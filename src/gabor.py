@@ -12,26 +12,28 @@ def gaborFunction(x, y, Lambda, theta, psi, sigma, gamma):
 	cos = math.cos( 2 * math.pi * xTheta / Lambda + psi )
 	return e * cos
 
-def gaborFilter(x, y, Lambda, theta, psi, sigma, gamma):
-	filter = empty( (2 * x, 2 * y) )
-	for i in range(-x, x):
-		for j in range(-y, y):
-			filter[i + x, j + y] = gaborFunction(i, j, Lambda, theta, psi, sigma, gamma)
+def gaborFilter(height, width, minx, miny, maxx, maxy, Lambda, theta, psi, sigma, gamma):
+	filter = empty( (height, width) )
+	xFactor = 1.0 * (maxx - minx) / height
+	yFactor = 1.0 * (maxy - miny) / width
+	for i in range(0, height):
+		for j in range(0, width):
+			filter[i, j] = gaborFunction(minx + i * xFactor, miny + j * yFactor, Lambda, theta, psi, sigma, gamma)
 	return filter
 
-def gaborFilterImage(length, width, x, y, Lambda, theta, psi, sigma, gamma):
-	filter = gaborFilter(x, y, Lambda, theta, psi, sigma, gamma)
+def gaborFilterImage(height, width, minx, miny, maxx, maxy, Lambda, theta, psi, sigma, gamma):
+	filter = gaborFilter(height, width, minx, miny, maxx, maxy, Lambda, theta, psi, sigma, gamma)
 	fmax = filter.max() 
 	fmin = filter.min()
-	image = Image.new("L", (2 * x - 1, 2 * y - 1))
+	image = Image.new("L", (height, width))
 	canvas = image.load()
-	for i in range(1, 2 * x):
-		for j in range(1, 2 * y):
-			canvas[i - 1, j - 1] = (filter[i, j]  - fmin) * 255 / (fmax - fmin)
-	image.save("gabor.jpg")
+	for i in range(0, height):
+		for j in range(0, width):
+			canvas[i, j] = (filter[i, j]  - fmin) * 255 / (fmax - fmin)
+	image.show()
 
 if __name__ == "__main__":
-	gaborFilterImage(32, 32, 6, 6, 5, 45, 0, 2, 0.5)
+	gaborFilterImage(320, 320, -6, -6, 6, 6, 5, 45, 0, 2, 0.5)
 			 
 			
 			
