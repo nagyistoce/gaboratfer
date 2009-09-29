@@ -19,7 +19,7 @@ def gaborFilter(x, y, Lambda, theta, psi, sigma, gamma):
 			filter[i + x, j + y] = gaborFunction(i, j, Lambda, theta, psi, sigma, gamma)
 	return filter
 
-def gaborFilterImage(x, y, Lambda, theta, psi, sigma, gamma):
+def gaborFilterImage(length, width, x, y, Lambda, theta, psi, sigma, gamma):
 	filter = gaborFilter(x, y, Lambda, theta, psi, sigma, gamma)
 	fmax = filter.max() 
 	fmin = filter.min()
@@ -28,9 +28,10 @@ def gaborFilterImage(x, y, Lambda, theta, psi, sigma, gamma):
 	for i in range(1, 2 * x):
 		for j in range(1, 2 * y):
 			canvas[i - 1, j - 1] = (filter[i, j]  - fmin) * 255 / (fmax - fmin)
+	image.save("gabor.jpg")
 
 if __name__ == "__main__":
-	gaborFilterImage(6, 6, 5, 45, 0, 2, 0.5)
+	gaborFilterImage(32, 32, 6, 6, 5, 45, 0, 2, 0.5)
 			 
 			
 			
