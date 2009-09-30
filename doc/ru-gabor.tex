@@ -1,0 +1,58 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[croatian]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{booktabs}
+% Da bi se promjenio stil citiranja umjesto:
+% [authoryear, round]
+% staviti:
+% [numbers, square]
+\usepackage[authoryear, round]{natbib}
+\usepackage{amsmath}
+\usepackage{subfig}
+\usepackage{fixltx2e}
+
+\begin{document}
+\title{Izlučivanje značajki gaborovim filterom}
+\author{Tomislav Reicher \and Krešimir Antolić \and Igor Belša \and Marko Ivanković \and Ivan Krišto \and Maja Legac \and Tomislav Novak}
+
+\maketitle
+
+\tableofcontents
+
+\section{Uvod}
+Face representation based on Gabor features have attracted much attention and
+achieved great success in face recognition area for the advantages of the Gabor
+filters. However, Gabor features currently adopted by most systems are redundant
+and too high dimensional. In this paper, we propose a face recognition method
+using AdaBoosted Gabor features, which are not only low dimensional but also
+discriminant. The main contribution of the paper lies in two points: (1) AdaBoost
+is successfully applied to face recognition by introducing the intra-face and
+extra-face difference space in the Gabor feature space; (2) An appropriate
+re-sampling scheme is adopted to deal with the imbalance between the amount of
+the positive samples and that of the negative samples. By using the proposed
+method, only hundreds of Gabor features are selected. Experiments on FERET
+database has shown that these hundreds of Gabor features are enough to achieve
+good performance comparable to that of methods using the complete set of Gabor
+features.
+
+Tekst je izvučen iz \citep{Yang04facerecognition}.
+
+Ovo je na brzinu složeno\ldots uskoro će biti lijepo ;D.
+
+\section{O literaturi}
+Literaturu izvlačite sa citeseerxa ili google schoolara jer vam oni odmah daju
+i bibtex članka koji samo kopirate u file \emph{literatura.bib}.
+
+Primjer citiranja: \verb|\citep{Yang04facerecognition}|.
+
+\bibliography{literatura}
+\bibliographystyle{plainnat}
+
+
+\end{document}
