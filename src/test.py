@@ -10,12 +10,14 @@ def main(argv):
 	#for opt, arg in opts:	
 	#	
 	#
+	filter = gabor.gaborFilter(5, 5, -1, -1, 1, 1, 5, 45, 0, 2, 0.5)
 
 	for inputImage in args:
 		file = open(inputImage, mode='rb')
 		data = file.read()
 		image = Image.fromstring("L", (64, 64), data, "raw", "L", 0, 1)
-		image.show()
+		gaborific = gabor.apply(filter, image)
+		gaborific.show()
 	
 
 if __name__ == "__main__":
