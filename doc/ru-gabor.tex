@@ -34,18 +34,32 @@
 \end{itemize}
 
 \section{Uvod}
-Sustav za raspoznavanje uzoraka se može opisati dijagramom:
-\begin{center}
-Uzorak $\rightarrow$ \fbox{Preprocesiranje} $\rightarrow$ \fbox{Izvlačenje
-značajki} $\rightarrow$ \fbox{Redukcija dimenzije} $\rightarrow$
-\fbox{Klasifikacija} $\rightarrow$ Razred\FUJ{Ovo pretvoriti u normalan
-dijagram!}
-\end{center}
-Prva nezaobilazna komponenta je izvlačenje značajki za što je odabran Gaborov
-filter.
+Sustav za raspoznavanje uzoraka se može opisati dijagramom
+\ref{fig:ru-sustav-dijagram}.
 
-Osnovna motivacija za korištenje Gaborovog filtera je veza sa biološkim osobinama
-vida kod sisavaca čiji su receptori osjetljivi na orijentaciju te imaju
+\begin{figure}[htb]
+\begin{center}
+\begin{picture}(270,130)
+\put(20,110){\makebox(40,15){\texttt{Uzorak}}}
+\put(58,117){\vector(1,0){15}}
+\put(75,110){\framebox(90,15){\textit{Preprocesiranje}}}
+\put(120,110){\vector(0,-1){15}}
+\put(75,80){\framebox(90,15){\textit{Izvlačenje značajki}}}
+\put(120,80){\vector(0,-1){15}}
+\put(75,50){\framebox(90,15){\textit{Redukcija dimenzije}}}
+\put(120,50){\vector(0,-1){15}}
+\put(75,20){\framebox(90,15){\textit{Klasifikacija}}}
+\put(167,27){\vector(1,0){15}}
+\put(180,20){\makebox(40,15){\texttt{Razred}}}
+\end{picture}
+\caption{Dijagram sustava za raspoznavanje uzoraka}
+\label{fig:ru-sustav-dijagram}
+\end{center}
+\end{figure}
+
+Prva nezaobilazna komponenta je izvlačenje značajki. Osnovna motivacija za
+korištenje Gaborovog filtera za izvlačenje značajki je veza sa biološkim
+osobinama vida kod sisavaca čiji su receptori osjetljivi na orijentaciju te imaju
 karakteristične prostorne frekvencije. Gaborov filter može iskoristit vizualne
 osobine kao što su lokalizacija prostora, selekcija orijentacije i karakteristike
 prostorne frekvencije
