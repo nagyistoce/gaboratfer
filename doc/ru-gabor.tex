@@ -69,17 +69,19 @@ orijentacije i karakteristike prostorne frekvencije
 
 % Ovo je opis o čemu koji odjeljak govori. Ovo se MORA nalaziti na kraju uvoda. 
 U 2.~odjeljku prikazan je matematički model dvodimenzionalnog gaborovog filtera,
-u 3.~odjeljku objašnjen je način izvlačenja značajki, 4.~odjeljak prikazuje
-rezultate primjene gaborovog filtera na neke od uzoraka, a 5.~navodi objašnjenja
-pojedinih parametara i njihov utjecaj na krajnji rezultat. U 6.~odjeljku je
+u 3.~odjeljku objašnjen je način izvlačenja značajki, 4.~odjeljak navodi objašnjenja
+pojedinih parametara i njihov utjecaj na krajnji rezultat, a 5.~prikazuje
+rezultate primjene gaborovog filtera na neke od uzoraka. U 6.~odjeljku je
 objašnjena interpretacija značajki te način korištenja dobivenih značajki u
 sustavima za raspoznavanje uzoraka, odnosno klasifikacija pomoću izlučenih
 značajki. Zaključak je dan u 7.~odjeljku.\TODO{Prešturo\ldots Doraditi nakon što
 budemo znali što ćemo uopće pisati\ldots}
 
-\section{Dizajn gaborovog filtera}\TODO{Provjeriti je li sve ok (formule)}
-Osnovna funkcijska forma 2D Gaborovog filtera definirana u prostornoj i
-prostorno--ferkvencijskoj domeni određena je sa \citep{huang2005robust}:
+\section{Dizajn gaborovog filtera}
+\FUJ{Ovo je loše! Različiti izvori imaju različite forme! Omg\ldots ovdje ima
+posla\ldots ispravim to (valjda do sutra))} Osnovna funkcijska forma 2D Gaborovog
+filtera definirana u prostornoj i prostorno--ferkvencijskoj domeni određena je sa
+\citep{huang2005robust}:
 \begin{equation}
 g(x,y)=\frac{1}{2\pi \sigma^2_{xy}}e^{-\left ( \frac{x'^2 +
 y'^2}{2\sigma^2_{x,y}} \right)} \times \left ( e^{2\pi i r_0 x'} -
@@ -129,10 +131,6 @@ slike $I(x,y)$.\TODO{Treba nastaviti\ldots}
 
 \subsection{Preprocesiranje uzoraka}
 \TODO{Izvuči iz \citep{bhuiyan2007onfacerecognition}}
-
-
-\section{Primjer primjene}
-Izvuči iz http://matlabserver.cs.rug.nl/edgedetectionweb/web/edgedetection\_examples.html
 
 \section{Utjecaj pojedinih parametara}
 Gaborov filter definiraju valna duljina ($\lambda$),
@@ -192,6 +190,9 @@ $\sigma$ veća, \emph{the support of the Gabor function and the number of
 visible parallel excitatory and inhibitory stripe zones.}\TODO{WTF!? Ovo ne
 mogu prevesti\ldots iz slika i pojma širine bi se dalo zaključiti, no nisam
 siguran što te pruge i zone predstavljaju}
+
+\section{Primjer primjene}
+Izvuči iz http://matlabserver.cs.rug.nl/edgedetectionweb/web/edgedetection\_examples.html
 
 \section{Klasifikacija}
 
