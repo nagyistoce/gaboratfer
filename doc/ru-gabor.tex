@@ -91,12 +91,11 @@ pri čemu su
 x' = x \cos \theta + y \sin \theta, \\
 y' = -x \sin \theta + y \cos \theta,
 \end{eqnarray*}
-gdje je $\sigma_{xy}$ standardna devijacija Gaussove omotnice\TODO{Je li ok
-ovako prevesti \emph{Gaussian envelope}?}koja karakterizira prostorni obujam i
-širinu\TODO{U originalu \emph{bandwidth}. To je ok?}filtera. Parametri ($u_0$,
-$v_0$) definiraju prostornu frekvenciju sinusoidalnog vala u ravnini koji
-također može biti izražen polarnim koordinatama kao radialna\TODO{U
-originalu \emph{radial}}frekvencija $r_0$ i orijentacija $\theta$:
+gdje je $\sigma_{xy}$ standardna devijacija Gaussove omotnice\TODO{\emph{Gaussian
+envelope}?}koja karakterizira prostorni obujam i širinu filtera. Parametri
+($u_0$, $v_0$) definiraju prostornu frekvenciju sinusoidalnog vala u ravnini koji
+također može biti izražen polarnim koordinatama kao radialna frekvencija $r_0$ i
+orijentacija $\theta$:
 \begin{eqnarray}
 r_0^2 = u_0^2 + v_0^2, \\
 \tan \theta = \frac{v_0}{u_0}.
@@ -134,9 +133,11 @@ slike $I(x,y)$.\TODO{Treba nastaviti\ldots}
 
 \section{Utjecaj pojedinih parametara}
 Gaborov filter definiraju valna duljina ($\lambda$),
-orijentacija ($\theta$), fazni pomak ($\varphi$), omjer \engl{aspect ratio}
-($\gamma $) i širina \engl{bandwidth} ($b$) \citep{petkovgabor}. Promjena
-parametara jest stvaranje novog filtera.
+orijentacija ($\theta$), fazni pomak ($\varphi$), omjer dimenzija \engl{aspect ratio}
+($\gamma $) i širina filtera \engl{bandwidth} ($b$) \citep{petkovgabor}.
+Promjena parametara jest stvaranje novog filtera.\TODO{Ovo provjeriti da nisam pokupio
+nešto karakteristično isključivo za onaj program iz onog HTML--a čiji je link
+naveden dolje u literaturi}
 
 \subsection{Valna duljina ($\lambda$)}
 Valna duljina se odnosi na valnu duljinu kosinusa u Gaborovoj funkciji.
@@ -144,7 +145,7 @@ Vrijednost je realan broj veći ili jednak $2$. Jedinica su pixeli.
 
 Uz $\lambda = 2$, ne bi se smjela koristiti kombinacija $\varphi = \pm 90$ jer u
 tom slučaju Gaborova funkcija je uzrokovana u svojim
-nul--prijelazima\TODO{``sampled in its zero crossings'' = u svojim nul\ldots?}.
+nul--prijelazima\TODO{``sampled in its zero crossings''?}.
 Da bi se spriječila pojava neželjenih efekata na rubovima slike, vrijednost valne
 duljine mora biti manja od $\frac{1}{5}$ veličine ulazne slike.\TODO{Dodati
 slike!}
@@ -156,7 +157,38 @@ Određena je kutom od $0$ do $360$ stupnjeva.\TODO{Dodati slike kao primjere
 različitih orijentacija}
 
 \subsection{Fazni pomak ($\varphi$)}
+Ovaj parametar određuje fazni pomak funkcije kosinus unutar Gaborove funkcije.
+Ispravne vrijednosti su realni brojevi između $-180$ i $180$ stupnjeva.
 
+Vrijednosti $0$ i $180$ odgovaraju središnje--simetričnim funkcijama, a $-90$ i
+$90$ anti--simetričnim funkcijama. Svi ostali slučajevi odgovaraju asimetričnim
+funkcijama.\TODO{Slikeee}
+
+\subsection{Omjer dimenzija ($\gamma $)}
+Parametar, koji se preciznije naziva prostorni omjer dimenzija, koji određuje
+eliptičnost Gaborove funkcije. Za $\gamma = 1$, eliptičnost se svodi na krug.
+Za $\gamma < 1$ funkcija je izdužena u smjeru paralelnom s paralelnim prugama
+funkcije\TODO{Opet te paralelne pruge!}.\TODO{Opet\ldots slikeee\ldots}
+
+\subsection{Širina filtera ($b$)}
+Prostorna širina filtera $b$ (u oktavama) Gaborovog filtera je povezana sa
+omjerom $\frac{\sigma}{\lambda}$, pri čemu su $\sigma$ i $\lambda$ standardna
+devijacija Gaussovog umnoška Gaborove funkcije i valna duljina. Definirana je
+sa:
+\begin{eqnarray}
+b = \log_2{\left (  \frac{\frac{\sigma}{\lambda}\pi + \sqrt{\frac{\ln2}{2}}}
+{\frac{\sigma}{\lambda}\pi - \sqrt{\frac{\ln2}{2}}} \right )}, \\
+\frac{\sigma}{\lambda} =
+\frac{1}{\pi}\sqrt{\frac{ln2}{2}}\cdot\frac{2^b+1}{2^b-1}.
+\end{eqnarray}
+Vrijednost $\sigma$ se ne može direktno odrediti. Ona se može mijenjati samo
+preko vrijednosti širine filtera, $b$.
+
+Širina filtera se određuje kao realni pozitivni broj. Što je širina manja,
+$\sigma$ veća, \emph{the support of the Gabor function and the number of
+visible parallel excitatory and inhibitory stripe zones.}\TODO{WTF!? Ovo ne
+mogu prevesti\ldots iz slika i pojma širine bi se dalo zaključiti, no nisam
+siguran što te pruge i zone predstavljaju}
 
 \section{Klasifikacija}
 
