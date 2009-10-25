@@ -4,6 +4,15 @@ from numpy import *
 from PIL import Image
 
 def gaborFunction(x, y, Lambda, theta, psi, sigma, gamma):
+	"""	Gaborova funkcija.
+		psi - faza kosinusa, u stupnjevima!
+		theta - orijentacija, u stupnjevima!
+	"""
+	
+	# Pretvaram psi i theta u radijane
+	psi = 2 * math.pi * psi/ 360
+	theta = 2 * math.pi * theta/ 360
+	
 	cosTheta = math.cos(theta)
 	sinTheta = math.sin(theta)
 	xTheta = x * cosTheta  + y * sinTheta
@@ -60,7 +69,7 @@ def apply(filter, image):
 	return resultImage
 
 if __name__ == "__main__":
-	gaborFilterImage(320, 320, -6, -6, 6, 6, 5, 45, 0, 2, 0.5)
+	gaborFilterImage(320, 320, -6, -6, 6, 6, 5, 90, 0, 2, 0.5)
 			 
 			
 			
