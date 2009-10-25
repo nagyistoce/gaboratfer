@@ -79,5 +79,5 @@ def apply(filter, image):
 
 if __name__ == "__main__":
 	#gaborFilterImage(320, 320, -6, -6, 6, 6, 5, 90, 0, 2, 0.5)
-	gaborFilterImage(100, 100, -6, -6, 6, 6, 10, 0, 0, 1, 0.5)
+	gaborFilterImage(100, 100, -50, -50, 50, 50, 10, 0, 0, 1, 0.5)
 	
