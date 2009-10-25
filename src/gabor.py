@@ -5,8 +5,8 @@ from PIL import Image
 
 def gaborFunction(x, y, Lambda, theta, psi, sigma, gamma):
 	"""	Gaborova funkcija.
-		psi - faza kosinusa, u stupnjevima!
-		theta - orijentacija, u stupnjevima!
+		psi - faza kosinusa, u stupnjevima
+		theta - orijentacija, u stupnjevima
 	"""
 	
 	# Pretvaram psi i theta u radijane
@@ -21,7 +21,16 @@ def gaborFunction(x, y, Lambda, theta, psi, sigma, gamma):
 	cos = math.cos( 2 * math.pi * xTheta / Lambda + psi )
 	return e * cos
 
-def gaborFilter(height, width, minx, miny, maxx, maxy, Lambda, theta, psi, sigma, gamma):
+def calcSigma(bandwidth, Lambda):
+	return (Lambda / math.pi) * math.sqrt(math.log(2, math.e)/2)*(2**bandwidth + 1)/(2**bandwidth - 1)
+	
+def gaborFilter(height, width, minx, miny, maxx, maxy, Lambda, theta, psi, bandwidth, gamma):
+	"""	Gaborov filter.
+		psi - faza kosinusa, u stupnjevima
+		theta - orijentacija, u stupnjevima
+	"""
+	
+	sigma = calcSigma(bandwidth, Lambda)
 	filter = empty( (height, width) )
 	xFactor = 1.0 * (maxx - minx) / height
 	yFactor = 1.0 * (maxy - miny) / width
@@ -30,8 +39,8 @@ def gaborFilter(height, width, minx, miny, maxx, maxy, Lambda, theta, psi, sigma
 			filter[i, j] = gaborFunction(minx + i * xFactor, miny + j * yFactor, Lambda, theta, psi, sigma, gamma)
 	return filter
 
-def gaborFilterImage(height, width, minx, miny, maxx, maxy, Lambda, theta, psi, sigma, gamma):
-	filter = gaborFilter(height, width, minx, miny, maxx, maxy, Lambda, theta, psi, sigma, gamma)
+def gaborFilterImage(height, width, minx, miny, maxx, maxy, Lambda, theta, psi, bandwidth, gamma):
+	filter = gaborFilter(height, width, minx, miny, maxx, maxy, Lambda, theta, psi, bandwidth, gamma)
 	fmax = filter.max() 
 	fmin = filter.min()
 	image = Image.new("L", (height, width))
@@ -69,7 +78,6 @@ def apply(filter, image):
 	return resultImage
 
 if __name__ == "__main__":
-	gaborFilterImage(320, 320, -6, -6, 6, 6, 5, 90, 0, 2, 0.5)
-			 
-			
-			
+	#gaborFilterImage(320, 320, -6, -6, 6, 6, 5, 90, 0, 2, 0.5)
+	gaborFilterImage(100, 100, -6, -6, 6, 6, 10, 0, 0, 1, 0.5)
+	
