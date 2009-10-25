@@ -21,11 +21,6 @@ def calcSigma(bandwidth, Lambda):
 	return (Lambda / math.pi) * math.sqrt(math.log(2, math.e)/2)*(2**bandwidth + 1)/(2**bandwidth - 1)
 	
 def gaborFilter(height, width, minx, miny, maxx, maxy, Lambda, theta, psi, bandwidth, gamma):
-	"""	Gaborov filter.
-		psi - faza kosinusa, u stupnjevima
-		theta - orijentacija, u stupnjevima
-	"""
-	
 	sigma = calcSigma(bandwidth, Lambda)
 	filter = empty( (height, width) )
 	xFactor = 1.0 * (maxx - minx) / height
