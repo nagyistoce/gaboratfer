@@ -38,8 +38,19 @@
 \end{itemize}
 
 \section{Uvod}
-Raspoznavanje uzoraka je znanstvena disciplina iz područja računarskih znanosti čiji je cilj klasifikacija ili razvrstavanje objekata u jedan od brojnih razreda ili klasa. Iako su područja uporabe brojna u ovom radu koncentacija je na raspoznavanju vizulanih uzoraka, točnije raspoznavanju lica. Prepoznavanje lica ukljućuje računalno prepoznavanje indentiteta na temelju značajki dobivenih obradom slika lica. Iako ljudima lak zadatak, prepoznavanje lica i njihova klasifikacija je veoma zahtjevan posao za računalo. Zadatak postaje tim zahtjevniji ako su lica slikana pod različitim osvijetljenjem, različitim kutovima ili ako osobe na slikama nemaju uvijek isti izraz lica. Kao osnovna motivacija za koriš¡tenje Gaborovog filtera za izvlačenje značajki je veza
-sa biološkim osobinama vida kod sisavaca čiji su receptori osjetljivi na
+Raspoznavanje uzoraka je znanstvena disciplina iz područja računarskih znanosti
+čiji je cilj klasifikacija ili razvrstavanje objekata u jedan od brojnih razreda
+ili klasa. Iako su područja uporabe brojna u ovom radu koncentacija je na
+raspoznavanju vizulanih uzoraka, točnije raspoznavanju lica.
+
+Raspoznavanje lica uključuje računalno prepoznavanje indentiteta na temelju
+značajki dobivenih obradom slika lica. Iako ljudima lak zadatak, prepoznavanje
+lica i njihova klasifikacija je veoma zahtjevan posao za računalo. Zadatak
+postaje tim zahtjevniji ako su lica slikana pod različitim osvijetljenjem,
+različitim kutovima ili ako osobe na slikama nemaju uvijek isti izraz lica.
+
+Kao osnovna motivacija za korištenje Gaborovog filtera za izvlačenje značajki je
+veza sa biološkim osobinama vida kod sisavaca čiji su receptori osjetljivi na
 orijentaciju te imaju karakteristične prostorne frekvencije. Gaborov filter može
 iskoristit vizualne osobine kao što su lokalizacija prostora, selekcija
 orijentacije i karakteristike prostorne frekvencije
@@ -53,11 +64,11 @@ Model sustava za raspoznavanje uzoraka se može opisati dijagramom
 \begin{picture}(270,130)
 \put(20,110){\makebox(40,15){\texttt{Uzorak}}}
 \put(58,117){\vector(1,0){15}}
-\put(75,110){\framebox(90,15){\textit{Senzor}}}
+\put(75,110){\framebox(90,15){\textit{Pretprocesiranje}}}
 \put(120,110){\vector(0,-1){15}}
-\put(75,80){\framebox(90,15){\textit{Pretprocesiranje}}}
+\put(75,80){\framebox(90,15){\textit{Izlučivanje značajki}}}
 \put(120,80){\vector(0,-1){15}}
-\put(75,50){\framebox(90,15){\textit{Izlučivanje značajki}}}
+\put(75,50){\framebox(90,15){\textit{Redukcija dimenzije}}}
 \put(120,50){\vector(0,-1){15}}
 \put(75,20){\framebox(90,15){\textit{Pravilo odlučivanja}}}
 \put(167,27){\vector(1,0){15}}
