@@ -31,12 +31,6 @@
 
 \tableofcontents
 
-\section*{Za raspraviti}
-\begin{itemize}
-  \item Je li naslov ok? Je li ok spomenuti ``raspoznavanje lica'' ili ``lice''
-  u samom naslovu?
-\end{itemize}
-
 \section{Uvod}
 Raspoznavanje uzoraka je znanstvena disciplina iz područja računarskih znanosti
 čiji je cilj klasifikacija ili razvrstavanje objekata u jedan od brojnih razreda
@@ -86,8 +80,7 @@ pojedinih parametara i njihov utjecaj na krajnji rezultat, a 5.~prikazuje
 rezultate primjene gaborovog filtera na neke od uzoraka. U 6.~odjeljku je
 objašnjena interpretacija značajki te način korištenja dobivenih značajki u
 sustavima za raspoznavanje uzoraka, odnosno klasifikacija pomoću izlučenih
-značajki. Zaključak je dan u 7.~odjeljku.\TODO{Prešturo\ldots Doraditi nakon što
-budemo znali što ćemo uopće pisati\ldots}
+značajki. Zaključak je dan u 7.~odjeljku.
 
 \section{Dizajn Gaborovog filtera}
 Dvodimenzionalna Gaborova funkcija data je kao \citep{petkovgabor}:
@@ -147,19 +140,18 @@ O(x,y,r_0, \theta_k) = I(x,y) * g(x,y,r_0, \theta_k),
 \label{konvolucija-filter-slika}
 \end{equation}
 pri čemu je $k = 1, 2, 3, 4$. $O(x,y,r_0, \theta_k)$ nazivamo Gaborov prikaz
-slike $I(x,y)$.\TODO{Treba nastaviti\ldots pogledati \citep{huang2005robust}
-dio 3.2.}
+slike $I(x,y)$.
+Kvaliteta izlučenih značajki ovisi iznimno o parametrima Gaborovog filtera.
+Naš zadatak u ovom radu je pronači optimalne parameter Gaborovog filtra za izlučivanje
+značajki ljudskog lica.
 
 \subsection{Preprocesiranje uzoraka}
-\TODO{Izvuči iz \citep{bhuiyan2007onfacerecognition}}
 
 \section{Utjecaj pojedinih parametara}
 Gaborov filter definiraju valna duljina ($\lambda$),
 orijentacija ($\theta$), fazni pomak ($\varphi$), omjer dimenzija \engl{aspect ratio}
 ($\gamma $) i širina filtera \engl{bandwidth} ($b$) \citep{petkovgabor}.
-Promjena parametara jest stvaranje novog filtera.\TODO{Ovo provjeriti da nisam pokupio
-nešto karakteristično isključivo za onaj program iz onog HTML--a čiji je link
-naveden dolje u literaturi}
+Promjena parametara jest stvaranje novog filtera.
 
 \subsection{Valna duljina ($\lambda$)}
 Valna duljina se odnosi na valnu duljinu kosinusa u Gaborovoj funkciji.
@@ -205,7 +197,7 @@ filter. Filter sa prevelikom valnom duljinom možete vidjeti na slici
 
 \subsection{Orijentacija ($\theta$)}
 Orijentacija određuje kut između normale i paralelnih pruga Gaborovog
-filtera.\TODO{Što je normala, a što su te pruge\ldots nisam uspio skužiti\ldots}
+filtera.
 Određena je kutom od $0$ do $360$ stupnjeva. Prikaze Gaborovog filtera sa
 orijentacijama od 45\textdegree, 80\textdegree\,i 0\textdegree\, možete vidjeti
 na slikama \ref{fig:filter-orientation-45}, \ref{fig:filter-orientation-80} i
@@ -265,7 +257,7 @@ anti--simetričnim funkcijama (primjer filtera se može vidjeti na slici
 Parametar, koji se preciznije naziva prostorni omjer dimenzija, koji određuje
 eliptičnost Gaborove funkcije. Za $\gamma = 1$, eliptičnost se svodi na krug.
 Za $\gamma < 1$ funkcija je izdužena u smjeru paralelnom s paralelnim prugama
-funkcije\TODO{Opet te paralelne pruge!}. Primjer filtera sa različitim omjerima
+funkcije. Primjer filtera sa različitim omjerima
 dimenzija se može vidjeti na slici \ref{fig:filter-ratios}.
 
 \begin{figure}[htb]
@@ -299,7 +291,7 @@ preko vrijednosti širine filtera, $b$.
 
 Širina filtera se određuje kao realni pozitivni broj. Što je širina manja,
 $\sigma$ je veća i povećava se broj naglašavajućih i prigušavajućih pruga
-Gaborovog filtera.\TODO{Je li ovo ok ovako napisano?} Primjere filtera sa
+Gaborovog filtera.~ Primjere filtera sa
 različitim širinama možete vidjeti na slikama \ref{fig:filter-bandwidth-05} i
 \ref{fig:filter-bandwidth-2}. Na prethodnim primjerima korištena je širina
 filtera od $b = 1$.
@@ -319,98 +311,18 @@ filtera od $b = 1$.
   \label{fig:filter-bandwidths}
 \end{figure}
 
-\section{Primjer primjene}
-Izvuči iz http://matlabserver.cs.rug.nl/edgedetectionweb/web/edgedetection\_examples.html
-
 \section{Klasifikacija}
+
+U našem radu za klasifikaciju biti će korišteni gotovi klasifikatori dostupni na internetu u obliku programskih knjižnica. Upotrijebiti ćemo najmanje dva različita klasifikatora.
 
 \section{Zaključak}
 
+Korištenje Gaborovog filtra ima dobru podlogu u biološkim osnovama vida
+sisavaca i očekujemo da će mo upotrebom različitih klasifikatora i
+automatiziranom optimizacijom parametara postići uspjeh u klasifikaciji
+dobivenih uzoraka.
+
 \bibliography{literatura}
 \bibliographystyle{plainnat}
-
-\newpage
-\appendix
-\section{\LaTeX~playground}
-Ovdje se možete igrati sa \LaTeX--om. Ideja je da igranjem u ovome dijelu
-naučite nešto korisno oko \LaTeX--a tako da vam oni koji znaju \LaTeX~tu ostave
-koji koristan primjer uporabe. Uglavnom, uvijek se igrajte s \LaTeX--om, jer igranje bez \LaTeX--a nije sigurno igranje. 
-
-\subsection{O novim redovima}
-Dokument dijelimo na paragrafe. Tekst unutar paragrafa se ne razlama. Ilitiga,
-ako napišete:
-\begin{verbatim}
-Želim ovo u prvom,
-ovo u drugom,
-a ovo u trećem, i da je blizu udaljena od       daleko.
-\end{verbatim}
-Dobiti će te:
-\emph{Želim ovo u prvom,
-ovo u drugom,
-a ovo u trećem, i da je blizu udaljena od       daleko.}
-
-Ako želite novi red unutar paragrafa, morat će te dodati
-\verb|\\| na kraj red ili komandu \verb|\newline|. I to je ružno\ldots
-
-Ako želite preći u novi paragraf dovoljno je ostaviti jedan prazan red između
-prošlog i novog paragrafa, tj.:
-\begin{verbatim}
-Prvi paragraf.
-
-Drugi paragraf.
-\end{verbatim}
-
-\subsection{Korištenje TODO i FUJ naredbi}
-Za potrebe ovog rada, dodane su \verb|\TODO{}| i \verb|\FUJ{}| naredbe. Služe
-da bi popljuvali\FUJ{Kako ružna riječ}nečije djelo ili napisali što još treba
-napraviti\TODO{Navedi primjer korištenja! :D}.
-
-U argumente ovih naredbi, tj. sadržaj \textsf{TODO}--a možete ugurati sam kod.
-Npr.~recimo.\TODO{\LaTeX, ovo je \emph{naglašeno}; ili
-malo matematike $\iint_a^b{x^2dx}$} No, ovdje neće proći stvari kao više
-linijski programski kod i sl.
-
-\subsection{O pisanju matematičkih izraza}
-Ako želite naučiti koristiti \LaTeX~za ono što ovaj podnaslov spominje, trebati
-će vam neki tutorial ili knjiga (a ima ih masu\ldots i to besplatnih!).
-Ja ću samo navesti par osnova.
-
-Primjer izraza koji se nalazi u posebnom bloku, i još je centriran:
-$$x_{1,2} = \frac{-b \pm \sqrt{b^2-4ac}}{2a}$$
-Napisao sam: \verb|$$x_{1,2} = \frac{-b \pm \sqrt{b^2-4ac}}{2a}$$|
-
-Ovo je jedan način zapisa. Mogli smo koristiti:
-\begin{equation}
-x_{1,2} = \frac{-b \pm \sqrt{b^2-4ac}}{2a}
-\label{rjesenje-kvadratne-jed}
-\end{equation}
-Napisao sam:
-\begin{verbatim}
-\begin{equation}
-x_{1,2} = \frac{-b \pm \sqrt{b^2-4ac}}{2a}
-\label{rjesenje-kvadratne-jed}
-\end{equation}
-\end{verbatim}
-
-Na ovaj drugi način izrazi se numeriraju i možemo se lako referencirati na
-njih, npr.~(\ref{rjesenje-kvadratne-jed}). Referenciramo se ne bilo koji
-\verb|\label{}| pomoću naredbe \verb|\ref{}|,
-npr.~\verb|\ref{rjesenje-kvadratne-jed}|.
-
-Evo neka stranica sa par zanimljivih primjera koje najvjerojatnije nikad nećete
-imati priliku primjeniti, \url{http://www.personal.ceu.hu/tex/cookbook.html} te
-još malo filozofije o svemu tome
-\url{http://www.math.uiuc.edu/~hildebr/tex/displays.html}.
-
-Btw.~ako gledate source, možda se pitate zašto uvijek stavljam ``\textasciitilde{}''
-nakon točke. Radi se o tome da \LaTeX~nakon svake točke stavi malo više
-razmaka, jer misli da se radi o početku nove rečenice. Ako mu stavimo tildu,
-onda taj razmak bude onakav kakav bi trebao biti.
-
-\subsection{O literaturi}
-Literaturu izvlačite sa citeseerxa ili google schoolara jer vam oni odmah daju
-i bibtex članka koji samo kopirate u file \emph{literatura.bib}.
-
-Primjer citiranja: \verb|\citep{Yang04facerecognition}|.
 
 \end{document}
