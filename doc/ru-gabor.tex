@@ -19,6 +19,7 @@
 \usepackage{fixltx2e}
 \usepackage{todo}
 \usepackage{url}
+\usepackage{textcomp}
 
 \newcommand{\engl}[1]{(engl.~\emph{#1})}
 
@@ -153,32 +154,123 @@ naveden dolje u literaturi}
 Valna duljina se odnosi na valnu duljinu kosinusa u Gaborovoj funkciji.
 Vrijednost je realan broj veći ili jednak $2$. Jedinica su pixeli.
 
-Uz $\lambda = 2$, ne bi se smjela koristiti kombinacija $\varphi = \pm 90$ jer u
-tom slučaju Gaborova funkcija je uzrokovana u svojim
-nul--prijelazima\TODO{``sampled in its zero crossings''?}.
+Slike Gaborovih filtera uz parametre $\varphi, \theta = 0,\: b = 1$, i $\gamma =
+0.5$ možete vidjeti na slici \ref{fig:filter-wavelengths}.
+
+\begin{figure}[htb]
+  \centering
+  \subfloat[Filter uz $\lambda = 5$.]{
+  	\label{fig:filter-lambda-5}
+  	\includegraphics[width=4cm]{images/wavelength5.jpg}
+  }
+  \hspace{50pt}
+  \subfloat[Filter uz $\lambda = 10$.]{
+  	\label{fig:filter-lambda-10}
+  	\includegraphics[width=4cm]{images/wavelength10.jpg}
+  }
+  \caption{Gaborov filter uz različite valne duljine.}
+  \label{fig:filter-wavelengths}
+\end{figure}
+
+% TODO: Pogledati o čemu se ovdje radi\ldots Gledao sam formulu, ništa pametno
+% nisam zaključio, generirao sam slike, također ništa pametno\ldots Nešto mi
+% promiče\ldots Zakomentirao sam tu rečenicu dok mi ne postane smislena.
+%Uz $\lambda = 2$, ne bi se smjela koristiti kombinacija $\varphi = \pm 90$ jer
+%u tom slučaju Gaborova funkcija je uzrokovana u svojim
+%nul--prijelazima\TODO{``sampled in its zero crossings''?}.
 Da bi se spriječila pojava neželjenih efekata na rubovima slike, vrijednost valne
-duljine mora biti manja od $\frac{1}{5}$ veličine ulazne slike.\TODO{Dodati
-slike!}
+duljine mora biti manja od $\frac{1}{5}$ veličine slike koja prolazi kroz
+filter. Filter sa prevelikom valnom duljinom možete vidjeti na slici
+\ref{fig:wavelength-overflow}. U datom primjeru filter djeluje na području
+širine 100 piksela, a filter je širok 30 piksela.
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=4cm]{images/wavelength30overflow.jpg}
+\end{center}
+\caption{Prikaz filtera uz preveliku valnu duljinu.}
+\label{fig:wavelength-overflow}
+\end{figure}
 
 \subsection{Orijentacija ($\theta$)}
 Orijentacija određuje kut između normale i paralelnih pruga Gaborovog
 filtera.\TODO{Što je normala, a što su te pruge\ldots nisam uspio skužiti\ldots}
-Određena je kutom od $0$ do $360$ stupnjeva.\TODO{Dodati slike kao primjere
-različitih orijentacija}
+Određena je kutom od $0$ do $360$ stupnjeva. Prikaze Gaborovog filtera sa
+orijentacijama od 45\textdegree, 80\textdegree\,i 0\textdegree\, možete vidjeti
+na slikama \ref{fig:filter-orientation-45}, \ref{fig:filter-orientation-80} i
+\ref{fig:filter-lambda-10}.
+
+\begin{figure}[htb]
+  \centering
+  \subfloat[Filter uz $\theta = 45$\textdegree.]{
+  	\label{fig:filter-orientation-45}
+  	\includegraphics[width=4cm]{images/orientation45.jpg}
+  }
+  \hspace{50pt}
+  \subfloat[Filter uz $\theta = 80$\textdegree.]{
+  	\label{fig:filter-orientation-80}
+  	\includegraphics[width=4cm]{images/orientation80.jpg}
+  }
+  \caption{Gaborov filter uz različite orijentacije.}
+  \label{fig:filter-orientations}
+\end{figure}
 
 \subsection{Fazni pomak ($\varphi$)}
 Ovaj parametar određuje fazni pomak funkcije kosinus unutar Gaborove funkcije.
-Ispravne vrijednosti su realni brojevi između $-180$ i $180$ stupnjeva.
+Ispravne vrijednosti su realni brojevi između $-180$ i $180$ stupnjeva. Prikaze
+Gaborovog filtera sa fazama od 45\textdegree, 180\textdegree\, i 0\textdegree\,
+možete vidjeti na slikama \ref{fig:filter-phase-45},
+\ref{fig:filter-phase-180} i \ref{fig:filter-lambda-10}.
 
-Vrijednosti $0$ i $180$ odgovaraju središnje--simetričnim funkcijama, a $-90$ i
-$90$ anti--simetričnim funkcijama. Svi ostali slučajevi odgovaraju asimetričnim
-funkcijama.\TODO{Slikeee}
+\begin{figure}[htb]
+  \centering
+  \subfloat[Filter uz $\varphi = 45$\textdegree.]{
+  	\label{fig:filter-phase-45}
+  	\includegraphics[width=4cm]{images/phase45.jpg}
+  }
+  \hspace{50pt}
+  \subfloat[Filter uz $\varphi = 180$\textdegree.]{
+  	\label{fig:filter-phase-180}
+  	\includegraphics[width=4cm]{images/phase180.jpg}
+  }
+  \caption{Gaborov filter uz različite faze.}
+  \label{fig:filter-phases}
+\end{figure}
+
+Vrijednosti $0$\textdegree\, i $180$\textdegree\, odgovaraju
+središnje--simetričnim funkcijama, a $-90$\textdegree\, i $90$\textdegree\,
+anti--simetričnim funkcijama (primjer filtera se može vidjeti na slici
+\ref{fig:phase-90}). Svi ostali slučajevi odgovaraju asimetričnim funkcijama.
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=4cm]{images/phase90.jpg}
+\end{center}
+\caption{Filter uz fazu od 90\textdegree (anti--simetrija).}
+\label{fig:phase-90}
+\end{figure}
 
 \subsection{Omjer dimenzija ($\gamma $)}
 Parametar, koji se preciznije naziva prostorni omjer dimenzija, koji određuje
 eliptičnost Gaborove funkcije. Za $\gamma = 1$, eliptičnost se svodi na krug.
 Za $\gamma < 1$ funkcija je izdužena u smjeru paralelnom s paralelnim prugama
-funkcije\TODO{Opet te paralelne pruge!}.\TODO{Opet\ldots slikeee\ldots}
+funkcije\TODO{Opet te paralelne pruge!}. Primjer filtera sa različitim omjerima
+dimenzija se može vidjeti na slici \ref{fig:filter-ratios}.
+
+\begin{figure}[htb]
+  \centering
+  \subfloat[Filter uz $\gamma = 0.5$.]{
+  	\label{fig:filter-gamma-05}
+  	\includegraphics[width=4cm]{images/wavelength10.jpg}
+  }
+  \hspace{50pt}
+  \subfloat[Filter uz $\gamma = 1$.]{
+  	\label{fig:filter-gamma-1}
+  	\includegraphics[width=4cm]{images/ratio1.jpg}
+  }
+  \caption{Gaborov filter uz različite omjere dimenzija.}
+  \label{fig:filter-ratios}
+\end{figure}
 
 \subsection{Širina filtera ($b$)}
 Prostorna širina filtera $b$ (u oktavama) Gaborovog filtera je povezana sa
@@ -195,10 +287,26 @@ Vrijednost $\sigma$ se ne može direktno odrediti. Ona se može mijenjati samo
 preko vrijednosti širine filtera, $b$.
 
 Širina filtera se određuje kao realni pozitivni broj. Što je širina manja,
-$\sigma$ veća, \emph{the support of the Gabor function and the number of
-visible parallel excitatory and inhibitory stripe zones.}\TODO{WTF!? Ovo ne
-mogu prevesti\ldots iz slika i pojma širine bi se dalo zaključiti, no nisam
-siguran što te pruge i zone predstavljaju}
+$\sigma$ je veća i povećava se broj naglašavajućih i prigušavajućih pruga
+Gaborovog filtera.\TODO{Je li ovo ok ovako napisano?} Primjere filtera sa
+različitim širinama možete vidjeti na slikama \ref{fig:filter-bandwidth-05} i
+\ref{fig:filter-bandwidth-2}. Na prethodnim primjerima korištena je širina
+filtera od $b = 1$.
+
+\begin{figure}[htb]
+  \centering
+  \subfloat[Filter uz $b = 0.5$.]{
+  	\label{fig:filter-bandwidth-05}
+  	\includegraphics[width=4cm]{images/bandwidth05.jpg}
+  }
+  \hspace{50pt}
+  \subfloat[Filter uz $b = 2$.]{
+  	\label{fig:filter-bandwidth-2}
+  	\includegraphics[width=4cm]{images/bandwidth2.jpg}
+  }
+  \caption{Gaborov filter uz različite širine.}
+  \label{fig:filter-bandwidths}
+\end{figure}
 
 \section{Primjer primjene}
 Izvuči iz http://matlabserver.cs.rug.nl/edgedetectionweb/web/edgedetection\_examples.html
