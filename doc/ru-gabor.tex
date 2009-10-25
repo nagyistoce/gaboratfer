@@ -77,31 +77,23 @@ sustavima za raspoznavanje uzoraka, odnosno klasifikacija pomoću izlučenih
 značajki. Zaključak je dan u 7.~odjeljku.\TODO{Prešturo\ldots Doraditi nakon što
 budemo znali što ćemo uopće pisati\ldots}
 
-\section{Dizajn gaborovog filtera}
-\FUJ{Ovo je loše! Različiti izvori imaju različite forme! Omg\ldots ovdje ima
-posla\ldots ispravim to (valjda do sutra))} Osnovna funkcijska forma 2D Gaborovog
-filtera definirana u prostornoj i prostorno--ferkvencijskoj domeni određena je sa
-\citep{huang2005robust}:
+\section{Dizajn Gaborovog filtera}
+Dvodimenzionalna Gaborova funkcija data je kao \citep{petkovgabor}:
 \begin{equation}
-g(x,y)=\frac{1}{2\pi \sigma^2_{xy}}e^{-\left ( \frac{x'^2 +
-y'^2}{2\sigma^2_{x,y}} \right)} \times \left ( e^{2\pi i r_0 x'} -
-e^{-\frac{r_0^2}{2\sigma^2_{uv}}}\right),
+% g(x,y)=\frac{1}{2\pi \sigma^2_{xy}}e^{-\left ( \frac{x'^2 +
+% y'^2}{2\sigma^2_{x,y}} \right)} \times \left ( e^{2\pi i r_0 x'} -
+% e^{-\frac{r_0^2}{2\sigma^2_{uv}}}\right),
+g_{\lambda,\theta,\varphi,\sigma,\gamma}(x,y) = \exp\left ( -
+\frac{x'^2+\gamma^2 y'^2}{2\sigma^2}\right ) \cos \left ( 2\pi \frac{x'}{\lambda} + \varphi \right ),
 \label{2d-gabor}
 \end{equation}
 pri čemu su
 \begin{eqnarray*}
 x' = x \cos \theta + y \sin \theta, \\
-y' = -x \sin \theta + y \cos \theta,
+y' = -x \sin \theta + y \cos \theta.
 \end{eqnarray*}
-gdje je $\sigma_{xy}$ standardna devijacija Gaussove omotnice\TODO{\emph{Gaussian
-envelope}?}koja karakterizira prostorni obujam i širinu filtera. Parametri
-($u_0$, $v_0$) definiraju prostornu frekvenciju sinusoidalnog vala u ravnini koji
-također može biti izražen polarnim koordinatama kao radialna frekvencija $r_0$ i
-orijentacija $\theta$:
-\begin{eqnarray}
-r_0^2 = u_0^2 + v_0^2, \\
-\tan \theta = \frac{v_0}{u_0}.
-\end{eqnarray}
+% gdje je $\sigma_{xy}$ standardna devijacija Gaussove omotnice\TODO{\emph{Gaussian
+% envelope}?}koja karakterizira prostorni obujam i širinu filtera. 
 Frekvencija i odabir orijentacije Gaborovog filtera su izražajnije u domeni
 frekvencijskog prikaza predstavljenog jednadžbom (\ref{gabor-frek}) koja
 određuje koliko filter utječe na svaku frekvencijsku komponentu ulazne slike.
@@ -113,8 +105,24 @@ G(u,v) = \exp \left ( - \frac{(u-u_0)^2 + (v-v_0)^2}{2\sigma^2_{uv}}\right ) -
 \begin{equation}
 \sigma_{uv} = \frac{1}{2\pi \sigma_{xy}}.
 \end{equation}
+Parametri ($u_0$, $v_0$) definiraju prostornu frekvenciju sinusoidalnog vala u
+ravnini koji također može biti izražen polarnim koordinatama kao radialna frekvencija $r_0$ i
+orijentacija $\theta$:
+\begin{eqnarray}
+r_0^2 = u_0^2 + v_0^2, \\
+\tan \theta = \frac{v_0}{u_0}.
+\end{eqnarray}
 Osobina Gaborovog filtera definirana je radijalnom frekvencijom $r_0$,
 orijentacijom i širinom filtera.
+
+Ako je svrha filtera izvlačenje značajki lica, zanimaju nas četiri orijentacije
+\citep{huang2005robust}:
+\begin{equation}
+\theta_k = \frac{\pi(k-1)}{4},\: k = 1,2,3,4.
+\label{equ:orijentacije}
+\end{equation}
+Orijentacije se odnose na oblu konturu lica, oči i usta koji se nalaze u skoro
+horizontalnoj ravnini, te nos koji je u vertikalnoj ravnini.
 
 \section{Izvlačenje značajki pomoću gaborovog filtera}
 Gaborove značajke se dobivaju konvolucijom klizečeg prozora slike i Gaborovog
