@@ -40,7 +40,6 @@ def gaborFilterImage(height, width, minx, miny, maxx, maxy, Lambda, theta, psi, 
 		for j in xrange(0, width):
 			canvas[i, j] = (filter[i, j]  - fmin) * 255 / (fmax - fmin)
 	image.show()
-	image.save("img.jpg", "JPEG")
 
 def degToRad(deg):
 	return 2 * math.pi * deg / 360.0
