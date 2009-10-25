@@ -5,13 +5,9 @@ from PIL import Image
 
 def gaborFunction(x, y, Lambda, theta, psi, sigma, gamma):
 	"""	Gaborova funkcija.
-		psi - faza kosinusa, u stupnjevima
-		theta - orijentacija, u stupnjevima
+		psi - faza kosinusa, u radijanima
+		theta - orijentacija, u radijanima
 	"""
-	
-	# Pretvaram psi i theta u radijane
-	psi = 2 * math.pi * psi/ 360
-	theta = 2 * math.pi * theta/ 360
 	
 	cosTheta = math.cos(theta)
 	sinTheta = math.sin(theta)
@@ -50,6 +46,9 @@ def gaborFilterImage(height, width, minx, miny, maxx, maxy, Lambda, theta, psi, 
 			canvas[i, j] = (filter[i, j]  - fmin) * 255 / (fmax - fmin)
 	image.show()
 
+def degToRad(deg):
+	return 2 * math.pi * deg / 360.0
+	
 def apply(filter, image):
 	imageHeight = image.size[0]
 	imageWidth = image.size[1]
@@ -79,5 +78,5 @@ def apply(filter, image):
 
 if __name__ == "__main__":
 	#gaborFilterImage(320, 320, -6, -6, 6, 6, 5, 90, 0, 2, 0.5)
-	gaborFilterImage(100, 100, -50, -50, 50, 50, 10, 0, 0, 1, 0.5)
+	gaborFilterImage(100, 100, -50, -50, 50, 50, 10, degToRad(45), 0, 1, 0.5)
 	
