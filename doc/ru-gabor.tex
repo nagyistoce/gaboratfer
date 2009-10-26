@@ -50,40 +50,14 @@ iskoristit vizualne osobine kao što su lokalizacija prostora, selekcija
 orijentacije i karakteristike prostorne frekvencije
 \citep{bhuiyan2007onfacerecognition}\nocite{daugman1985uncertainty}.
 
-Model sustava za raspoznavanje uzoraka se može opisati dijagramom
-\ref{fig:ru-sustav-model}.
-
-\begin{figure}[htb]
-\begin{center}
-\begin{picture}(270,130)
-\put(20,110){\makebox(40,15){\texttt{Uzorak}}}
-\put(58,117){\vector(1,0){15}}
-\put(75,110){\framebox(90,15){\textit{Pretprocesiranje}}}
-\put(120,110){\vector(0,-1){15}}
-\put(75,80){\framebox(90,15){\textit{Izlučivanje značajki}}}
-\put(120,80){\vector(0,-1){15}}
-\put(75,50){\framebox(90,15){\textit{Redukcija dimenzije}}}
-\put(120,50){\vector(0,-1){15}}
-\put(75,20){\framebox(90,15){\textit{Pravilo odlučivanja}}}
-\put(167,27){\vector(1,0){15}}
-\put(180,20){\makebox(40,15){\texttt{Razred}}}
-\end{picture}
-\caption{Model sustava za raspoznavanje uzoraka}
-\label{fig:ru-sustav-model}
-\end{center}
-\end{figure}
-
-% Ovo je opis o čemu koji odjeljak govori. Ovo se MORA nalaziti na kraju uvoda. 
-U 2.~odjeljku prikazan je matematički model dvodimenzionalnog gaborovog filtera,
-u 3.~odjeljku objašnjen je način izvlačenja značajki, 4.~odjeljak navodi objašnjenja
-pojedinih parametara i njihov utjecaj na krajnji rezultat, a 5.~prikazuje
-rezultate primjene gaborovog filtera na neke od uzoraka. U 6.~odjeljku je
-objašnjena interpretacija značajki te način korištenja dobivenih značajki u
-sustavima za raspoznavanje uzoraka, odnosno klasifikacija pomoću izlučenih
-značajki. Zaključak je dan u 7.~odjeljku.
+% Ovo je opis o čemu koji odjeljak govori. Ovo se MORA nalaziti na kraju uvoda.
+U 2.~odjeljku prikazan je matematički model dvodimenzionalnog Gaborovog filtra,
+3.~odjeljak navodi objašnjenja pojedinih parametara i njihov utjecaj na krajnji rezultat, 
+u 4.~odjeljku objašnjen je način izvlačenja značajki, 
+u 5. odjeljku su opisani daljni koraci u raspoznavanju lica, a zaključak je dan u 6.~odjeljku.
 
 \section{Dizajn Gaborovog filtera}
-Dvodimenzionalna Gaborova funkcija data je kao \citep{petkovgabor}:
+Dvodimenzionalna Gaborova funkcija dana je kao \citep{petkovgabor}:
 \begin{equation}
 % g(x,y)=\frac{1}{2\pi \sigma^2_{xy}}e^{-\left ( \frac{x'^2 +
 % y'^2}{2\sigma^2_{x,y}} \right)} \times \left ( e^{2\pi i r_0 x'} -
@@ -98,9 +72,9 @@ x' = x \cos \theta + y \sin \theta, \\
 y' = -x \sin \theta + y \cos \theta.
 \end{eqnarray*}
 % gdje je $\sigma_{xy}$ standardna devijacija Gaussove omotnice\TODO{\emph{Gaussian
-% envelope}?}koja karakterizira prostorni obujam i širinu filtera. 
-Frekvencija i odabir orijentacije Gaborovog filtera su izražajnije u domeni
-frekvencijskog prikaza predstavljenog jednadžbom (\ref{gabor-frek}) koja
+% envelope}?}koja karakterizira prostorni obujam i širinu filtera.
+Frekvencija i odabir orijentacije Gaborovog filtra su izražajnije u domeni
+frekvencijskog prikaza predstavljenog Gaborovom funkcijom (\ref{gabor-frek}) koja
 određuje koliko filter utječe na svaku frekvencijsku komponentu ulazne slike.
 \begin{equation}
 G(u,v) = \exp \left ( - \frac{(u-u_0)^2 + (v-v_0)^2}{2\sigma^2_{uv}}\right ) -
@@ -129,50 +103,32 @@ Ako je svrha filtera izvlačenje značajki lica, zanimaju nas četiri orijentaci
 Orijentacije se odnose na oblu konturu lica, oči i usta koji se nalaze u skoro
 horizontalnoj ravnini, te nos koji je u vertikalnoj ravnini.
 
-\section{Izvlačenje značajki pomoću gaborovog filtera}
-Gaborove značajke se dobivaju konvolucijom klizečeg prozora slike i Gaborovog
-filtera.
-
-Neka je $I(x,y)$ slika. Konvolucija slike $I(x,y)$ i Gaborovog filtera dana je
-sa:
-\begin{equation}
-O(x,y,r_0, \theta_k) = I(x,y) * g(x,y,r_0, \theta_k),
-\label{konvolucija-filter-slika}
-\end{equation}
-pri čemu je $k = 1, 2, 3, 4$. $O(x,y,r_0, \theta_k)$ nazivamo Gaborov prikaz
-slike $I(x,y)$.
-Kvaliteta izlučenih značajki ovisi iznimno o parametrima Gaborovog filtera.
-Naš zadatak u ovom radu je pronači optimalne parameter Gaborovog filtra za izlučivanje
-značajki ljudskog lica.
-
-\subsection{Preprocesiranje uzoraka}
-
 \section{Utjecaj pojedinih parametara}
 Gaborov filter definiraju valna duljina ($\lambda$),
 orijentacija ($\theta$), fazni pomak ($\varphi$), omjer dimenzija \engl{aspect ratio}
 ($\gamma $) i širina filtera \engl{bandwidth} ($b$) \citep{petkovgabor}.
-Promjena parametara jest stvaranje novog filtera.
 
 \subsection{Valna duljina ($\lambda$)}
-Valna duljina se odnosi na valnu duljinu kosinusa u Gaborovoj funkciji.
-Vrijednost je realan broj veći ili jednak $2$. Jedinica su pixeli.
+Valna duljina se odnosi na valnu duljinu kosinusa u Gaborovoj funkciji kojom se ujedino definira
+i prostorna frekvencija na koju će sam Gaborov filter biti osjetljiv.
+Vrijednost valne duljine realan je broj veći ili jednak $2$ koji predstavlja broj slikovnih elemenata (engl. Pixel).
 
 Slike Gaborovih filtera uz parametre $\varphi, \theta = 0,\: b = 1$, i $\gamma =
 0.5$ možete vidjeti na slici \ref{fig:filter-wavelengths}.
 
 \begin{figure}[htb]
-  \centering
-  \subfloat[Filter uz $\lambda = 5$.]{
-  	\label{fig:filter-lambda-5}
-  	\includegraphics[width=4cm]{images/wavelength5.jpg}
-  }
-  \hspace{50pt}
-  \subfloat[Filter uz $\lambda = 10$.]{
-  	\label{fig:filter-lambda-10}
-  	\includegraphics[width=4cm]{images/wavelength10.jpg}
-  }
-  \caption{Gaborov filter uz različite valne duljine.}
-  \label{fig:filter-wavelengths}
+\centering
+\subfloat[Filter uz $\lambda = 5$.]{
+\label{fig:filter-lambda-5}
+\includegraphics[width=4cm]{images/wavelength5.jpg}
+}
+\hspace{50pt}
+\subfloat[Filter uz $\lambda = 10$.]{
+\label{fig:filter-lambda-10}
+\includegraphics[width=4cm]{images/wavelength10.jpg}
+}
+\caption{Gaborov filter uz različite valne duljine.}
+\label{fig:filter-wavelengths}
 \end{figure}
 
 % TODO: Pogledati o čemu se ovdje radi\ldots Gledao sam formulu, ništa pametno
@@ -181,10 +137,10 @@ Slike Gaborovih filtera uz parametre $\varphi, \theta = 0,\: b = 1$, i $\gamma =
 %Uz $\lambda = 2$, ne bi se smjela koristiti kombinacija $\varphi = \pm 90$ jer
 %u tom slučaju Gaborova funkcija je uzrokovana u svojim
 %nul--prijelazima\TODO{``sampled in its zero crossings''?}.
-Da bi se spriječila pojava neželjenih efekata na rubovima slike, vrijednost valne
+Da bi se spriječila pojava neželjenih efekata na rubovima slike prilikom filtriranja slike Gaborovim filtrom, vrijednost valne
 duljine mora biti manja od $\frac{1}{5}$ veličine slike koja prolazi kroz
-filter. Filter sa prevelikom valnom duljinom možete vidjeti na slici
-\ref{fig:wavelength-overflow}. U datom primjeru filter djeluje na području
+filter. Filter sa prevelikom valnom duljinom može se vidjeti na slici
+\ref{fig:wavelength-overflow}. U danom primjeru filter djeluje na području
 širine 100 piksela, a filter je širok 30 piksela.
 
 \begin{figure}[htb]
@@ -197,47 +153,48 @@ filter. Filter sa prevelikom valnom duljinom možete vidjeti na slici
 
 \subsection{Orijentacija ($\theta$)}
 Orijentacija određuje kut između normale i paralelnih pruga Gaborovog
-filtera.
+filtera odnosno kut između normale i smjera rasprostiranja moduliranog sinusnog signala.
 Određena je kutom od $0$ do $360$ stupnjeva. Prikaze Gaborovog filtera sa
 orijentacijama od 45\textdegree, 80\textdegree\,i 0\textdegree\, možete vidjeti
 na slikama \ref{fig:filter-orientation-45}, \ref{fig:filter-orientation-80} i
 \ref{fig:filter-lambda-10}.
 
+
 \begin{figure}[htb]
-  \centering
-  \subfloat[Filter uz $\theta = 45$\textdegree.]{
-  	\label{fig:filter-orientation-45}
-  	\includegraphics[width=4cm]{images/orientation45.jpg}
-  }
-  \hspace{50pt}
-  \subfloat[Filter uz $\theta = 80$\textdegree.]{
-  	\label{fig:filter-orientation-80}
-  	\includegraphics[width=4cm]{images/orientation80.jpg}
-  }
-  \caption{Gaborov filter uz različite orijentacije.}
-  \label{fig:filter-orientations}
+\centering
+\subfloat[Filter uz $\theta = 45$\textdegree.]{
+\label{fig:filter-orientation-45}
+\includegraphics[width=4cm]{images/orientation45.jpg}
+}
+\hspace{50pt}
+\subfloat[Filter uz $\theta = 80$\textdegree.]{
+\label{fig:filter-orientation-80}
+\includegraphics[width=4cm]{images/orientation80.jpg}
+}
+\caption{Gaborov filter uz različite orijentacije.}
+\label{fig:filter-orientations}
 \end{figure}
 
 \subsection{Fazni pomak ($\varphi$)}
-Ovaj parametar određuje fazni pomak funkcije kosinus unutar Gaborove funkcije.
+Ovaj parametar određuje fazni pomak kosinusa unutar Gaborove funkcije.
 Ispravne vrijednosti su realni brojevi između $-180$ i $180$ stupnjeva. Prikaze
 Gaborovog filtera sa fazama od 45\textdegree, 180\textdegree\, i 0\textdegree\,
 možete vidjeti na slikama \ref{fig:filter-phase-45},
 \ref{fig:filter-phase-180} i \ref{fig:filter-lambda-10}.
 
 \begin{figure}[htb]
-  \centering
-  \subfloat[Filter uz $\varphi = 45$\textdegree.]{
-  	\label{fig:filter-phase-45}
-  	\includegraphics[width=4cm]{images/phase45.jpg}
-  }
-  \hspace{50pt}
-  \subfloat[Filter uz $\varphi = 180$\textdegree.]{
-  	\label{fig:filter-phase-180}
-  	\includegraphics[width=4cm]{images/phase180.jpg}
-  }
-  \caption{Gaborov filter uz različite faze.}
-  \label{fig:filter-phases}
+\centering
+\subfloat[Filter uz $\varphi = 45$\textdegree.]{
+\label{fig:filter-phase-45}
+\includegraphics[width=4cm]{images/phase45.jpg}
+}
+\hspace{50pt}
+\subfloat[Filter uz $\varphi = 180$\textdegree.]{
+\label{fig:filter-phase-180}
+\includegraphics[width=4cm]{images/phase180.jpg}
+}
+\caption{Gaborov filter uz različite faze.}
+\label{fig:filter-phases}
 \end{figure}
 
 Vrijednosti $0$\textdegree\, i $180$\textdegree\, odgovaraju
@@ -254,39 +211,39 @@ anti--simetričnim funkcijama (primjer filtera se može vidjeti na slici
 \end{figure}
 
 \subsection{Omjer dimenzija ($\gamma $)}
-Parametar, koji se preciznije naziva prostorni omjer dimenzija, koji određuje
-eliptičnost Gaborove funkcije. Za $\gamma = 1$, eliptičnost se svodi na krug.
+Parametar koji se preciznije naziva prostorni omjer dimenzija, određuje
+eliptičnost Gaborove funkcije tj. odnos između devijacija Gaussove funkcije u $x$ i $y$ smjeru. Za $\gamma = 1$ eliptičnost se svodi na krug.
 Za $\gamma < 1$ funkcija je izdužena u smjeru paralelnom s paralelnim prugama
 funkcije. Primjer filtera sa različitim omjerima
 dimenzija se može vidjeti na slici \ref{fig:filter-ratios}.
 
 \begin{figure}[htb]
-  \centering
-  \subfloat[Filter uz $\gamma = 0.5$.]{
-  	\label{fig:filter-gamma-05}
-  	\includegraphics[width=4cm]{images/wavelength10.jpg}
-  }
-  \hspace{50pt}
-  \subfloat[Filter uz $\gamma = 1$.]{
-  	\label{fig:filter-gamma-1}
-  	\includegraphics[width=4cm]{images/ratio1.jpg}
-  }
-  \caption{Gaborov filter uz različite omjere dimenzija.}
-  \label{fig:filter-ratios}
+\centering
+\subfloat[Filter uz $\gamma = 0.5$.]{
+\label{fig:filter-gamma-05}
+\includegraphics[width=4cm]{images/wavelength10.jpg}
+}
+\hspace{50pt}
+\subfloat[Filter uz $\gamma = 1$.]{
+\label{fig:filter-gamma-1}
+\includegraphics[width=4cm]{images/ratio1.jpg}
+}
+\caption{Gaborov filter uz različite omjere dimenzija.}
+\label{fig:filter-ratios}
 \end{figure}
 
 \subsection{Širina filtera ($b$)}
-Prostorna širina filtera $b$ (u oktavama) Gaborovog filtera je povezana sa
+Prostorna širina filtera $b$ Gaborovog filtra je povezana sa
 omjerom $\frac{\sigma}{\lambda}$, pri čemu su $\sigma$ i $\lambda$ standardna
-devijacija Gaussovog umnoška Gaborove funkcije i valna duljina. Definirana je
-sa:
+devijacija Gaussove funkcije i valna duljina kosinusa. Prostorna širina definirana je
+s:
 \begin{eqnarray}
-b = \log_2{\left (  \frac{\frac{\sigma}{\lambda}\pi + \sqrt{\frac{\ln2}{2}}}
+b = \log_2{\left ( \frac{\frac{\sigma}{\lambda}\pi + \sqrt{\frac{\ln2}{2}}}
 {\frac{\sigma}{\lambda}\pi - \sqrt{\frac{\ln2}{2}}} \right )}, \\
 \frac{\sigma}{\lambda} =
 \frac{1}{\pi}\sqrt{\frac{ln2}{2}}\cdot\frac{2^b+1}{2^b-1}.
 \end{eqnarray}
-Vrijednost $\sigma$ se ne može direktno odrediti. Ona se može mijenjati samo
+Prilikom izvedbe filtra vrijednost $\sigma$ se ne može direktno odrediti. Ona se može mijenjati samo
 preko vrijednosti širine filtera, $b$.
 
 Širina filtera se određuje kao realni pozitivni broj. Što je širina manja,
@@ -297,30 +254,64 @@ različitim širinama možete vidjeti na slikama \ref{fig:filter-bandwidth-05} i
 filtera od $b = 1$.
 
 \begin{figure}[htb]
-  \centering
-  \subfloat[Filter uz $b = 0.5$.]{
-  	\label{fig:filter-bandwidth-05}
-  	\includegraphics[width=4cm]{images/bandwidth05.jpg}
-  }
-  \hspace{50pt}
-  \subfloat[Filter uz $b = 2$.]{
-  	\label{fig:filter-bandwidth-2}
-  	\includegraphics[width=4cm]{images/bandwidth2.jpg}
-  }
-  \caption{Gaborov filter uz različite širine.}
-  \label{fig:filter-bandwidths}
+\centering
+\subfloat[Filter uz $b = 0.5$.]{
+\label{fig:filter-bandwidth-05}
+\includegraphics[width=4cm]{images/bandwidth05.jpg}
+}
+\hspace{50pt}
+\subfloat[Filter uz $b = 2$.]{
+\label{fig:filter-bandwidth-2}
+\includegraphics[width=4cm]{images/bandwidth2.jpg}
+}
+\caption{Gaborov filter uz različite širine.}
+\label{fig:filter-bandwidths}
 \end{figure}
+
+\section{Izvlačenje značajki pomoću gaborovog filtera}
+Osnovna ideja korištenja Gaborovog filtra pri raspoznavanju je filtriranje početne 
+slike filtrom s ciljem izlučivanja značajki za kasniju klasifikaciju.
+Odziv Gaborovog filtra osjetljiv je na lokalnu prostornu frekvenciju i odgovarajuću orijentaciju
+ulaznog signala, odnosno slike, pa pod pretpostavkom da su Gaborovim filtrom izlučene
+odgovarajuće frekvencije i orijentacije moguće je raspoznavati različite osobe
+temeljem slika njihovih lica.
+
+Izlaz Gaborovog filtra dobiva se konvolucijom klizečeg prozora slike i Gaborove
+funkcije.
+
+Neka je $I(x,y)$ slika. Konvolucija slike $I(x,y)$ i Gaborove funkcije dana je
+sa:
+\begin{equation}
+O(x,y,r_0, \theta_k) = I(x,y) * g(x,y,r_0, \theta_k),
+\label{konvolucija-filter-slika}
+\end{equation}
+pri čemu je $k = 1, 2, 3, 4$. $O(x,y,r_0, \theta_k)$ nazivamo Gaborov prikaz
+slike $I(x,y)$.
+
+Rezultantna funkcija je kompleksna funkcija s realnim i imaginarnim dijelom. Prilikom 
+filtriranja ulazne slike Gaborovim filtrima različitih frekvencija i orijentacije nastaje
+skup kompleksnih funkcija koje se tada grupiraju u odgovarajući vektor značajki.
+Vektor značajki nije nužno ograničen na prikaz pomoću kompleksnih brojeva te ga je moguće
+prikazati i kao vektor amplituda odnosno vektora faza rezultantnih funkcija nastalih filtiranjem.
+Kvaliteta izlučenih značajki ovisi iznimno o parametrima Gaborovog filtera te je 
+naš zadatak u ovom radu je pronaći optimalne parametre Gaborovog filtra za izlučivanje
+značajki ljudskog lica.
+
 
 \section{Klasifikacija}
 
-U našem radu za klasifikaciju biti će korišteni gotovi klasifikatori dostupni na internetu u obliku programskih knjižnica. Upotrijebiti ćemo najmanje dva različita klasifikatora.
+Nakon izlučivanja značajki Gaborovim filtrom dobiven je vektor značajki koji se koristi za klasifikaciju. 
+Kako je dobiveni vektor visoke dimenzionalnosti potrebno je izvršiti redukciju prostora značajki na nižedimenzionalan prostor.
+Neke od metoda koje se pritom koriste su linearna diskriminanta analiza (engl. Linear Discriminant Analysis) i analiza glavnih komponenti
+(engl. Principal Component Analysis). 
+Za klasifikaciju vektora značajki dostupno je mnogo različitih klasifikatora poput neuralnih mreža, stroja s potpornim vektorima i sl.
+te će se u okviru ovog rada ispitati učinkovitost različitih metoda klasifikacije kako bi se pronašla ona s najvećom uspješnošću.
 
 \section{Zaključak}
 
 Korištenje Gaborovog filtra ima dobru podlogu u biološkim osnovama vida
-sisavaca i očekujemo da će mo upotrebom različitih klasifikatora i
-automatiziranom optimizacijom parametara postići uspjeh u klasifikaciji
-dobivenih uzoraka.
+sisavaca te se očekuje da će se njegovom upotrebom, korištenjem različitih klasifikatora i
+automatiziranom optimizacijom parametara postići uspjeh u raspoznavanju lica različitih osoba.
 
 \bibliography{literatura}
 \bibliographystyle{plainnat}
