@@ -20,6 +20,7 @@
 \usepackage{todo}
 \usepackage{url}
 \usepackage{textcomp}
+\usepackage{float}
 
 \newcommand{\engl}[1]{(engl.~\emph{#1})}
 
@@ -31,7 +32,6 @@
 
 \tableofcontents
 
-\newpage
 \section{Uvod}
 Raspoznavanje uzoraka je znanstvena disciplina iz područja računarskih znanosti
 čiji je cilj klasifikacija ili razvrstavanje objekata u jedan od brojnih razreda
@@ -44,7 +44,7 @@ lica i njihova klasifikacija je veoma zahtjevan posao za računalo. Zadatak
 postaje tim zahtjevniji ako su lica slikana pod različitim osvijetljenjem,
 različitim kutovima ili ako osobe na slikama nemaju uvijek isti izraz lica.
 
-Kao osnovna motivacija za korištenje Gaborovog filtera za izlučivanje značajki je
+Kao osnovna motivacija za korištenje Gaborovog filtera za izvlačenje značajki je
 veza sa biološkim osobinama vida kod sisavaca čiji su receptori osjetljivi na
 orijentaciju te imaju karakteristične prostorne frekvencije. Gaborov filter može
 iskoristit vizualne osobine kao što su lokalizacija prostora, selekcija
@@ -57,7 +57,6 @@ U 2.~odjeljku prikazan je matematički model dvodimenzionalnog Gaborovog filtra,
 u 4.~odjeljku objašnjen je način izvlačenja značajki, 
 u 5. odjeljku su opisani daljni koraci u raspoznavanju lica, a zaključak je dan u 6.~odjeljku.
 
-\newpage
 \section{Dizajn Gaborovog filtera}
 Dvodimenzionalna Gaborova funkcija dana je kao \citep{petkovgabor}:
 \begin{equation}
@@ -96,7 +95,7 @@ r_0^2 = u_0^2 + v_0^2, \\
 Osobina Gaborovog filtera definirana je radijalnom frekvencijom $r_0$,
 orijentacijom i širinom filtera.
 
-Ako je svrha filtera izlučivanje značajki lica, zanimaju nas četiri orijentacije
+Ako je svrha filtera izvlačenje značajki lica, zanimaju nas četiri orijentacije
 \citep{huang2005robust}:
 \begin{equation}
 \theta_k = \frac{\pi(k-1)}{4},\: k = 1,2,3,4.
@@ -105,7 +104,6 @@ Ako je svrha filtera izlučivanje značajki lica, zanimaju nas četiri orijentac
 Orijentacije se odnose na oblu konturu lica, oči i usta koji se nalaze u skoro
 horizontalnoj ravnini, te nos koji je u vertikalnoj ravnini.
 
-\newpage
 \section{Utjecaj pojedinih parametara}
 Gaborov filter definiraju valna duljina ($\lambda$),
 orijentacija ($\theta$), fazni pomak ($\varphi$), omjer dimenzija \engl{aspect ratio}
@@ -119,7 +117,7 @@ Vrijednost valne duljine realan je broj veći ili jednak $2$ koji predstavlja br
 Slike Gaborovih filtera uz parametre $\varphi, \theta = 0,\: b = 1$, i $\gamma =
 0.5$ možete vidjeti na slici \ref{fig:filter-wavelengths}.
 
-\begin{figure}[H]
+\begin{figure}[h!tb]
 \centering
 \subfloat[Filter uz $\lambda = 5$.]{
 \label{fig:filter-lambda-5}
@@ -146,7 +144,7 @@ filter. Filter sa prevelikom valnom duljinom može se vidjeti na slici
 \ref{fig:wavelength-overflow}. U danom primjeru filter djeluje na području
 širine 100 piksela, a filter je širok 30 piksela.
 
-\begin{figure}[H]
+\begin{figure}[h!tb]
 \begin{center}
 \includegraphics[width=4cm]{images/wavelength30overflow.jpg}
 \end{center}
@@ -163,7 +161,7 @@ na slikama \ref{fig:filter-orientation-45}, \ref{fig:filter-orientation-80} i
 \ref{fig:filter-lambda-10}.
 
 
-\begin{figure}[H]
+\begin{figure}[h!tb]
 \centering
 \subfloat[Filter uz $\theta = 45$\textdegree.]{
 \label{fig:filter-orientation-45}
@@ -185,7 +183,7 @@ Gaborovog filtera sa fazama od 45\textdegree, 180\textdegree\, i 0\textdegree\,
 možete vidjeti na slikama \ref{fig:filter-phase-45},
 \ref{fig:filter-phase-180} i \ref{fig:filter-lambda-10}.
 
-\begin{figure}[H]
+\begin{figure}[h!tb]
 \centering
 \subfloat[Filter uz $\varphi = 45$\textdegree.]{
 \label{fig:filter-phase-45}
@@ -205,7 +203,7 @@ središnje--simetričnim funkcijama, a $-90$\textdegree\, i $90$\textdegree\,
 anti--simetričnim funkcijama (primjer filtera se može vidjeti na slici
 \ref{fig:phase-90}). Svi ostali slučajevi odgovaraju asimetričnim funkcijama.
 
-\begin{figure}[H]
+\begin{figure}[h!tb]
 \begin{center}
 \includegraphics[width=4cm]{images/phase90.jpg}
 \end{center}
@@ -220,7 +218,7 @@ Za $\gamma < 1$ funkcija je izdužena u smjeru paralelnom s paralelnim prugama
 funkcije. Primjer filtera sa različitim omjerima
 dimenzija se može vidjeti na slici \ref{fig:filter-ratios}.
 
-\begin{figure}[htb]
+\begin{figure}[h!tb]
 \centering
 \subfloat[Filter uz $\gamma = 0.5$.]{
 \label{fig:filter-gamma-05}
@@ -256,7 +254,7 @@ različitim širinama možete vidjeti na slikama \ref{fig:filter-bandwidth-05} i
 \ref{fig:filter-bandwidth-2}. Na prethodnim primjerima korištena je širina
 filtera od $b = 1$.
 
-\begin{figure}[H]
+\begin{figure}[h!tb]
 \centering
 \subfloat[Filter uz $b = 0.5$.]{
 \label{fig:filter-bandwidth-05}
@@ -271,8 +269,7 @@ filtera od $b = 1$.
 \label{fig:filter-bandwidths}
 \end{figure}
 
-\newpage
-\section{Izlučivanje značajki pomoću gaborovog filtera}
+\section{Izvlačenje značajki pomoću gaborovog filtera}
 Osnovna ideja korištenja Gaborovog filtra pri raspoznavanju je filtriranje početne 
 slike filtrom s ciljem izlučivanja značajki za kasniju klasifikaciju.
 Odziv Gaborovog filtra osjetljiv je na lokalnu prostornu frekvenciju i odgovarajuću orijentaciju
@@ -280,7 +277,7 @@ ulaznog signala, odnosno slike, pa pod pretpostavkom da su Gaborovim filtrom izl
 odgovarajuće frekvencije i orijentacije moguće je raspoznavati različite osobe
 temeljem slika njihovih lica.
 
-Izlaz Gaborovog filtra dobiva se konvolucijom klizećeg prozora slike i Gaborove
+Izlaz Gaborovog filtra dobiva se konvolucijom klizečeg prozora slike i Gaborove
 funkcije.
 
 Neka je $I(x,y)$ slika. Konvolucija slike $I(x,y)$ i Gaborove funkcije dana je
@@ -301,7 +298,7 @@ Kvaliteta izlučenih značajki ovisi iznimno o parametrima Gaborovog filtera te 
 naš zadatak u ovom radu je pronaći optimalne parametre Gaborovog filtra za izlučivanje
 značajki ljudskog lica.
 
-\newpage
+
 \section{Klasifikacija}
 
 Nakon izlučivanja značajki Gaborovim filtrom dobiven je vektor značajki koji se koristi za klasifikaciju. 
@@ -311,7 +308,6 @@ Neke od metoda koje se pritom koriste su linearna diskriminanta analiza (engl. L
 Za klasifikaciju vektora značajki dostupno je mnogo različitih klasifikatora poput neuralnih mreža, stroja s potpornim vektorima i sl.
 te će se u okviru ovog rada ispitati učinkovitost različitih metoda klasifikacije kako bi se pronašla ona s najvećom uspješnošću.
 
-\newpage
 \section{Zaključak}
 
 Korištenje Gaborovog filtra ima dobru podlogu u biološkim osnovama vida
