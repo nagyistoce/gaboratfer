@@ -10,6 +10,7 @@ import collector
 # Put deciders here
 
 import unclassifier
+import libsvmclassifier
 
 def main(argv):
 	opts, args = getopt.getopt(argv, "", [])
@@ -22,6 +23,8 @@ def main(argv):
 	OMEGA = {}
 	okCount = 0
 	
+	collector.Collector.register(libsvmclassifier.LibSVMclassifier())
+
 	for inputImage in args:
 		if os.path.isfile(inputImage):
 			fileName = os.path.split(inputImage)[1]
