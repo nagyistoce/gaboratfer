@@ -22,8 +22,6 @@ def main(argv):
 
 	OMEGA = {}
 	okCount = 0
-	
-	collector.Collector.register(libsvmclassifier.LibSVMclassifier())
 
 	for inputImage in args:
 		if os.path.isfile(inputImage):
@@ -71,4 +69,3 @@ def main(argv):
 
 if __name__ == "__main__":
 	main(sys.argv[1:])
-
