@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import Image
 import sys, getopt, os
@@ -16,7 +17,7 @@ def main(argv):
 	#for opt, arg in opts:	
 	#	
 	#
-	filter = gabor.gaborFilter(5, 5, -1, -1, 1, 1, 5, 45, 0, 2, 0.5)
+	#filter = gabor.gaborFilter(5, 5, -1, -1, 1, 1, 5, 45, 0, 2, 0.5)
 
 	OMEGA = {}
 	okCount = 0
@@ -67,3 +68,4 @@ def main(argv):
 
 if __name__ == "__main__":
 	main(sys.argv[1:])
+

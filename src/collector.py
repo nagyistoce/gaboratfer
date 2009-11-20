@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # DON'T. EVEN. TRY.
 
 class Collector:
@@ -27,8 +28,9 @@ class Collector:
 				for z in testData[x]:
 					totalCount = totalCount + 1
 					if i.classify(z) == x:
-							correctCount = correctCount + 1
+						correctCount = correctCount + 1
 			print "%s je tocno klasificirao %d od %d uzoraka (%f posto)" % (i.name, correctCount, totalCount, correctCount * 100.0 / totalCount)
 			
 
 Collector = Collector()
+
