@@ -11,6 +11,19 @@ class LibSVMclassifier(Classifier):
 	ids = []
 	model = None
 	
+	def __init__(self):
+		filter = gabor.gaborFilter(5, 5, -1, -1, 1, 1, 5, 45, 0, 2, 0.5)
+	
+	def extractFeatures(self, image):
+		global filter
+		gabored = gabor.apply(filter, image)
+		imgvec = Numeric.fromstring(gabored.tostring(), Numeric.UnsignedInt8)
+		imgvec.shape = 1, 4096
+		sampleVector = []
+		for sample in imgvec[0]:
+			sampleVector.append(float(sample)/255.0)	# Skaliranje! [0,1]
+		return sampleVector
+
 	def train(self, traindata):
 		""" 	Traindata sadrzi dictionary u kojem su kljucevi ID
 			faca a vrijednosti liste Image objekata u kojima su slikice """
@@ -18,18 +31,12 @@ class LibSVMclassifier(Classifier):
 		
 		svmc.svm_set_quiet()
 		
-		filter = gabor.gaborFilter(5, 5, -1, -1, 1, 1, 5, 45, 0, 2, 0.5)
 		self.ids = traindata.keys()[:]
 		samples = []
 		labels = []
 		for k in self.ids:
 			for s in traindata[k]:
-				gabored = gabor.apply(filter, s)
-				imgvec = Numeric.fromstring(gabored.tostring(), Numeric.UnsignedInt8)
-				imgvec.shape = 1, 4096
-				currSample = []
-				for sample in imgvec[0]:
-				  currSample.append(float(sample)/255.0)	# Skaliranje! [0,1]
+				currSample = extractFeatures(s)
 				labels.append(float(k))
 				samples.append(currSample)
 				
@@ -57,13 +64,7 @@ class LibSVMclassifier(Classifier):
 		
 		if model == None: return -1
 		else:
-			filter = gabor.gaborFilter(5, 5, -1, -1, 1, 1, 5, 45, 0, 2, 0.5)
-			gabored = gabor.apply(filter, image)
-			imgvec = Numeric.fromstring(gabored.tostring(), Numeric.UnsignedInt8)
-			imgvec.shape = 1, 4096
-			currSample = []
-			for sample in imgvec[0]:
-				currSample.append(float(sample)/255.0)	# Skaliranje! [0,1]
+			currSample = extractFeatures(image)
 			return model.predict(currSample)
 
 instance = LibSVMclassifier()
