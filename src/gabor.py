@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from numpy import *
+import numpy
+import math
 from PIL import Image
 
 def gaborFunction(x, y, Lambda, theta, psi, sigma, gamma):
@@ -23,7 +24,7 @@ def calcSigma(bandwidth, Lambda):
 	
 def gaborFilter(height, width, minx, miny, maxx, maxy, Lambda, theta, psi, bandwidth, gamma):
 	sigma = calcSigma(bandwidth, Lambda)
-	filter = empty( (height, width) )
+	filter = numpy.empty( (height, width) )
 	xFactor = 1.0 * (maxx - minx) / height
 	yFactor = 1.0 * (maxy - miny) / width
 	for i in xrange(0, height):
@@ -50,7 +51,7 @@ def apply(filter, image):
 	imageWidth = image.size[1]
 	filterHeight = len(filter)
 	filterWidth = len(filter[0])
-	result = zeros ( (imageHeight, imageWidth) )
+	result = numpy.zeros ( (imageHeight, imageWidth) )
 	imageCanvas = image.load()
 	for x in xrange(0, imageHeight):
 		for y in xrange(0, imageWidth):
