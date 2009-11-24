@@ -50,9 +50,7 @@ def processOptions():
 	  usage()
 	  sys.exit(2)
 
-if __name__ == "__main__":
-	processOptions()
-	
+def splitit(path):
 	testing = []
 	samples = os.listdir(path)
 	samplesMap = {}
@@ -73,12 +71,19 @@ if __name__ == "__main__":
 			idx = random.randint(0, len(samplesMap[k])-1)
 			testing.append(samplesMap[k].pop(idx))
 	
+	testing.sort()
+	learning = []
+	for lsl in samplesMap.values():
+		learning.extend(lsl)
+	learning.sort()
+	return (learning, testing)
+
+if __name__ == "__main__":
+	processOptions()
+	
+	(learning, testing) = splitit(path)
+	
 	if testSamples:
-		testing.sort()
 		for ts in testing: print ts
 	else:
-		learning = []
-		for lsl in samplesMap.values():
-			learning.extend(lsl)
-		learning.sort()
 		for ls in learning: print ls
