@@ -29,7 +29,7 @@ class LibSVMclassifier(Classifier):
 				imgvec.shape = 1, 4096
 				currSample = []
 				for sample in imgvec[0]:
-				  currSample.append(float(sample))
+				  currSample.append(float(sample)/255.0)	# Skaliranje! [0,1]
 				labels.append(float(k))
 				samples.append(currSample)
 				
@@ -63,7 +63,7 @@ class LibSVMclassifier(Classifier):
 			imgvec.shape = 1, 4096
 			currSample = []
 			for sample in imgvec[0]:
-				currSample.append(float(sample))
+				currSample.append(float(sample)/255.0)	# Skaliranje! [0,1]
 			return model.predict(currSample)
 
 instance = LibSVMclassifier()
