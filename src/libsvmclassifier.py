@@ -10,13 +10,13 @@ class LibSVMclassifier(Classifier):
 	name = "libsvmclassifier"
 	ids = []
 	model = None
-	
+	filter = None
+
 	def __init__(self):
-		filter = gabor.gaborFilter(5, 5, -1, -1, 1, 1, 5, 45, 0, 2, 0.5)
+		self.filter = gabor.gaborFilter(5, 5, -1, -1, 1, 1, 5, 45, 0, 2, 0.5)
 	
 	def extractFeatures(self, image):
-		global filter
-		gabored = gabor.apply(filter, image)
+		gabored = gabor.apply(self.filter, image)
 		imgvec = Numeric.fromstring(gabored.tostring(), Numeric.UnsignedInt8)
 		imgvec.shape = 1, 4096
 		sampleVector = []
@@ -27,8 +27,6 @@ class LibSVMclassifier(Classifier):
 	def train(self, traindata):
 		""" 	Traindata sadrzi dictionary u kojem su kljucevi ID
 			faca a vrijednosti liste Image objekata u kojima su slikice """
-		global model
-		
 		svmc.svm_set_quiet()
 		
 		self.ids = traindata.keys()[:]
@@ -44,8 +42,8 @@ class LibSVMclassifier(Classifier):
 		size = len(samples) # 4096
 		param = svm_parameter(C = 10,nr_weight = 2,weight_label = [1,0],weight = [10,1])
 		param.kernel_type = RBF;
-		model = svm_model(problem,param)
-		# TODO: Spremi model u datoteku: model.save('svmmodel.model')
+		self.model = svm_model(problem,param)
+		# TODO: Spremi model u datoteku: self.model.save('svmmodel.model')
 		# Ucitavanje iz datoteke: m = svm_model('svmmodel.model')
 		
 		#errors = 0
@@ -60,11 +58,11 @@ class LibSVMclassifier(Classifier):
 		
 	def classify(self, image):
 		""" Image objekt, return mora biti tocan ID osobe """
-		global model
+		self.model
 		
-		if model == None: return -1
+		if self.model == None: return -1
 		else:
 			currSample = extractFeatures(image)
-			return model.predict(currSample)
+			return self.model.predict(currSample)
 
 instance = LibSVMclassifier()
