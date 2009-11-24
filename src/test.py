@@ -12,10 +12,16 @@ import collector
 import unclassifier
 import libsvmclassifier
 
+def readImage(inputImage):
+	file = open(inputImage, mode='rb')
+	data = file.read()
+	image = Image.fromstring("L", (64, 64), data, "raw", "L", 0, 1)
+	return image
+
 def main(argv):
 	opts, args = getopt.getopt(argv, "", [])
 
-	#for opt, arg in opts:	
+	#for opt, arg in opts:
 	#	
 	#
 	#filter = gabor.gaborFilter(5, 5, -1, -1, 1, 1, 5, 45, 0, 2, 0.5)
@@ -33,14 +39,11 @@ def main(argv):
 				shot = ident[1]
 				picture = ident[2]
 				if person not in OMEGA:
-					OMEGA[person] = []					
-				file = open(inputImage, mode='rb')
-				data = file.read()
-				image = Image.fromstring("L", (64, 64), data, "raw", "L", 0, 1)
-				OMEGA[person].append(image)
+					OMEGA[person] = []
+				OMEGA[person].append(readImage(inputImage))
 				okCount = okCount + 1
 			else:
-				print "Skipping non-nrm file %s" % (inputImage)			
+				print "Skipping non-nrm file %s" % (inputImage)
 		else:
 			print "Skipping non-file %s" % (inputImage)
 	

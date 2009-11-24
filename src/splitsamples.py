@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# Dijeljenje skupa uzoraka na skup za testiranje i skup za učenje.
+# Podjela ide slučajnim odabirom 20% uzoraka u skup za testiranje.
+# Skup za učenje se ispisuje na stdout, a ako je stavljena zastavica --test
+# onda se ispisuje skup za testiranje.
+
 import os
 import sys
 import getopt
