@@ -9,8 +9,8 @@ import collector
 
 # Put deciders here
 
-import unclassifier
-import libsvmclassifier
+import knnnogabor
+#import libsvmclassifier
 
 def readImage(inputImage):
 	file = open(inputImage, mode='rb')

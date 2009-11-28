@@ -29,6 +29,8 @@ class Collector:
 					totalCount = totalCount + 1
 					if i.classify(z) == x:
 						correctCount = correctCount + 1
+					if totalCount % 10 == 0:
+						print "Ispitano %d uzoraka (%d : %d rezultat)" % (totalCount, correctCount, totalCount - correctCount)
 			print "%s je tocno klasificirao %d od %d uzoraka (%f posto)" % (i.name, correctCount, totalCount, correctCount * 100.0 / totalCount)
 			
 
