@@ -41,7 +41,7 @@ def gaborFilterImage(height, width, minx, miny, maxx, maxy, Lambda, theta, psi, 
 	for i in xrange(0, height):
 		for j in xrange(0, width):
 			canvas[i, j] = (filter[i, j]  - fmin) * 255 / (fmax - fmin)
-	image.show()
+	image.save("filter.png")
 
 def degToRad(deg):
 	return 2 * math.pi * deg / 360.0
@@ -74,5 +74,14 @@ def apply(filter, image):
 	return resultImage
 
 if __name__ == "__main__":
-	#gaborFilterImage(320, 320, -6, -6, 6, 6, 5, 90, 0, 2, 0.5)
-	gaborFilterImage(300, 300, -50, -50, 50, 50, 10, 0, 0, 1, 0.5)
+	def readImage(inputImage):
+		file = open(inputImage, mode='rb')
+		data = file.read()
+		image = Image.fromstring("L", (64, 64), data, "raw", "L", 0, 1)
+		return image
+
+	filtr = gaborFilter(8, 8, -4, -4, 4, 4, 2, 0, 0, 1, 1)
+
+	img = readImage("./../data/000_2_1.nrm")
+	result = apply(filtr, img)
+	result.save("test.png")
