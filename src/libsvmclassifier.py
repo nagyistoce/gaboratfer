@@ -34,7 +34,7 @@ class LibSVMclassifier(Classifier):
 
 		problem = svm_problem(labels, samples)
 		size = len(samples) # 4096
-		param = svm_parameter(kernel_type = RBF, C = 2**-3, gamma = 2**2)
+		param = svm_parameter(kernel_type = RBF, C = 2**12, gamma = 2**-11)
 		self.model = svm_model(problem, param)
 		# TODO: Spremi model u datoteku: self.model.save('svmmodel.model')
 		# Ucitavanje iz datoteke: m = svm_model('svmmodel.model')
