@@ -158,7 +158,7 @@ if __name__ == "__main__":
 		image = Image.fromstring("L", (64, 64), data, "raw", "L", 0, 1)
 		return image
 
-	filtr = gaborFilter(8, 8, -4, -4, 4, 4, 2, 0, 0, 1, 1)
+	filtr = gaborFilter(8, 8, -4, -4, 4, 4, 2.5, 0, 0, 1, 1)
 
 	img = readImage("./../data/000_2_1.nrm")
 	#result = applyDirectConvolution(filtr, img)
@@ -166,3 +166,30 @@ if __name__ == "__main__":
 	#result = applyScipyConv(filtr, img)
 
 	result.save("test.png")
+
+	filters = []
+	for i in xrange(0,4):
+		filters.append(gaborFilter(8, 8, -4, -4, 4, 4, 2.5, (math.pi/4.0)*i, 0, 1, 1))
+
+	filtered = []
+	for filtr in filters:
+		filtered.append(apply(filtr, img))
+
+	combined = Image.new("L", (128, 128))
+	canvas = combined.load()
+	
+	for n in [0, 1]:
+		leftFilter = filtered[n].load()
+		rightFilter = filtered[n*2+1].load()
+		for x in xrange(0,64):
+			for y in xrange(0,64):
+				canvas[x,y+64*n] = leftFilter[x,y]
+				canvas[x+64,y+64*n] = rightFilter[x,y]
+
+	def stretch(im, size, filter=Image.NEAREST):
+		im.load()
+		im = im._new(im.im.stretch(size, filter))
+		return im
+
+	combined = stretch(combined, (64,64))
+	combined.save("testCombined.png")
