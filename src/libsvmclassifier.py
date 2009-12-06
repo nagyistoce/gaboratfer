@@ -20,6 +20,7 @@ class LibSVMclassifier(Classifier):
 	def train(self, traindata):
 		""" Traindata sadrzi dictionary u kojem su kljucevi ID
 			faca a vrijednosti liste Image objekata u kojima su slikice """
+		
 		svmc.svm_set_quiet()
 		
 		self.ids = traindata.keys()[:]
@@ -30,12 +31,11 @@ class LibSVMclassifier(Classifier):
 				currSample = self.extractFeatures(s)
 				labels.append(float(k))
 				samples.append(currSample)
-				
+
 		problem = svm_problem(labels, samples)
 		size = len(samples) # 4096
-		param = svm_parameter(C = 10,nr_weight = 2,weight_label = [1,0],weight = [10,1])
-		param.kernel_type = RBF;
-		self.model = svm_model(problem,param)
+		param = svm_parameter(kernel_type = RBF, C = 2**-3, gamma = 2**2)
+		self.model = svm_model(problem, param)
 		# TODO: Spremi model u datoteku: self.model.save('svmmodel.model')
 		# Ucitavanje iz datoteke: m = svm_model('svmmodel.model')
 		
@@ -46,6 +46,7 @@ class LibSVMclassifier(Classifier):
 		if self.model == None: return -1
 		else:
 			currSample = self.extractFeatures(image)
-			return self.model.predict(currSample)
+			cls = self.model.predict(currSample)
+			return "%03.0f" % cls
 
 instance = LibSVMclassifier()
