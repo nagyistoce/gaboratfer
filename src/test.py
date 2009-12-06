@@ -3,7 +3,6 @@
 
 import Image
 import sys, getopt, os
-import gabor
 
 import collector
 
@@ -19,11 +18,6 @@ def readImage(inputImage):
 
 def main(argv):
 	opts, args = getopt.getopt(argv, "", [])
-
-	#for opt, arg in opts:
-	#	
-	#
-	#filter = gabor.gaborFilter(5, 5, -1, -1, 1, 1, 5, 45, 0, 2, 0.5)
 
 	OMEGA = {}
 	okCount = 0

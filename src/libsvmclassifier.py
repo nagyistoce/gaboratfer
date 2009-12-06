@@ -3,24 +3,18 @@
 
 from classifier import Classifier
 import Image, Numeric
-import gabor
+import filterer
 from svm import *
 
 class LibSVMclassifier(Classifier):
 	name = "libsvmclassifier"
 	ids = []
 	model = None
-	filter = None
-
-	def __init__(self):
-		self.filter = gabor.gaborFilter(5, 5, -1, -1, 1, 1, 5, 45, 0, 2, 0.5)
 	
 	def extractFeatures(self, image):
-		gabored = gabor.apply(self.filter, image)
-		imgvec = Numeric.fromstring(gabored.tostring(), Numeric.UnsignedInt8)
-		imgvec.shape = 1, 4096
+		imgvec = filterer.extractFeatures(image)
 		sampleVector = []
-		for sample in imgvec[0]:
+		for sample in imgvec:
 			sampleVector.append(float(sample)/255.0)	# Skaliranje! [0,1]
 		return sampleVector
 

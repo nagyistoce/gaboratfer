@@ -4,7 +4,7 @@
 from classifier import Classifier
 import Image
 import random, math
-import gabor
+import filterer
 
 class GaborkNNclassifier(Classifier):
 	name = "kNN sa gaborom"
@@ -29,7 +29,6 @@ class GaborkNNclassifier(Classifier):
 	def train(self, traindata):
 		""" 	Traindata sadrzi dictionary u kojem su kljucevi ID
 			faca a vrijednosti liste Image objekata u kojima su slikice """
-		self.filter = gabor.gaborFilter(8, 8, -4, -4, 4, 4, 2, 0, 0, 1, 1)
 		tmp = traindata.values()[0][0]
 		tmpc = tmp.load()
 		for i in xrange(0, tmp.size[0]):
@@ -48,7 +47,7 @@ class GaborkNNclassifier(Classifier):
 		for x in traindata:		
 			self.data[x] = []
 			for y in traindata[x]:
-				self.data[x].append(gabor.apply(self.filter, y));
+				self.data[x].append(filterer.filterImage(y));
 			count = count + 1
 			if count % 10 == 0:
 				print "Procesed %d classes" % (count)
@@ -59,7 +58,7 @@ class GaborkNNclassifier(Classifier):
 		for x in xrange(0, self.k):
 			nn.append([-1, -1])
 
-		image = gabor.apply(self.filter, image)
+		image = filterer.filterImage(image)
 
 		self.currentWorst = -1
 		for x in self.data:
