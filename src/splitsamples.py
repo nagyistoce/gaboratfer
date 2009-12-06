@@ -6,6 +6,10 @@
 # Skup za učenje se ispisuje na stdout, a ako je stavljena zastavica --test
 # onda se ispisuje skup za testiranje.
 
+# Ovo neka se ne koristi jer nema previše smisla... 20% pojedinog razreda je u većini slučajeva između 0 i 2.
+# Podjela na uzorke već postoji u test.py (zadnji uzorak se uzima za testiranje).
+# Ovo se eventualno može prilagoditi radi printsamples.py radi određivanja parametara preko grid.py
+
 import os
 import sys
 import getopt
