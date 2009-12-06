@@ -3,6 +3,7 @@
 
 import gabor
 import math
+import numpy
 from PIL import Image
 
 filter = gabor.gaborFilter(8, 8, -4, -4, 4, 4, 2.5, 0, 0, 1, 1)
@@ -41,6 +42,6 @@ def filterImage(image):
 
 def extractFeatures(image):
 	gabored = filterImage(image)
-	imgvec = Numeric.fromstring(gabored.tostring(), Numeric.UnsignedInt8)
+	imgvec = numpy.fromstring(gabored.tostring(), numpy.uint8)
 	imgvec.shape = 1, 4096
 	return imgvec[0]

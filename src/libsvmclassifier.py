@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from classifier import Classifier
-import Image, Numeric
 import filterer
 from svm import *
 
@@ -19,7 +18,7 @@ class LibSVMclassifier(Classifier):
 		return sampleVector
 
 	def train(self, traindata):
-		""" 	Traindata sadrzi dictionary u kojem su kljucevi ID
+		""" Traindata sadrzi dictionary u kojem su kljucevi ID
 			faca a vrijednosti liste Image objekata u kojima su slikice """
 		svmc.svm_set_quiet()
 		
@@ -28,7 +27,7 @@ class LibSVMclassifier(Classifier):
 		labels = []
 		for k in self.ids:
 			for s in traindata[k]:
-				currSample = extractFeatures(s)
+				currSample = self.extractFeatures(s)
 				labels.append(float(k))
 				samples.append(currSample)
 				
@@ -40,23 +39,13 @@ class LibSVMclassifier(Classifier):
 		# TODO: Spremi model u datoteku: self.model.save('svmmodel.model')
 		# Ucitavanje iz datoteke: m = svm_model('svmmodel.model')
 		
-		#errors = 0
-		#for i in range(size):
-			#prediction = model.predict(samples[i])
-			#probability = model.predict_probability
-			#if (labels[i] != prediction):
-				#errors = errors + 1
-		#print "##########################################"
-		#print " kernel %s: error rate = %d / %d" % ("RBF", errors, size)
-		#print "##########################################"
-		
 	def classify(self, image):
 		""" Image objekt, return mora biti tocan ID osobe """
 		self.model
 		
 		if self.model == None: return -1
 		else:
-			currSample = extractFeatures(image)
+			currSample = self.extractFeatures(image)
 			return self.model.predict(currSample)
 
 instance = LibSVMclassifier()
