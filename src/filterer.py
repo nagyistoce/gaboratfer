@@ -42,7 +42,8 @@ def filterImageAppendedFilters(image):
 # Filtriranje slike preko više filtera (zasebno).
 # Rezultati se spajaju odabirom najveće vrijednosti među svim
 # rezultatima filtriranja.
-def filterImageMultipassMaxVal(image):
+# Ovo se još naziva L-inf norma.
+def filterImageMultipassMaxNorm(image):
 	filtered = []
 	for filtr in filters:
 		filtered.append(gabor.apply(filtr, image))
@@ -116,14 +117,17 @@ def filterImageMultipassAvg(image):
 	return combined
 
 def filterImage(image):
-	return gabor.apply(filter, image)
+	# Kombinacija više filtera L-inf (max) normom
+	return filterImageMultipassMaxNorm(image)
+
+	# Čista slika
+	#return image
+
+	# Primjena samo jednog filtera
+	#return gabor.apply(filter, image)
 
 def extractFeatures(image):
-	#gabored = filterImage(image)
-	gabored = filterImageMultipassMaxVal(image)
-	#gabored = filterImageMultipassMinVal(image)
-	#gabored = filterImageMultipassAvg(image)
-	#gabored = image
+	gabored = filterImage(image)
 	imgvec = numpy.fromstring(gabored.tostring(), numpy.uint8)
 	imgvec.shape = 1, 4096
 	return imgvec[0]
