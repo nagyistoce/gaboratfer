@@ -36,6 +36,8 @@ def main(args):
 	
 	print "Ukupno zadano %d uzoraka." % (len(images))
 	print
+	
+	print "Classifying by " + clasifierImpl.name + " classifier."
 
 	for (name, img) in images:
 		cls = clasifierImpl.classify(img)
