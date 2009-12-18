@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# Treniranje klasifikatora i spremanje modela.
+
 import Image
 import sys, getopt, os
 import collector
-
-# Klasifikacija s postojećim modelom.
 
 # Put decider here (Only first will be used, others will be ignored)
 #import knn
@@ -20,29 +20,39 @@ def readImage(inputImage):
 	image = Image.fromstring("L", (64, 64), data, "raw", "L", 0, 1)
 	return image
 
-def main(args):
-	images = []
+def main(args, modelSavePath):
+	trainData = {}
+	okCount = 0
 
 	for inputImage in args:
 		if os.path.isfile(inputImage):
 			fileName = os.path.split(inputImage)[1]
 			extension = fileName.split('.')[-1]
 			if extension == "nrm":
-				images.append((inputImage, readImage(inputImage)))
+				ident = fileName.split('.')[0].split('_')
+				person = ident[0]
+				shot = ident[1]
+				picture = ident[2]
+				if person not in trainData:
+					trainData[person] = []
+				trainData[person].append(readImage(inputImage))
+				okCount = okCount + 1
 			else:
 				print "Skipping non-nrm file %s" % (inputImage)
 		else:
 			print "Skipping non-file %s" % (inputImage)
 	
-	print "Ukupno zadano %d uzoraka." % (len(images))
+	print "Ukupno zadano %d razreda uzoraka." % (len(trainData))
+	print "Ukupno zadano %d uzoraka." % (okCount)
 	print
 
-	for (name, img) in images:
-		cls = clasifierImpl.classify(img)
-		print name + " is classified as " + cls
+	clasifierImpl.train(trainData)
+	clasifierImpl.saveModel(modelSavePath)
+	
+	print "Done!"
 
 def usage():
-  print "Use: " + sys.argv[0] + " -m <modelPath> <images ...>"
+  print "Use: " + sys.argv[0] + " -m <modelSavePath> <images ...>"
   sys.exit(-1)
 
 if __name__ == "__main__":
@@ -51,15 +61,10 @@ if __name__ == "__main__":
 		idx = args.index("-m")
 		if len(args) <= idx+1:
 			usage()
-		modelPath = args[idx+1]
+		modelSavePath = args[idx+1]
 		args.remove("-m")
-		args.remove(modelPath)
-		try:
-			clasifierImpl.loadModel(modelPath)
-		except:
-			print "Model " + modelPath + " doesn't exist!"
-			usage()
+		args.remove(modelSavePath)
 	else:
 		usage()
 
-	main(args)
+	main(args, modelSavePath)
