@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from classifier import Classifier
+import os
 import filterer
 from svm import *
 
@@ -17,10 +18,11 @@ class LibSVMclassifier(Classifier):
 			sampleVector.append(float(sample)/255.0)	# Skaliranje! [0,1]
 		return sampleVector
 	
-	def loadModel(modelPath):
+	def loadModel(self, modelPath):
+		if not os.path.isfile(modelPath): raise Exception("Model doesn't exist: " + modelPath)
 		self.model = svm_model(modelPath)
 	
-	def saveModel(modelPath):
+	def saveModel(self, modelPath):
 		if self.model == None: raise Exception("No model set!")
 		self.model.save(modelPath)
 		
