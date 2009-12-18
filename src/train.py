@@ -13,6 +13,7 @@ import libsvmclassifier
 
 
 clasifierImpl = collector.Collector.registered[0]
+doSplit = False
 
 def readImage(inputImage):
 	file = open(inputImage, mode='rb')
@@ -45,14 +46,22 @@ def main(args, modelSavePath):
 	print "Ukupno zadano %d razreda uzoraka." % (len(trainData))
 	print "Ukupno zadano %d uzoraka." % (okCount)
 	print
-
+	
+	if doSplit:
+		for cls in trainData:
+			trainData[cls] = trainData[cls][:-1]
+	
+	print "Training " + clasifierImpl.name + " classifier."
+	
 	clasifierImpl.train(trainData)
 	clasifierImpl.saveModel(modelSavePath)
 	
 	print "Done!"
+	print "Model for " + clasifierImpl.name + " classifier saved to: " + modelSavePath
 
 def usage():
-  print "Use: " + sys.argv[0] + " -m <modelSavePath> <images ...>"
+  print "Use: " + sys.argv[0] + " -m <modelSavePath> [--split] <images ...>"
+  print "--split = Do data splitting (leavning last sample of each class for testing)"
   sys.exit(-1)
 
 if __name__ == "__main__":
@@ -67,4 +76,8 @@ if __name__ == "__main__":
 	else:
 		usage()
 
+	if "--split" in args:
+		args.remove("--split")
+		doSplit = True
+	
 	main(args, modelSavePath)
