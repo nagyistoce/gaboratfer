@@ -16,7 +16,14 @@ class LibSVMclassifier(Classifier):
 		for sample in imgvec:
 			sampleVector.append(float(sample)/255.0)	# Skaliranje! [0,1]
 		return sampleVector
-
+	
+	def loadModel(modelPath):
+		self.model = svm_model(modelPath)
+	
+	def saveModel(modelPath):
+		if self.model == None: raise Exception("No model set!")
+		self.model.save(modelPath)
+		
 	def train(self, traindata):
 		""" Traindata sadrzi dictionary u kojem su kljucevi ID
 			faca a vrijednosti liste Image objekata u kojima su slikice """
@@ -33,17 +40,13 @@ class LibSVMclassifier(Classifier):
 				samples.append(currSample)
 
 		problem = svm_problem(labels, samples)
-		size = len(samples) # 4096
 		param = svm_parameter(kernel_type = RBF, C = 2**12, gamma = 2**-11)
 		self.model = svm_model(problem, param)
-		# TODO: Spremi model u datoteku: self.model.save('svmmodel.model')
-		# Ucitavanje iz datoteke: m = svm_model('svmmodel.model')
 		
 	def classify(self, image):
 		""" Image objekt, return mora biti tocan ID osobe """
-		self.model
 		
-		if self.model == None: return -1
+		if self.model == None: raise Exception("No model set!")
 		else:
 			currSample = self.extractFeatures(image)
 			cls = self.model.predict(currSample)
