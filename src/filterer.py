@@ -48,22 +48,19 @@ def filterImageMultipassMaxNorm(image):
 	for filtr in filters:
 		filtered.append(gabor.apply(filtr, image))
 
-	combined = Image.new("L", (64, 64))
-	canvas = combined.load()
+	canvas = numpy.ones(image.shape)
 	
-	filteredCan = []
-	for fil in filtered:
-		filteredCan.append(fil.load())
-
-	for x in xrange(0,64):
-		for y in xrange(0,64):
+	# TODO: Mislim da je shp[1], pa shp[0] ok jer se koordinatni počinje gore lijevo...
+	# Treba isprobati... na 64x64 sve radi ;D
+	for x in xrange(0,image.shape[1]):
+		for y in xrange(0,image.shape[0]):
 			maxVal = -1
-			for fc in filteredCan:
+			for fc in filtered:
 				if maxVal < fc[x,y]: maxVal = fc[x,y]
 			
 			canvas[x,y] = maxVal
 
-	return combined
+	return canvas
 
 # Filtriranje slike preko više filtera (zasebno).
 # Rezultati se spajaju odabirom najmanje vrijednosti među svim
@@ -73,22 +70,17 @@ def filterImageMultipassMinVal(image):
 	for filtr in filters:
 		filtered.append(gabor.apply(filtr, image))
 
-	combined = Image.new("L", (64, 64))
-	canvas = combined.load()
-	
-	filteredCan = []
-	for fil in filtered:
-		filteredCan.append(fil.load())
+	canvas = numpy.ones((64, 64))
 
 	for x in xrange(0,64):
 		for y in xrange(0,64):
-			minVal = -1
-			for fc in filteredCan:
+			maxVal = -1
+			for fc in filtered:
 				if minVal == -1 or minVal > fc[x,y]: minVal = fc[x,y]
 			
 			canvas[x,y] = minVal
 
-	return combined
+	return canvas
 
 # Filtriranje slike preko više filtera (zasebno).
 # Rezultati se spajaju prosjekom vrijednosti među svim
@@ -98,48 +90,46 @@ def filterImageMultipassAvg(image):
 	for filtr in filters:
 		filtered.append(gabor.apply(filtr, image))
 
-	combined = Image.new("L", (64, 64))
-	canvas = combined.load()
+	canvas = numpy.ones((64, 64))
 	
-	filteredCan = []
-	for fil in filtered:
-		filteredCan.append(fil.load())
-	
-	filtersNum = len(filteredCan)
+	filtersNum = len(filtered)
 	for x in xrange(0,64):
 		for y in xrange(0,64):
 			sum = 0
-			for fc in filteredCan:
+			for fc in filtered:
 				sum += fc[x,y]
 			
 			canvas[x,y] = sum*1.0/filtersNum
 
 	return combined
 
+# Filteri i parametri potrebni filterImageMultiParam() filtriranju
+lambdaSet = [2.5, 4, 5.6568, 8, 11.3137, 16]
+orientationNum = 8
+gamma = 0.5
+bandwidth = math.pi
+filterSet1 = []
+filterSet2 = []
+filtersNum = 0
+for Lambda in lambdaSet:
+	for n in xrange(0, orientationNum):
+		filterSet1.append(gabor.gaborFilterSimplified(Lambda, math.pi/8 * n, 0, bandwidth, gamma))
+		filterSet2.append(gabor.gaborFilterSimplified(Lambda, math.pi/8 * n, math.pi/2, bandwidth, gamma))
+		filtersNum += 1
 def filterImageMultiParam(image):
-	
-	lambdaSet = [2.5, 4, 5.6568, 8, 11.3137, 16]
-	orientationNum = 8
-	gamma = 0.5
-	bandwidth = math.pi
-	
 	result = numpy.array([])
-	
-	for Lambda in lambdaSet:
-		for n in xrange(0, orientationNum):
-			f1 = gabor.gaborFilterSimplified(Lambda, math.pi/8 * n, 0, bandwidth, gamma)
-			f2 = gabor.gaborFilterSimplified(Lambda, math.pi/8 * n, math.pi/2, bandwidth, gamma)
-			r1 = gabor.applyConv(f1, image)
-			r2 = gabor.applyConv(f2, image)
-			
-			# magnituda kompleksnog odziva filtra
-			r = numpy.sqrt(r1*r1 + r2*r2)
 
-			r = (r - r.min()) / (r.max() - r.min())
-			
-			r.shape = 4096,
-			result = numpy.concatenate((result, r))
-	
+	for n in xrange(0, filtersNum):
+		f1 = filterSet1[n]
+		f2 = filterSet2[n]
+		r1 = gabor.apply(f1, image)
+		r2 = gabor.apply(f2, image)
+		
+		# magnituda kompleksnog odziva filtra
+		r = numpy.sqrt(r1*r1 + r2*r2)
+		r = (r - r.min()) / (r.max() - r.min())
+
+		result = numpy.concatenate((result, r.ravel()))
 	
 	return result
 		 
@@ -147,14 +137,14 @@ def filterImage(image):
 	# Kombinacija više filtera L-inf (max) normom
 	return filterImageMultipassMaxNorm(image)
 
+	#return filterImageMultiParam(image)
+
 	# Čista slika
-	#return image
+	#return numpy.asarray(image)
 
 	# Primjena samo jednog filtera
 	#return gabor.apply(filter, image)
 
 def extractFeatures(image):
 	gabored = filterImage(image)
-	imgvec = numpy.fromstring(gabored.tostring(), numpy.uint8)
-	imgvec.shape = 1, 4096
-	return imgvec[0]
+	return gabored.ravel()
