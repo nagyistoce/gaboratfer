@@ -34,6 +34,25 @@ def gaborFilter(height, width, minx, miny, maxx, maxy, Lambda, theta, psi, bandw
 			filter[i, j] = gaborFunction(minx + i * xFactor, miny + j * yFactor, Lambda, theta, psi, sigma, gamma)
 	return filter
 
+def gaborFilterSimplified(Lambda, theta, psi, bandwidth, gamma):
+	
+	sigma = calcSigma(bandwidth, Lambda)
+	n = int(6*sigma)
+	#zelimo da filter uvijek bude neparne velicine (simetricnost)
+	if not n%2:
+		++n
+	
+	filter = numpy.empty( (n,n) )
+	
+	for i in xrange(0, n):
+		for j in xrange(0, n):
+			filter[i, j] = gaborFunction(j-n/2, i-n/2, Lambda, theta, psi, sigma, gamma)
+	
+	# normalizacija
+	filter = filter - filter.sum() / (n*n)
+	
+	return filter
+
 def gaborFilterImage(height, width, minx, miny, maxx, maxy, Lambda, theta, psi, bandwidth, gamma):
 	filter = gaborFilter(height, width, minx, miny, maxx, maxy, Lambda, theta, psi, bandwidth, gamma)
 	fmax = filter.max() 
@@ -58,7 +77,7 @@ def applyScipyConv(filter, image):
 	image.shape = (r2, c2)
 	image.dtype = numpy.uint8
 	filter.shape = (r1, c1)
-	result = signal.fftconvolve(image, filter)
+	result = signal.fftconvolve(image, filter,'same')
 	#result = signal.correlate(image, filter)
 	#result = convolve.convolve2d(filter, image, fft=1)
 
@@ -71,6 +90,19 @@ def applyScipyConv(filter, image):
 		for y in xrange(0, c2):
 			resultCanvas[y, x] = (result[x, y] - valueMin) * 255 / (valueMax - valueMin)
 	return resultImage
+
+# Konvolucija koja vraca normalizirani numpy.array, a ne sliku
+def applyConv(filter, image):
+	r2 = image.size[0]
+	c2 = image.size[1]
+	r1 = len(filter)
+	c1 = len(filter[0])
+	image.shape = (r2, c2)
+	image.dtype = numpy.uint8
+	filter.shape = (r1, c1)
+	result = signal.fftconvolve(image, filter,'same')
+	
+	return result
 
 def apply(filter, image, MinPad=True, pad=True):
 	""" Not so simple convolution """
@@ -158,23 +190,24 @@ if __name__ == "__main__":
 		image = Image.fromstring("L", (64, 64), data, "raw", "L", 0, 1)
 		return image
 
-	filtr = gaborFilter(8, 8, -4, -4, 4, 4, 2.5, 0, 0, 1, 1)
+	#filtr = gaborFilter(8, 8, -4, -4, 4, 4, 2.5, math.pi/2, 0, 1, 1)
+	filtr = gaborFilterSimplified(2.5, 0, 0, 1, 1)
 
-	img = readImage("./../data/000_2_1.nrm")
+	img = readImage("../face/000_1_1.nrm")
 	#result = applyDirectConvolution(filtr, img)
-	result = apply(filtr, img)
-	#result = applyScipyConv(filtr, img)
+	#result = apply(filtr, img)
+	result = applyScipyConv(filtr, img)
 
-	result.save("test.png")
+	result.save("../test.png")
 
 	filters = []
-	for i in xrange(0,4):
-		filters.append(gaborFilter(8, 8, -4, -4, 4, 4, 2.5, (math.pi/4.0)*i, 0, 1, 1))
+	for i in xrange(0,8):
+		filters.append(gaborFilterSimplified(2.5, (math.pi/4.0)*i, 0, 1, 1))
 
 	filtered = []
 	for filtr in filters:
-		filtered.append(apply(filtr, img))
-
+		filtered.append(applyScipyConv(filtr, img))
+	
 	combined = Image.new("L", (128, 128))
 	canvas = combined.load()
 	
@@ -192,4 +225,5 @@ if __name__ == "__main__":
 		return im
 
 	combined = stretch(combined, (64,64))
-	combined.save("testCombined.png")
+	combined.save("../testCombined.png")
+_
