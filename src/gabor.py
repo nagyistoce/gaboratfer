@@ -92,7 +92,7 @@ def applyScipyConv(filter, image):
 	return resultImage
 
 # Konvolucija koja vraca normalizirani numpy.array, a ne sliku
-def applyConv(filter, image):
+def apply(filter, image):
 	r2 = image.size[0]
 	c2 = image.size[1]
 	r1 = len(filter)
@@ -100,11 +100,11 @@ def applyConv(filter, image):
 	image.shape = (r2, c2)
 	image.dtype = numpy.uint8
 	filter.shape = (r1, c1)
-	result = signal.fftconvolve(image, filter,'same')
+	result = signal.fftconvolve(image, filter, 'same')
 	
 	return result
 
-def apply(filter, image, MinPad=True, pad=True):
+def applyFFtConvImg(filter, image, MinPad=True, pad=True):
 	""" Not so simple convolution """
 
 	#Just for comfort:
@@ -226,4 +226,3 @@ if __name__ == "__main__":
 
 	combined = stretch(combined, (64,64))
 	combined.save("../testCombined.png")
-_
