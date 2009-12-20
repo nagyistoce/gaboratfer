@@ -40,8 +40,8 @@ def main(argv):
 			if extension == "nrm":
 				ident = fileName.split('.')[0].split('_')
 				person = ident[0]
-				shot = ident[1]
-				picture = ident[2]
+				#shot = ident[1]
+				#picture = ident[2]
 				if person not in OMEGA:
 					OMEGA[person] = []
 				OMEGA[person].append(readImage(inputImage))

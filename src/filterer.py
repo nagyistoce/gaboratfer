@@ -50,10 +50,8 @@ def filterImageMultipassMaxNorm(image):
 
 	canvas = numpy.ones(image.shape)
 	
-	# TODO: Mislim da je shp[1], pa shp[0] ok jer se koordinatni počinje gore lijevo...
-	# Treba isprobati... na 64x64 sve radi ;D
-	for x in xrange(0,image.shape[1]):
-		for y in xrange(0,image.shape[0]):
+	for x in xrange(0,image.shape[0]):
+		for y in xrange(0,image.shape[1]):
 			maxVal = -1
 			for fc in filtered:
 				if maxVal < fc[x,y]: maxVal = fc[x,y]
