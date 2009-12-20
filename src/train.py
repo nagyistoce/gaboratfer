@@ -4,7 +4,7 @@
 # Treniranje klasifikatora i spremanje modela.
 
 import Image
-import sys, getopt, os
+import sys, getopt, os, glob
 import collector
 
 # Put decider here (Only first will be used, others will be ignored)
@@ -25,6 +25,15 @@ def main(args, modelSavePath):
 	trainData = {}
 	okCount = 0
 
+	if sys.platform == "win32":
+		tmp = []
+		for arg in args:
+			if len(glob.glob(arg)) == 0:
+				tmp += arg
+			else:
+				tmp += glob.glob(arg)
+		args = tmp
+	
 	for inputImage in args:
 		if os.path.isfile(inputImage):
 			fileName = os.path.split(inputImage)[1]

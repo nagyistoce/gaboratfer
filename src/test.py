@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import Image
-import sys, getopt, os
+import sys, getopt, os, glob
 
 import collector
 
@@ -18,10 +18,20 @@ def readImage(inputImage):
 	return image
 
 def main(argv):
+	
 	opts, args = getopt.getopt(argv, "", [])
 
 	OMEGA = {}
 	okCount = 0
+	
+	if sys.platform == "win32":
+		tmp = []
+		for arg in args:
+			if len(glob.glob(arg)) == 0:
+				tmp += arg
+			else:
+				tmp += glob.glob(arg)
+		args = tmp
 
 	for inputImage in args:
 		if os.path.isfile(inputImage):

@@ -6,10 +6,10 @@ import math
 import numpy
 from PIL import Image
 
-filter = gabor.gaborFilter(8, 8, -4, -4, 4, 4, 2.5, 0, 0, 1, 1)
+filter = gabor.gaborFilterSimplified(2.5, 0, 0, 1, 1)
 filters = []
 for i in xrange(0,4):
-	filters.append(gabor.gaborFilter(8, 8, -4, -4, 4, 4, 2.5, (math.pi/4.0)*i, 0, 1, 1))
+	filters.append(gabor.gaborFilterSimplified(2.5, (math.pi/4.0)*i, 0, 1, 1))
 
 # Promjena velicine slike
 def stretch(im, size, filter=Image.NEAREST):
@@ -116,6 +116,33 @@ def filterImageMultipassAvg(image):
 
 	return combined
 
+def filterImageMultiParam(image):
+	
+	lambdaSet = [2.5, 4, 5.6568, 8, 11.3137, 16]
+	orientationNum = 8
+	gamma = 0.5
+	bandwidth = math.pi
+	
+	result = numpy.array([])
+	
+	for Lambda in lambdaSet:
+		for n in xrange(0, orientationNum):
+			f1 = gabor.gaborFilterSimplified(Lambda, math.pi/8 * n, 0, bandwidth, gamma)
+			f2 = gabor.gaborFilterSimplified(Lambda, math.pi/8 * n, math.pi/2, bandwidth, gamma)
+			r1 = gabor.applyConv(f1, image)
+			r2 = gabor.applyConv(f2, image)
+			
+			# magnituda kompleksnog odziva filtra
+			r = numpy.sqrt(r1*r1 + r2*r2)
+
+			r = (r - r.min()) / (r.max() - r.min())
+			
+			r.shape = 4096,
+			result = numpy.concatenate((result, r))
+	
+	
+	return result
+		 
 def filterImage(image):
 	# Kombinacija više filtera L-inf (max) normom
 	return filterImageMultipassMaxNorm(image)

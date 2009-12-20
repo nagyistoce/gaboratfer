@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import Image
-import sys, getopt, os
+import sys, getopt, os, glob
 import collector
 
 # Klasifikacija s postojećim modelom.
@@ -22,6 +22,15 @@ def readImage(inputImage):
 
 def main(args):
 	images = []
+
+	if sys.platform == "win32":
+		tmp = []
+		for arg in args:
+			if len(glob.glob(arg)) == 0:
+				tmp += arg
+			else:
+				tmp += glob.glob(arg)
+		args = tmp
 
 	for inputImage in args:
 		if os.path.isfile(inputImage):
