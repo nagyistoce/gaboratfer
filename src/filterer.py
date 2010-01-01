@@ -114,6 +114,9 @@ for Lambda in lambdaSet:
 		filterSet1.append(gabor.gaborFilterSimplified(Lambda, math.pi/8 * n, 0, bandwidth, gamma))
 		filterSet2.append(gabor.gaborFilterSimplified(Lambda, math.pi/8 * n, math.pi/2, bandwidth, gamma))
 		filtersNum += 1
+#downsampling faktor
+p =  8
+
 def filterImageMultiParam(image):
 	result = numpy.array([])
 
@@ -125,17 +128,25 @@ def filterImageMultiParam(image):
 		
 		# magnituda kompleksnog odziva filtra
 		r = numpy.sqrt(r1*r1 + r2*r2)
-		r = (r - r.min()) / (r.max() - r.min())
+		
+		#downsampling
+		rc,cc = r.shape
+		r.shape = (rc*cc/p, p)
+		r = r.sum(1)
+		r.shape = (rc/p, p, cc/p)
+		r = r.sum(1)/(p*p) 
+		
+		r = (r - r.min()) / (r.max()-r.min())
 
-		result = numpy.concatenate((result, r.ravel()))
+		result = numpy.concatenate((result,r.ravel()))
 	
 	return result
 		 
 def filterImage(image):
 	# Kombinacija više filtera L-inf (max) normom
-	return filterImageMultipassMaxNorm(image)
+	# return filterImageMultipassMaxNorm(image)
 
-	#return filterImageMultiParam(image)
+	return filterImageMultiParam(image)
 
 	# Čista slika
 	#return numpy.asarray(image)

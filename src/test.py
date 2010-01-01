@@ -28,7 +28,7 @@ def main(argv):
 		tmp = []
 		for arg in args:
 			if len(glob.glob(arg)) == 0:
-				tmp += arg
+				tmp.append(arg)
 			else:
 				tmp += glob.glob(arg)
 		args = tmp

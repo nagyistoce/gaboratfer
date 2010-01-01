@@ -15,7 +15,7 @@ class LibSVMclassifier(Classifier):
 		imgvec = filterer.extractFeatures(image)
 		sampleVector = []
 		for sample in imgvec:
-			sampleVector.append(float(sample)/255.0)	# Skaliranje! [0,1]
+			sampleVector.append(float(sample))	# Skaliranje! [0,1]
 		return sampleVector
 	
 	def loadModel(self, modelPath):
