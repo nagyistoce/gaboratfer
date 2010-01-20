@@ -1,0 +1,368 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc} \usepackage[croatian]{babel} \usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+% Da bi se promjenio stil citiranja umjesto: [authoryear, round] staviti:
+% [numbers, square]
+\usepackage[authoryear, round]{natbib}
+\usepackage{amsmath}
+\usepackage{subfig}
+\usepackage{fixltx2e}
+\usepackage{todo}
+\usepackage{url}
+\usepackage{textcomp}
+\usepackage{float}
+
+\newcommand{\engl}[1]{(engl.~\emph{#1})}
+
+\begin{document}
+\title{Izlučivanje značajki lica Gaborovim filterom}
+\author{Tomislav Reicher \and Krešimir Antolić \and Igor Belša \and Marko Ivanković \and Ivan Krišto \and Maja Legac \and Tomislav Novak}
+\date{20.01.2010.}
+\maketitle
+
+\tableofcontents
+
+\section{Uvod}
+Raspoznavanje uzoraka je znanstvena disciplina iz područja računarskih znanosti
+čiji je cilj klasifikacija ili razvrstavanje objekata u jedan od brojnih razreda
+ili klasa. Iako su područja uporabe brojna u ovom radu koncentacija je na
+raspoznavanju vizulanih uzoraka, točnije, radi se o raspoznavanju lica.
+
+Raspoznavanje lica uključuje računalno prepoznavanje indentiteta na temelju
+značajki dobivenih obradom slike lica. Iako ljudima lak zadatak, prepoznavanje
+lica i njihovo raspoznavanje je veoma zahtjevan posao za računalo. Zadatak
+postaje tim zahtjevniji ako su lica slikana pod različitim osvijetljenjem,
+različitim kutovima ili osobe na slikama imaju različite izraze lica.
+
+Kao osnovna motivacija za korištenje Gaborovog filtera za izvlačenje značajki je
+veza sa biološkim osobinama vida kod sisavaca čiji su receptori osjetljivi na
+karakteristične prostorne frekvencije te njihovu orijentaciju. Gaborov filter
+može iskoristit vizualne osobine kao što su lokalizacija prostora i selekcija
+orijentacije pojedine prostorne frekvencije
+\citep{bhuiyan2007onfacerecognition}\nocite{daugman1985uncertainty}.
+
+% Ovo je opis o čemu koji odjeljak govori. Ovo se MORA nalaziti na kraju uvoda.
+U 2.~odjeljku ukratko je opisana osnovna ideja korištenja Gaborovog
+filtra u izlučivanju značajki za klasifikaciju lica, u 3.~odjeljku prikazan je
+matematički model dvodimenzionalnog Gaborovog filtra te su navodena objašnjenja
+i utjecaj pojedinih parametara Gaborovog filtra. U 4.~odjeljku opisan je
+postupak izlučivanja značajki Gaborovim filtrom te su navedeni korišteni
+parametri, u 5. odjeljku su opisana je metoda kojom su lica na temelju
+izlučenih značajki klasificirana, provedena evaluacija opisana je u  te je
+zaključak dan u 6.~odjeljku.
+
+\section{Osnovna ideja}
+Slike lica osoba koje računalni sustav treba raspoznati su podložne su različitom
+šumu kao što su varijacija osvjetljenja, položaj lica, izražaji lica (lice s
+osmijehom, ozbiljno lice), brkovi i brada kod lica muškaraca, naočale itd. Jedna
+od metoda izlučivanja značajki koja se pritom koristi kako bi se doskočilo
+navedenim problemima je izlučivanje značajki Gaborovim filtrom. Osnovna ideja u
+izlučivanju značajki Gaborovim filterom je pronaći značajke lica karakterizirane
+prostornom frekvencijom \engl{Spatial frequency}, prostornom lokalizacijom
+\engl{Spatial locality} i orijentacijom koje će predstavljati diskriminatorne
+značajke za raspoznavanje lica različitih osoba. Promatranje slike u
+frekvencijskoj domeni \engl{Frequency domain}, gdje je cijela slika predstavljena
+skupom različitih prostornih frekvencija, omogućuje lakšu manipulaciju s
+različitim informacijama sa slike. Uklanjanjem nekog manjeg skupa frekvencija i
+prikazom dobivene slike moguće je ukloniti različiti šum na slici. Problem kod
+prikaza u frekvencijskoj domeni je taj što prikaz ima globalni karakter, tj. za
+pojedinu frekvenciju nije moguće odrediti gdje se prostorno na slici ona pojavila
+već je samo moguće utvrditi da ona na slici postoji. Gaborov filter rješava
+upravo navedeni problem prostorne lokalizacije jer pomoću njega možemo efikasno
+odrediti da li se u pojedinom dijelu slike pojavila određena frekvencija, koja
+je amplituda i faza frekvencije te koji je smjer rasprostiranja frekvencije.
+
+Nakon izlučivanja skupa značajki pomoću Gaborovog filtra lice sa slike raspoznaje
+se pomoću stroja s potpornim vektorima \engl{Support vector machine,SVM} s radijalnom baznom funkcijom.
+
+\section{Gaborov filter}
+
+Jezgra Gaborovog filtra dvodimenzionalna je Gaborova funkcija koju čini
+kompleksni sinusoidalni val moduliran Gaussovom funkcijom. Gaborova funkcija
+dana je kao \citep{petkovgabor}:
+\begin{equation}
+% g(x,y)=\frac{1}{2\pi \sigma^2_{xy}}e^{-\left ( \frac{x'^2 +
+% y'^2}{2\sigma^2_{x,y}} \right)} \times \left ( e^{2\pi i r_0 x'} -
+% e^{-\frac{r_0^2}{2\sigma^2_{uv}}}\right),
+g_{\lambda,\theta,\sigma,\gamma}(x,y) = \exp\left ( -
+\frac{x'^2+\gamma^2 y'^2}{2\sigma^2}\right ) \exp \left ( j2\pi
+\frac{x'}{\lambda} \right ),
+\label{2d-gabor}
+\end{equation}
+pri čemu su
+\begin{eqnarray*}
+x' = x \cos \theta + y \sin \theta, \\
+y' = -x \sin \theta + y \cos \theta.
+\end{eqnarray*}
+
+Ovdje $\sigma$ označava standardnu devijaciju Gaussove funkcije u $x$ smjeru,
+$\gamma$ označava omjer devijacije Gaussove funkcije u $x$ i $y$ smjeru ($\gamma =
+\frac{\sigma_x}{\sigma_y}$), $\lambda$ je valna duljina potpornog sinusoidalnog
+vala, a $\theta$ kut smjera rasprostiranja sinusoidalnog vala.
+
+Frekvencija i odabir orijentacije Gaborovog filtra su izražajnije u
+domeni frekvencijskog prikaza predstavljenog Gaborovom funkcijom (\ref{gabor-frek}) koja
+određuje koliko filter utječe na svaku frekvencijsku komponentu ulazne slike.
+\begin{equation}
+G(u,v) = \exp \left ( - \frac{(u-u_0)^2 + (v-v_0)^2}{2\sigma^2_{uv}}\right ),
+\label{gabor-frek}
+\end{equation}
+\begin{equation}
+\sigma_{uv} = \frac{1}{2\pi \sigma}.
+\end{equation}
+Parametri ($u_0$, $v_0$) definiraju prostornu frekvenciju sinusoidalnog vala u
+ravnini koja također može biti izražena polarnim koordinatama kao radijalna
+frekvencija $r_0$, odnosno valna duljina $\lambda$, i orijentacija $\theta$ čime
+dobivamo parametre ovisne o frekvenciji ekvivalentne onima iz Gaborove funkcije u prostornoj
+domeni:
+\begin{eqnarray}
+r_0 = \sqrt{u_0^2 + v_0^2}, \\
+\tan \theta = \frac{v_0}{u_0}, \\
+\lambda = \frac{1}{r_0}.
+\end{eqnarray}
+
+Iz gornje formule možemo vidjeti da je Gaborova funkcija u frekvencijskoj domeni
+jednaka Gaussovoj funkciji postavljenoj u točci $(u_0, v_0)$, odnosno $(r_0,
+\theta)$, te s time na umu Gaborov filter možemo gledati kao pojasno propusnifilter koji propušta frekvencije u malom pojasu oko centralne frekvencije $(u_0,v_0)$.
+
+Kako bi bilo moguće odabrati parametre Gaborovog filtra koji će služiti
+za izlučivanje značajki potrebno je promotriti utjecaj pojedinih parametara na
+Gaborovu funkciju.
+
+\subsection{Valna duljina ($\lambda$)}
+Valna duljina se odnosi na valnu duljinu sinusoidalnog vala u Gaborovoj funkciji
+kojom se ujedino definira i prostorna frekvencija na koju će sam Gaborov filter
+biti osjetljiv. Valna duljina ovdje određuje duljinu ciklusa u slikovnim
+elemetima \engl{Pixel} i realan je broj veći ili jednak $2$. Prema
+Nyquist--Shannonovom teoremu uzorkovanja signal koji sadrži frekvencije veće od
+polovine frekvencije uzorkovanja ne može biti rekonstruiran u potpunosti, stoga
+je gornja granica frekvencije koju $2D$ slika može sadržavati jednaka $F_{max} =
+0.5$ ciklusa/slikovnom elementu, a to je upravo znači da će valna duljina
+biti veća ili jednaka od $2$ slikovna elementa.
+
+Slike realnih dijelova Gaborovih filtera uz parametre $\theta = 0,\: b
+= 1$, i $\gamma = 0.5$ mogu se vidjeti na slici \ref{fig:filter-wavelengths}.
+
+\begin{figure}[h!tb]
+\centering
+\subfloat[Filter uz $\lambda = 5$.]{
+\label{fig:filter-lambda-5}
+\includegraphics[width=4cm]{images/wavelength5.jpg}
+}
+\hspace{50pt}
+\subfloat[Filter uz $\lambda = 10$.]{
+\label{fig:filter-lambda-10}
+\includegraphics[width=4cm]{images/wavelength10.jpg}
+}
+\caption{Gaborov filter uz različite valne duljine.}
+\label{fig:filter-wavelengths}
+\end{figure}
+
+% TODO: Pogledati o čemu se ovdje radi\ldots Gledao sam formulu, ništa pametno
+% nisam zaključio, generirao sam slike, također ništa pametno\ldots Nešto mi
+% promiče\ldots Zakomentirao sam tu rečenicu dok mi ne postane smislena.
+%Uz $\lambda = 2$, ne bi se smjela koristiti kombinacija $\varphi = \pm 90$ jer
+%u tom slučaju Gaborova funkcija je uzrokovana u svojim
+%nul--prijelazima\TODO{``sampled in its zero crossings''?}.
+
+
+\subsection{Orijentacija ($\theta$)}
+Orijentacija određuje smjer rasprostiranja moduliranog sinusnog signala odnosno
+kut normale paralelnih pruga Gaborovog filtera. Za potpuno
+specificiranje prostorne frekvencije nije dovoljna informacija o valnoj
+duljini, već je potrebno odrediti i smjer u kojem se ta frekvencija
+rasprostire. Određena je kutom od $0$ do $360$ stupnjeva odnosno $0$ do $2\pi$
+radijana. Prikaze realnog dijela Gaborovog filtera sa orijentacijama od
+45\textdegree, 80\textdegree\,i 0\textdegree\, možete vidjeti na slikama
+\ref{fig:filter-orientation-45}, \ref{fig:filter-orientation-80} i \ref{fig:filter-lambda-10}.
+
+
+\begin{figure}[h!tb]
+\centering
+\subfloat[Filter uz $\theta = 45$\textdegree.]{
+\label{fig:filter-orientation-45}
+\includegraphics[width=4cm]{images/orientation45.jpg}
+}
+\hspace{50pt}
+\subfloat[Filter uz $\theta = 80$\textdegree.]{
+\label{fig:filter-orientation-80}
+\includegraphics[width=4cm]{images/orientation80.jpg}
+}
+\caption{Gaborov filter uz različite orijentacije.}
+\label{fig:filter-orientations}
+\end{figure}
+
+
+\subsection{Omjer dimenzija ($\gamma $)}
+Parametar koji se preciznije naziva prostorni omjer dimenzija, određuje
+eliptičnost Gaborove funkcije tj. odnos između devijacija Gaussove funkcije u
+$x$ i $y$ smjeru. Za $\gamma = 1$ eliptičnost se svodi na krug, dok je za
+$\gamma < 1$ funkcija je izdužena u smjeru paralelnom s paralelnim prugama
+funkcije. Primjer filtera sa različitim omjerima dimenzija se može vidjeti na
+slici \ref{fig:filter-ratios}.
+
+\begin{figure}[h!tb]
+\centering
+\subfloat[Filter uz $\gamma = 0.5$.]{
+\label{fig:filter-gamma-05}
+\includegraphics[width=4cm]{images/wavelength10.jpg}
+}
+\hspace{50pt}
+\subfloat[Filter uz $\gamma = 1$.]{
+\label{fig:filter-gamma-1}
+\includegraphics[width=4cm]{images/ratio1.jpg}
+}
+\caption{Gaborov filter uz različite omjere dimenzija.}
+\label{fig:filter-ratios}
+\end{figure}
+
+\subsection{Standardna devijacija ($\sigma$)}
+Standardna devijacija Gaussove funkcije utječe na dio prostora u kojem će se
+računati odziv Gaborovog filtra, a jednako tako utječe i na širinu
+frekvencijskog pojasa koji će gaborov filter propustiti, stoga je poželjno da
+omjer standardne devijacije i radijalne frekvencije Gaborove funkcije bude
+konstantan. Gaborova funkcija s većom frekvencijom će tako imati
+manju standarnu devijaciju te time pokrivati manju površinu u prostornoj domeni
+od gaborove funkcije s manjom frekvencijom. 
+
+Širina filtra $b$ Gaborovog filtra povezana je s omjerom
+$\frac{\sigma}{\lambda}$, ($\lambda = \frac{1}{r_0}$) i definirana s:
+\begin{eqnarray}
+b = \log_2{\left ( \frac{\frac{\sigma}{\lambda}\pi + \sqrt{\frac{\ln2}{2}}}
+{\frac{\sigma}{\lambda}\pi - \sqrt{\frac{\ln2}{2}}} \right )}, \\
+\frac{\sigma}{\lambda} =
+\frac{1}{\pi}\sqrt{\frac{ln2}{2}}\cdot\frac{2^b+1}{2^b-1}.
+\end{eqnarray}
+Prilikom izvedbe filtra vrijednost $\sigma$ se ne može direktno
+odrediti, nego se mijenja samo preko vrijednosti širine filtera,
+$b$. Uz zadani $b$ i poznati $\lambda$, $\sigma$ se određuje prema gornjoj
+formuli.
+ 
+Širina filtera zadana je kao pozitivni realni broj. Što je širina manja,
+$\sigma$ je veća i povećava se broj naglašavajućih i prigušavajućih pruga
+Gaborovog filtera.~ Primjere realnog dijela filtra s
+različitim širinama moguće je vidjeti na slikama \ref{fig:filter-bandwidth-05}
+i \ref{fig:filter-bandwidth-2}. Na prethodnim primjerima korištena je širina
+filtera od $b = 1$.
+
+\begin{figure}[h!tb]
+\centering
+\subfloat[Filter uz $b = 0.5$.]{
+\label{fig:filter-bandwidth-05}
+\includegraphics[width=4cm]{images/bandwidth05.jpg}
+}
+\hspace{50pt}
+\subfloat[Filter uz $b = 2$.]{
+\label{fig:filter-bandwidth-2}
+\includegraphics[width=4cm]{images/bandwidth2.jpg}
+}
+\caption{Gaborov filter uz različite širine.}
+\label{fig:filter-bandwidths}
+\end{figure}
+
+\section{Izlučivanje značajki pomoću Gaborovog filtra}
+
+Kako bi izlučili značajke sliku konvoluiramo sa skupom Gaborovih filtera. Ako
+je s $I(x, y)$ definirana slika sivih razina, odziv pojedinog Gaborovog filtra i
+slike računa se konvolucijom:
+\begin{equation}
+O(x,y,\lambda, \theta) = I(x,y) * g(x,y,\lambda, \theta),
+\label{konvolucija-filter-slika}
+\end{equation}
+gdje je $g(x,y,\lambda, \theta)$ Gaborov filter definiran parametrima $\lambda$
+i $\theta$. Parametri koji su u ovom radu pri tome korišteni su $\lambda =
+\{2.5, 4, 5.6568, 8, 11.3137, 16\}$ i $\theta = \{ \frac{i \pi}{8} | i =
+0 \ldots 7\}$ uz ostale parametre filtra $\gamma = 1$ i $b = \pi$ za koje se
+pokazalo da su uspješni u izlučivanju značajki prilikom klasifikacije lica
+\citep{shen2007gabor}.
+
+Rezultantna slika koja nastaje je kompleksna slika s realnim i imaginarnim
+dijelom. Prije konvolucije Gaborov filter potrebno je normalizirati, odnosno
+oduzeti mu istosmjernu komponentu \engl{DC component}, kako odziv nebi bio ovisan
+o varijacijama osvjetljenja izvorne slike, tj. o istosmjernoj komponenti izvorne
+slike. Nakon što se slika konvoluira s cijelim skupom Gaborovih filtera dobiveni
+su odzivi $O(x,y,\lambda_i, \theta_j)$ za sve parametre $\theta$ i $\lambda$. Za
+svaki element ($x,y$) slike kompleksnog odziva $O(x,y,\lambda_i, \theta_j)$
+računa se magnituda čime je dobivena nova slika realnih magnituda. Kako su
+izvorne slike korištene u raspoznavanju dimenzija $64\times64$ sliku magnituda potom
+svodimo na sliku manjih dimenzija, $8\times8$, postupkom rezolucijske piramide
+tako da je slikovni element nove slike dobiven kao srednja vrijednost $8\times8$
+susjednih slikovnih elemenata. Ako je s $O^{r}(x,y,\lambda_i, \theta_j)$
+označena dobivena slika magnituda nakon postupka reduciranja dimenzije, svaka
+slika se tada pretvara u vektor $V(x,y,\lambda_i, \theta_j)$ tako da se
+slijepe \engl{Concatenate} redovi slike $O^{r}(x,y,\lambda_i, \theta_j)$.
+Dobiveni skup vektora se potom slijepi u rezultantni vektor $X$:
+\begin{equation}
+ X = \left ( V(x,y,\lambda_1, \theta_1)^T \ldots
+V(x,y,\lambda_i, \theta_j)^T \ldots V(x,y,\lambda_m, \theta_n)^T \right )
+\end{equation}
+Vektor $X$ je vektor značajki koje se koriste za raspoznavanja lica i onje veličine $8\times8\times48 = 3072$  jer je nastao povezivanjem reduciranihrezultata konvolucije izvorne slike s $48$ različitih Gaborovih filtara. Trebaprimjetiti da je postupak reduciranja dimenzionalnosti nužan jer bi bez tog korakadobiveni vektor značajki bio dimenzija $64\times64\times48 = 196608$ što upogledu brzine izvođenja predstavlja ozbiljan problem prilikom računanja samogvektora, a i prilikom koraka klasifikacije.
+
+\section{Klasifikacija}
+
+Prikaz izvorne slike vektorom realnih brojeva omogućava jednostavno korištenje
+klasifikatora koji traže decizijske funkcije, tj.~granice u vektorskom
+prostoru.
+U radu je za klasifikaciju korišten stroj s potpornim vektorima \engl{Support
+vector machine}. Izvorno, SVM traži optimalnu linearnu granicu, odnosno
+hiperravninu, kako bi razdvojio različite razrede predstavljene skupom vektora u
+vektorskome prostoru. Iskorištavanjem jezgrenog trika \engl{kernel trick} isti
+klasifikator moguće je primijeniti za traženje proizvoljno nelinearne granice
+između različitih razreda. Pri tome često korištena jezgrena funkcija je
+radijalna bazna funkcija odnosno Gaussova jezgra:
+\begin{equation}
+k(\mathbf{x_i},\mathbf{x_j})=\exp(-\gamma \|\mathbf{x_i} - \mathbf{x_j}\|^2).
+\end{equation}
+
+Pokazano je da uz odabir ispravnih parametara \citep{keerthi2003asymptotic} linearni SVM
+predstavlja specijalni slučaj SVM--a s radijalnom baznom funkcijom čime
+se isključuje potreba za korištenjem linearnog SVM--a kao potencijalnog
+klasifikatora. Prilikom korištenja radijalne bazne funkcije, a i općenito
+SVM--a, prije samog postupka učenja podatke je potrebno skalirati kako bi utjecaj svih
+atributa na klasifikaciju bio jednak, no u spomenutom slučaju klasifikacije
+lica postupak skaliranja je izostavljen pod pretpostavkom da su područja slike s
+većim vrijednostima odnosno većim rasponom vrijednosti od veće važnosti od
+ostalih područja. 
+
+Učenjem SVM--a traže se parametri pretpostavljenog oblika decizijske funkcije,
+koja će ispravno klasificirati sve uzorke u skupu za učenje, što ponekad zbog
+šuma u podacima ili njihove distribucije u prostoru nije moguće. Rješenje tog
+problema nalazi se u korištenju SVM klasifikatora s mekim granicama definiranima
+parametrom $C$ koji dozvoljava odstupanja od ispravne klasifikacije svih podataka
+u skupu za učenje s ciljem bolje generalizacije nad još neviđenim skupom
+podataka. Parametri SVM--a koji utječu na moć generalizacije nad neviđenim skupom
+za ispitivanje su tako $C$ (parametar meke granice) i $\gamma$ (parametar
+radijalne bazne funkcije). Oni zajedno čine prostor parametara čijom je pretragom
+potrebno pronaći vrijednosti parametara, tj.~odabrati onaj model, koji će dati
+SVM klasifikator s najmanjom pogreškom generalizacije.
+
+Pretraga parametra odvija se odabirom modela s parametrima $(C, \gamma)$ iz skupa
+$\left (C = {2^{-5}, 2^{-4}, \ldots , 2^{15}},  \gamma = {2^{-15}, 2^{-14},
+\ldots, 2^3} \right )$ \citep{CC01a} koji daju najveću točnost klasifikacije u
+procesu cross--validacije nad skupom za učenje. Točnost klasifikacije mjeri se formulom:
+\begin{equation}
+acc = \frac{n_c}{N},
+\end{equation}
+pri čemu je $n_c$ broj točno klasificiranih slika lica, a $N$ ukupan broj slika
+lica nad kojima je provedeno testiranje. Nakon što su pronađeni parametri modela $(C,
+\gamma)$, koji daju najveću točnost, klasifikator s navedenim parametrima ponovo
+se uči na potpunom skupu za učenje. Parametri SVM klasifikatora korišteni u ovom
+radu su $C = 2^{12}$ i $\gamma = 2^{-11}$.
+
+
+\section{Zaključak}
+
+Korištenje Gaborovog filtra ima dobru podlogu u biološkim osnovama vida
+sisavaca te se očekuje da će se njegovom upotrebom, korištenjem različitih klasifikatora i
+automatiziranom optimizacijom parametara postići uspjeh u raspoznavanju lica različitih osoba.
+
+\bibliography{literatura}
+\bibliographystyle{plainnat}
+
+\end{document}
