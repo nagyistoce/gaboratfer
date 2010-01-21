@@ -9,7 +9,7 @@ import collector
 # Put deciders here
 
 #import knn
-import libsvmclassifier
+import multilibsvmclassifier
 
 def readImage(inputImage):
 	file = open(inputImage, mode='rb')
