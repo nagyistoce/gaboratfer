@@ -11,8 +11,15 @@ class LibSVMclassifier(Classifier):
 	ids = []
 	model = None
 	
+	def __init__(self, ef=None):
+		Classifier.__init__(self)
+		if ef is None:
+			self.featuresExtractor = filterer.extractFeatures
+		else:
+			self.featuresExtractor = ef
+
 	def extractFeatures(self, image):
-		imgvec = filterer.extractFeatures(image)
+		imgvec = self.featuresExtractor(image)
 		sampleVector = []
 		for sample in imgvec:
 			sampleVector.append(float(sample))	# Skaliranje! [0,1]
@@ -43,6 +50,7 @@ class LibSVMclassifier(Classifier):
 
 		problem = svm_problem(labels, samples)
 		param = svm_parameter(kernel_type = RBF, C = 2**12, gamma = 2**-11)
+		
 		self.model = svm_model(problem, param)
 		
 	def classify(self, image):
