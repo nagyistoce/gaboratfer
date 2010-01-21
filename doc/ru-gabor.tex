@@ -1,8 +1,10 @@
-\documentclass{article}
-\usepackage[utf8]{inputenc} \usepackage[croatian]{babel} \usepackage[T1]{fontenc}
+\documentclass[12pt,a4paper]{ReportAA}
+\usepackage[utf8]{inputenc} 
+\usepackage[croatian]{babel}
+\usepackage[T1]{fontenc}
 \usepackage{lmodern}
-\usepackage{algorithmic}
-\usepackage{algorithm}
+%\usepackage{algorithmic}
+%\usepackage{algorithm}
 \usepackage{longtable}
 \usepackage{graphicx}
 \usepackage{booktabs}
@@ -26,9 +28,11 @@
 \date{20.01.2010.}
 \maketitle
 
+\newpage
+
 \tableofcontents
 
-\section{Uvod}
+\chapter{Uvod}
 Raspoznavanje uzoraka je znanstvena disciplina iz područja računarskih znanosti
 čiji je cilj klasifikacija ili razvrstavanje objekata u jedan od brojnih razreda
 ili klasa. Iako su područja uporabe brojna u ovom radu koncentracija je na
@@ -57,7 +61,7 @@ parametri. U 5. odjeljku opisana je metoda kojom su lica klasificirana na temelj
 izlučenih značajki, dok je provedena evaluacija opisana u poglavlju ?. Konačno, na
 kraju je dan zaključak.
 
-\section{Osnovna ideja}
+\chapter{Osnovna ideja}
 Slike lica osoba koje računalni sustav treba raspoznati podložne su različitom
 šumu kao što su varijacija osvjetljenja, položaj lica, izražaji lica (lice s
 osmijehom, ozbiljno lice), brkovi i brada kod lica muškaraca, naočale itd. Jedna
@@ -82,7 +86,7 @@ Nakon izlučivanja skupa značajki pomoću Gaborovog filtra lice sa slike raspoz
 se pomoću stroja s potpornim vektorima \engl{Support vector machine,
 SVM} s radijalnom baznom funkcijom.
 
-\section{Gaborov filter}
+\chapter{Gaborov filter}
 
 Jezgra Gaborovog filtra dvodimenzionalna je Gaborova funkcija koju čini
 kompleksni sinusoidalni val moduliran Gaussovom funkcijom. Gaborova funkcija
@@ -138,7 +142,7 @@ Kako bi bilo moguće odabrati parametre Gaborovog filtra koji će služiti
 za izlučivanje značajki potrebno je promotriti utjecaj pojedinih parametara na
 Gaborovu funkciju.
 
-\subsection{Valna duljina ($\lambda$)}
+\section{Valna duljina ($\lambda$)}
 Valna duljina se odnosi na valnu duljinu sinusoidalnog vala u Gaborovoj funkciji
 kojom se ujedino definira i prostorna frekvencija na koju će sam Gaborov filter
 biti osjetljiv. Valna duljina ovdje određuje duljinu ciklusa u slikovnim
@@ -175,7 +179,7 @@ Slike realnih dijelova Gaborovih filtera uz parametre $\theta = 0,\: b
 %nul--prijelazima\TODO{``sampled in its zero crossings''?}.
 
 
-\subsection{Orijentacija ($\theta$)}
+\section{Orijentacija ($\theta$)}
 Orijentacija određuje smjer rasprostiranja moduliranog sinusnog signala odnosno
 kut normale paralelnih pruga Gaborovog filtera. Za potpuno
 specificiranje prostorne frekvencije nije dovoljna informacija o valnoj
@@ -202,7 +206,7 @@ radijana. Prikaze realnog dijela Gaborovog filtera sa orijentacijama od
 \end{figure}
 
 
-\subsection{Omjer dimenzija ($\gamma $)}
+\section{Omjer dimenzija ($\gamma $)}
 Parametar koji se preciznije naziva prostorni omjer dimenzija, određuje
 eliptičnost Gaborove funkcije tj. odnos između devijacija Gaussove funkcije u
 $x$ i $y$ smjeru. Za $\gamma = 1$ eliptičnost se svodi na krug, dok je za
@@ -225,7 +229,7 @@ slici \ref{fig:filter-ratios}.
 \label{fig:filter-ratios}
 \end{figure}
 
-\subsection{Standardna devijacija ($\sigma$)}
+\section{Standardna devijacija ($\sigma$)}
 Standardna devijacija Gaussove funkcije utječe na dio prostora u kojem će se
 računati odziv Gaborovog filtra, a jednako tako utječe i na širinu
 frekvencijskog pojasa koji će gaborov filter propustiti, stoga je poželjno da
@@ -269,7 +273,7 @@ filtera od $b = 1$.
 \label{fig:filter-bandwidths}
 \end{figure}
 
-\section{Izlučivanje značajki pomoću Gaborovog filtra}
+\chapter{Izlučivanje značajki pomoću Gaborovog filtra}
 
 Kako bi izlučili značajke sliku konvoluiramo sa skupom Gaborovih filtera. Ako
 je s $I(x, y)$ definirana slika sivih razina, odziv pojedinog Gaborovog filtra i
@@ -314,7 +318,7 @@ pogledu brzine izvođenja predstavlja ozbiljan problem prilikom računanja samog
 vektora, a i prilikom koraka klasifikacije.
 
 
-\section{Klasifikacija}
+\chapter{Klasifikacija}
 
 Prikaz izvorne slike vektorom realnih brojeva omogućava jednostavno korištenje
 klasifikatora koji traže decizijske funkcije, tj.~granice u vektorskom
@@ -366,7 +370,7 @@ se uči na potpunom skupu za učenje. Parametri SVM klasifikatora korišteni u o
 radu su $C = 2^{12}$ i $\gamma = 2^{-11}$.
 
 
-\section{Zaključak}
+\chapter{Zaključak}
 
 Korištenje Gaborovog filtra ima dobru podlogu u biološkim osnovama vida
 sisavaca te se očekuje da će se njegovom upotrebom, korištenjem različitih klasifikatora i
