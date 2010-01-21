@@ -31,8 +31,8 @@
 \section{Uvod}
 Raspoznavanje uzoraka je znanstvena disciplina iz područja računarskih znanosti
 čiji je cilj klasifikacija ili razvrstavanje objekata u jedan od brojnih razreda
-ili klasa. Iako su područja uporabe brojna u ovom radu koncentacija je na
-raspoznavanju vizulanih uzoraka, točnije, radi se o raspoznavanju lica.
+ili klasa. Iako su područja uporabe brojna u ovom radu koncentracija je na
+raspoznavanju vizualnih uzoraka. Točnije, radi se o raspoznavanju lica.
 
 Raspoznavanje lica uključuje računalno prepoznavanje indentiteta na temelju
 značajki dobivenih obradom slike lica. Iako ljudima lak zadatak, prepoznavanje
@@ -53,12 +53,12 @@ filtra u izlučivanju značajki za klasifikaciju lica, u 3.~odjeljku prikazan je
 matematički model dvodimenzionalnog Gaborovog filtra te su navodena objašnjenja
 i utjecaj pojedinih parametara Gaborovog filtra. U 4.~odjeljku opisan je
 postupak izlučivanja značajki Gaborovim filtrom te su navedeni korišteni
-parametri, u 5. odjeljku su opisana je metoda kojom su lica na temelju
-izlučenih značajki klasificirana, provedena evaluacija opisana je u  te je
-zaključak dan u 6.~odjeljku.
+parametri. U 5. odjeljku opisana je metoda kojom su lica klasificirana na temelju
+izlučenih značajki, dok je provedena evaluacija opisana u poglavlju ?. Konačno, na
+kraju je dan zaključak.
 
 \section{Osnovna ideja}
-Slike lica osoba koje računalni sustav treba raspoznati su podložne su različitom
+Slike lica osoba koje računalni sustav treba raspoznati podložne su različitom
 šumu kao što su varijacija osvjetljenja, položaj lica, izražaji lica (lice s
 osmijehom, ozbiljno lice), brkovi i brada kod lica muškaraca, naočale itd. Jedna
 od metoda izlučivanja značajki koja se pritom koristi kako bi se doskočilo
@@ -71,15 +71,16 @@ frekvencijskoj domeni \engl{Frequency domain}, gdje je cijela slika predstavljen
 skupom različitih prostornih frekvencija, omogućuje lakšu manipulaciju s
 različitim informacijama sa slike. Uklanjanjem nekog manjeg skupa frekvencija i
 prikazom dobivene slike moguće je ukloniti različiti šum na slici. Problem kod
-prikaza u frekvencijskoj domeni je taj što prikaz ima globalni karakter, tj. za
-pojedinu frekvenciju nije moguće odrediti gdje se prostorno na slici ona pojavila
-već je samo moguće utvrditi da ona na slici postoji. Gaborov filter rješava
-upravo navedeni problem prostorne lokalizacije jer pomoću njega možemo efikasno
-odrediti da li se u pojedinom dijelu slike pojavila određena frekvencija, koja
-je amplituda i faza frekvencije te koji je smjer rasprostiranja frekvencije.
+prikaza u frekvencijskoj domeni je globalni karakter prikaza, tj. za
+pojedinu frekvenciju nije moguće odrediti gdje se prostorno na slici ona pojavila.
+Moguće je samo utvrditi da ona na slici postoji. Gaborov filter rješava
+upravo navedeni problem prostorne lokalizacije. Pomoću njega možemo efikasno
+odrediti je li se u pojedinom dijelu slike pojavila određena frekvencija, koja
+je amplituda i faza te frekvencije te koji je smjer njenog rasprostiranja.
 
 Nakon izlučivanja skupa značajki pomoću Gaborovog filtra lice sa slike raspoznaje
-se pomoću stroja s potpornim vektorima \engl{Support vector machine,SVM} s radijalnom baznom funkcijom.
+se pomoću stroja s potpornim vektorima \engl{Support vector machine,
+SVM} s radijalnom baznom funkcijom.
 
 \section{Gaborov filter}
 
@@ -129,7 +130,9 @@ r_0 = \sqrt{u_0^2 + v_0^2}, \\
 
 Iz gornje formule možemo vidjeti da je Gaborova funkcija u frekvencijskoj domeni
 jednaka Gaussovoj funkciji postavljenoj u točci $(u_0, v_0)$, odnosno $(r_0,
-\theta)$, te s time na umu Gaborov filter možemo gledati kao pojasno propusnifilter koji propušta frekvencije u malom pojasu oko centralne frekvencije $(u_0,v_0)$.
+\theta)$, te s time na umu Gaborov filter možemo gledati kao pojasno propusni
+filter koji propušta frekvencije u malom pojasu oko centralne frekvencije $(u_0,
+v_0)$.
 
 Kako bi bilo moguće odabrati parametre Gaborovog filtra koji će služiti
 za izlučivanje značajki potrebno je promotriti utjecaj pojedinih parametara na
@@ -302,7 +305,14 @@ Dobiveni skup vektora se potom slijepi u rezultantni vektor $X$:
  X = \left ( V(x,y,\lambda_1, \theta_1)^T \ldots
 V(x,y,\lambda_i, \theta_j)^T \ldots V(x,y,\lambda_m, \theta_n)^T \right )
 \end{equation}
-Vektor $X$ je vektor značajki koje se koriste za raspoznavanja lica i onje veličine $8\times8\times48 = 3072$  jer je nastao povezivanjem reduciranihrezultata konvolucije izvorne slike s $48$ različitih Gaborovih filtara. Trebaprimjetiti da je postupak reduciranja dimenzionalnosti nužan jer bi bez tog korakadobiveni vektor značajki bio dimenzija $64\times64\times48 = 196608$ što upogledu brzine izvođenja predstavlja ozbiljan problem prilikom računanja samogvektora, a i prilikom koraka klasifikacije.
+Vektor $X$ je vektor značajki koje se koriste za raspoznavanja lica i on
+je veličine $8\times8\times48 = 3072$  jer je nastao povezivanjem reduciranih
+rezultata konvolucije izvorne slike s $48$ različitih Gaborovih filtara. Treba
+primjetiti da je postupak reduciranja dimenzionalnosti nužan jer bi bez tog koraka
+dobiveni vektor značajki bio dimenzija $64\times64\times48 = 196608$ što u
+pogledu brzine izvođenja predstavlja ozbiljan problem prilikom računanja samog
+vektora, a i prilikom koraka klasifikacije.
+
 
 \section{Klasifikacija}
 
