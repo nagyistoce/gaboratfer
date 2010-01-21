@@ -1,20 +1,9 @@
-\documentclass[12pt,a4paper]{ReportAA}
-\usepackage[utf8]{inputenc} 
-\usepackage[croatian]{babel}
-\usepackage[T1]{fontenc}
-\usepackage{lmodern}
+\documentclass{ru}
+
 %\usepackage{algorithmic}
 %\usepackage{algorithm}
 \usepackage{longtable}
-\usepackage{graphicx}
-\usepackage{booktabs}
 \usepackage{hyperref}
-% Da bi se promjenio stil citiranja umjesto: [authoryear, round] staviti:
-% [numbers, square]
-\usepackage[authoryear, round]{natbib}
-\usepackage{amsmath}
-\usepackage{subfig}
-\usepackage{fixltx2e}
 \usepackage{todo}
 \usepackage{hyperref}
 \usepackage{textcomp}
@@ -22,7 +11,6 @@
 
 \hypersetup{colorlinks=true,urlcolor=blue}
 
-\newcommand{\engl}[1]{(engl.~\emph{#1})}
 
 \begin{document}
 \title{Izlučivanje značajki lica Gaborovim filtrom}
@@ -241,7 +229,7 @@ manju standardnu devijaciju te time pokrivati manju površinu u prostornoj domen
 od Gaborove funkcije s manjom frekvencijom. 
 
 Širina filtra $b$ Gaborovog filtra povezana je s omjerom
-$\frac{\sigma}{\lambda}$, ($\lambda = \frac{1}{r_0}$) i definirana s:
+$\frac{\sigma}{\lambda}$, ($\lambda = \frac{1}{r_0}$) i definirana kao
 \begin{eqnarray}
 b = \log_2{\left ( \frac{\frac{\sigma}{\lambda}\pi + \sqrt{\frac{\ln2}{2}}}
 {\frac{\sigma}{\lambda}\pi - \sqrt{\frac{\ln2}{2}}} \right )}, \\
@@ -383,8 +371,8 @@ radu su $C = 2^{12}$ i $\gamma = 2^{-11}$.
 % Obuci carape, vani je hladno
 % Ra ra raspici, samo dobro opici...
 
-Metoda $k-nn$ radi na principu promatranja $k$ najbližih susjeda uzorka koji se klasificira.
-Primjeri za učenje su točke u $n$-dimenzionalnom prostoru $R^{n}$, a za račun udaljenosti koristi se
+Metoda $k-nn$ radi na principu promatranja $k$ najbližih susjeda uzorka koji
+se klasificira. Primjeri za učenje su točke u $n$-dimenzionalnom prostoru $R^{n}$, a za račun udaljenosti koristi se
 euklidska metrika. Moguće je korištenje i drugih metrika, ovisno o domeni problema.
 
 Primjer $x_k$ opisan je vektorom značajki:
@@ -400,14 +388,15 @@ Euklidska udaljenost dva vektora $x_i$ i $x_j$ je:
 d(x_i, y_i) = \sqrt{\sum_{i=1}^n |a_r(x_i) - a_r(x_j)|^2}
 \end{equation}
 
-Valja primjetiti da za $k-nn$ metodu nije potrebno izračunavati punu euklidsku udaljenost. Kako je operacija kvadratnog korijena
-jedna od računalno skupljih operacija zgodno je iskoristiti sljedeću relaciju:
+Valja primjetiti da za $k-nn$ metodu nije potrebno izračunavati punu euklidsku
+udaljenost. Kako je operacija kvadratnog korijena jedna od računalno skupljih operacija zgodno je iskoristiti sljedeću relaciju:
 
 \begin{equation}
 a \leq b \Rightarrow a^2 \leq b^2 \quad \forall a,b \geq 0
 \end{equation}
 
-Vidimo da izračun kvadratnog korijena ne utječe na relativni odnos parova, što je jedina bitna informacija za $k-nn$ metodu.
+Vidimo da izračun kvadratnog korijena ne utječe na relativni odnos parova, što
+je jedina bitna informacija za $k-nn$ metodu.
 
 U algoritmu klasifikacije, primjeru $x_q$ pridjeljuje se klasifikacija koju ima najviše njegovih $k$ najbližih
 susjeda, prema formuli:
@@ -419,12 +408,12 @@ f(x_q)=\arg\max_{v \epsilon V} \sum_{i=1}^k \delta(v,f(x_i))
 gdje je $\delta$ kroneckerov simbol (vrijednost je 1 ako su oba argumenta jednaka).
 
 
-Lijene metode poput metode $k-nn$ konstruiraju različitu aproksimaciju ciljne funkcije za svaki različiti novi uzorak koji
-traba biti klasificiran. Umjesto procjene ciljne funkcije jednom za cijeli prostor,
+Lijene metode poput metode $k-nn$ konstruiraju različitu aproksimaciju ciljne
+funkcije za svaki različiti novi uzorak koji traba biti klasificiran. Umjesto procjene ciljne funkcije jednom za cijeli prostor,
 procjenjuje se ciljna funkcija samo lokalno, u okolini novog uzorka. Ovo je pogodno u slučaju
 kompleksnih ciljnih funkcija. Nedostatak je visoka cijena klasificiranja svakog novog primjera. Razmatraju se svi atributi
-iako samo neki mogu imati utjecaj na ciljnu funkciju. Induktivna pristranost $k-nn$ algoritma je pretpostavka da je klasifikacija
-u blizini uzorka $x_q$ slična klasifikaciji primjera u blizini.
+iako samo neki mogu imati utjecaj na ciljnu funkciju. Induktivna pristranost
+$k-nn$ algoritma je pretpostavka da je klasifikacija u blizini uzorka $x_q$ slična klasifikaciji primjera u blizini.
 
 \chapter{Zaključak}
 
