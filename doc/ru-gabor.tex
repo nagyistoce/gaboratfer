@@ -63,7 +63,7 @@ parametri. U 5. odjeljku opisana je metoda kojom su lica klasificirana na temelj
 izlučenih značajki, dok je provedena evaluacija opisana u poglavlju ?. Konačno, na
 kraju je dan zaključak.
 
-\chapter{Osnovna ideja}
+\chapter{Teorijska razrada}
 Slike lica osoba koje računalni sustav treba raspoznati podložne su različitom
 šumu kao što su varijacija osvjetljenja, položaj lica, izražaji lica (lice s
 osmijehom, ozbiljno lice), brkovi i brada kod lica muškaraca, naočale itd. Jedna
@@ -381,11 +381,11 @@ radu su $C = 2^{12}$ i $\gamma = 2^{-11}$.
 % Popravi TEX gdje nije ok!
 % Dodaj reference na literaturu, ja ovo pisem napamet i po slajdovima struce
 % Obuci carape, vani je hladno
+% Ra ra raspici, samo dobro opici...
 
-Metoda $k-nn$ radi na principu promatranja $k$ najbližih susjeda uzorka koji se klasificia.
-Primjeri su točke u $n$-dimenzionalnom prostoru $R^{n}$, a za račun udaljenosti koristi se
+Metoda $k-nn$ radi na principu promatranja $k$ najbližih susjeda uzorka koji se klasificira.
+Primjeri za učenje su točke u $n$-dimenzionalnom prostoru $R^{n}$, a za račun udaljenosti koristi se
 euklidska metrika. Moguće je korištenje i drugih metrika, ovisno o domeni problema.
-
 
 Primjer $x_k$ opisan je vektorom značajki:
 
@@ -400,6 +400,14 @@ Euklidska udaljenost dva vektora $x_i$ i $x_j$ je:
 d(x_i, y_i) = \sqrt{\sum_{i=1}^n |a_r(x_i) - a_r(x_j)|^2}
 \end{equation}
 
+Valja primjetiti da za $k-nn$ metodu nije potrebno izračunavati punu euklidsku udaljenost. Kako je operacija kvadratnog korijena
+jedna od računalno skupljih operacija zgodno je iskoristiti sljedeću relaciju:
+
+\begin{equation}
+a \leq b \Rightarrow a^2 \leq b^2 \quad \forall a,b \geq 0
+\end{equation}
+
+Vidimo da izračun kvadratnog korijena ne utječe na relativni odnos parova, što je jedina bitna informacija za $k-nn$ metodu.
 
 U algoritmu klasifikacije, primjeru $x_q$ pridjeljuje se klasifikacija koju ima najviše njegovih $k$ najbližih
 susjeda, prema formuli:
@@ -423,6 +431,9 @@ u blizini uzorka $x_q$ slična klasifikaciji primjera u blizini.
 Korištenje Gaborovog filtra ima dobru podlogu u biološkim osnovama vida
 sisavaca te se očekuje da će se njegovom upotrebom, korištenjem različitih klasifikatora i
 automatiziranom optimizacijom parametara postići uspjeh u raspoznavanju lica različitih osoba.
+
+%TODO:
+% rasprava rezultata
 
 \bibliography{literatura}
 \bibliographystyle{plainnat}
