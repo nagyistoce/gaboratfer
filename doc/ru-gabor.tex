@@ -324,9 +324,13 @@ vektora, a i prilikom koraka klasifikacije.
 
 Prikaz izvorne slike vektorom realnih brojeva omogućava jednostavno korištenje
 klasifikatora koji traže decizijske funkcije, tj.~granice u vektorskom
-prostoru.
-U radu je za klasifikaciju korišten stroj s potpornim vektorima \engl{Support
-vector machine}. Izvorno, SVM traži optimalnu linearnu granicu, odnosno
+prostoru. U radu je za klasifikaciju korišten stroj s potpornim vektorima \engl{Support
+vector machine}. Također je omogućeno korištenje klasifikatora koji koriste lijene metode, 
+tj. pohranjuju primjere za učenje i odgađaju generalizaciju do potrebe za klasifikacijom
+novog uzorka. U radu je implementirana metoda $k$-najbližih susjeda \engl{$k$-nearest-neighbor}.
+
+\section{Stroj s potpornim vektorim}
+Izvorno, SVM traži optimalnu linearnu granicu, odnosno
 hiperravninu, kako bi razdvojio različite razrede predstavljene skupom vektora u
 vektorskome prostoru. Iskorištavanjem jezgrenog trika \engl{kernel trick} isti
 klasifikator moguće je primijeniti za traženje proizvoljno nelinearne granice
@@ -371,6 +375,48 @@ lica nad kojima je provedeno testiranje. Nakon što su pronađeni parametri mode
 se uči na potpunom skupu za učenje. Parametri SVM klasifikatora korišteni u ovom
 radu su $C = 2^{12}$ i $\gamma = 2^{-11}$.
 
+\section{Metoda $k-nn$}
+
+%TODO: 
+% Popravi TEX gdje nije ok!
+% Dodaj reference na literaturu, ja ovo pisem napamet i po slajdovima struce
+% Obuci carape, vani je hladno
+
+Metoda $k-nn$ radi na principu promatranja $k$ najbližih susjeda uzorka koji se klasificia.
+Primjeri su točke u $n$-dimenzionalnom prostoru $R^{n}$, a za račun udaljenosti koristi se
+euklidska metrika. Moguće je korištenje i drugih metrika, ovisno o domeni problema.
+
+
+Primjer $x_k$ opisan je vektorom značajki:
+
+\begin{equation}
+x_k = [a_1(x), a_2(x), ..., a_n(x)]
+\end{equation}
+
+
+Euklidska udaljenost dva vektora $x_i$ i $x_j$ je:
+
+\begin{equation}
+d(x_i, y_i) = \sqrt{\sum_{i=1}^n |a_r(x_i) - a_r(x_j)|^2}
+\end{equation}
+
+
+U algoritmu klasifikacije, primjeru $x_q$ pridjeljuje se klasifikacija koju ima najviše njegovih $k$ najbližih
+susjeda, prema formuli:
+
+\begin{equation}
+f(x_q)=\arg\max_v \sum_{i=1}^k \delta(v,f(x_i))
+\end{equation}
+
+gdje je $\delta$ kroneckerov simbol (vrijednost je 1 ako su oba argumenta jednaka).
+
+
+Lijene metode poput metode $k-nn$ konstruiraju različitu aproksimaciju ciljne funkcije za svaki različiti novi uzorak koji
+traba biti klasificiran. Umjesto procjene ciljne funkcije jednom za cijeli prostor,
+procjenjuje se ciljna funkcija samo lokalno, u okolini novog uzorka. Ovo je pogodno u slučaju
+kompleksnih ciljnih funkcija. Nedostatak je visoka cijena klasificiranja svakog novog primjera. Razmatraju se svi atributi
+iako samo neki mogu imati utjecaj na ciljnu funkciju. Induktivna pristranost $k-nn$ algoritma je pretpostavka da je klasifikacija
+u blizini uzorka $x_q$ slična klasifikaciji primjera u blizini.
 
 \chapter{Zaključak}
 
