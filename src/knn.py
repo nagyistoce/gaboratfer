@@ -10,15 +10,13 @@ class GaborkNNclassifier(Classifier):
 	name = "kNN sa gaborom"
 	k = 3
 	currentWorst = -1
-	leftBounds = []
-	rightBounds = []
 
 	def distance(self, a, b):
 		dist = 0
 		ac = a.load()
 		bc = b.load()
 		for i in xrange(0, a.size[0]):
-			for j in xrange(self.leftBounds[i], self.rightBounds[i] + 1):
+			for j in xrange(0, a.size[1]):
 				dist = dist + math.fabs(ac[i, j] - bc[i, j])
 				if self.currentWorst != -1 and dist > self.currentWorst:
 					return dist
@@ -31,17 +29,6 @@ class GaborkNNclassifier(Classifier):
 			faca a vrijednosti liste Image objekata u kojima su slikice """
 		tmp = traindata.values()[0][0]
 		tmpc = tmp.load()
-		for i in xrange(0, tmp.size[0]):
-			self.leftBounds.append(0)
-			self.rightBounds.append(0)
-			for j in xrange(0, tmp.size[1]):
-				if tmpc[i, j] != 0:
-					break
-				self.leftBounds[i] = j
-			for j in xrange(tmp.size[1] - 1, 0, -1):
-				if tmpc[i, j] != 0:
-					break
-				self.rightBounds[i] = j
 		self.data = {}
 		count = 0
 		for x in traindata:		
