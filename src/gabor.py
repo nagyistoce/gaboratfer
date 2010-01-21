@@ -67,8 +67,6 @@ def gaborFilterImage(height, width, minx, miny, maxx, maxy, Lambda, theta, psi, 
 def degToRad(deg):
 	return 2 * math.pi * deg / 360.0
 
-from scipy.stsci import convolve
-
 def applyScipyConv(filter, image):
 	r2 = image.size[0]
 	c2 = image.size[1]

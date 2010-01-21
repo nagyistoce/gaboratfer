@@ -106,20 +106,20 @@ lambdaSet = [2.5, 4, 5.6568, 8, 11.3137, 16]
 orientationNum = 8
 gamma = 0.5
 bandwidth = math.pi
-filterSet1 = []
-filterSet2 = []
-filtersNum = 0
+_filterSet1 = []
+_filterSet2 = []
 for Lambda in lambdaSet:
 	for n in xrange(0, orientationNum):
-		filterSet1.append(gabor.gaborFilterSimplified(Lambda, math.pi/8 * n, 0, bandwidth, gamma))
-		filterSet2.append(gabor.gaborFilterSimplified(Lambda, math.pi/8 * n, math.pi/2, bandwidth, gamma))
-		filtersNum += 1
-#downsampling faktor
-p =  8
+		_filterSet1.append(gabor.gaborFilterSimplified(Lambda, math.pi/8 * n, 0, bandwidth, gamma))
+		_filterSet2.append(gabor.gaborFilterSimplified(Lambda, math.pi/8 * n, math.pi/2, bandwidth, gamma))
 
-def filterImageMultiParam(image):
+# p - downsampling faktor
+def filterImageMultiParam(image, p=8, filterSet1=None, filterSet2=None):
 	result = numpy.array([])
-
+	if filterSet1 is None: filterSet1 = _filterSet1
+	if filterSet2 is None: filterSet2 = _filterSet2
+	
+	filtersNum = len(filterSet1)
 	for n in xrange(0, filtersNum):
 		f1 = filterSet1[n]
 		f2 = filterSet2[n]
