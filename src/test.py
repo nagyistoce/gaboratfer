@@ -58,7 +58,7 @@ def main(argv):
 
 	trainData = {}
 	for x in OMEGA:
-		trainData[x] = OMEGA[x][:-1]
+		trainData[x] = OMEGA[x][:-3]
 		
 	collector.Collector.trainAll(trainData)
 
@@ -68,6 +68,8 @@ def main(argv):
 	for x in OMEGA:
 		testData[x] = []
 		testData[x].append(OMEGA[x][-1])
+		testData[x].append(OMEGA[x][-2])
+		testData[x].append(OMEGA[x][-3])
 
 	collector.Collector.testAll(testData)
 
