@@ -43,14 +43,14 @@ raspoznavanje objekata vanjskog svijeta
 \citep{bhuiyan2007onfacerecognition}\nocite{daugman1985uncertainty}.
 
 % Ovo je opis o čemu koji odjeljak govori. Ovo se MORA nalaziti na kraju uvoda.
-U 2.~odjeljku ukratko je opisana osnovna ideja korištenja Gaborovog
-filtra u izlučivanju značajki za klasifikaciju lica, u 3.~odjeljku prikazan je
+U 2.~poglavlju ukratko je opisana osnovna ideja korištenja Gaborovog
+filtra u izlučivanju značajki za klasifikaciju lica, u 3.~poglavlju prikazan je
 matematički model dvodimenzionalnog Gaborovog filtra te su navedena objašnjenja
-i utjecaj pojedinih parametara Gaborovog filtra. U 4.~odjeljku opisan je
+i utjecaj pojedinih parametara Gaborovog filtra. U 4.~poglavlju opisan je
 postupak izlučivanja značajki Gaborovim filtrom te su navedeni korišteni
-parametri. U 5. odjeljku opisana je metoda kojom su lica klasificirana na temelju
-izlučenih značajki, dok je provedena evaluacija opisana u poglavlju ?. Konačno, na
-kraju je dan zaključak.
+parametri. U 5.~poglavlju opisana je metoda kojom su lica klasificirana na temelju
+izlučenih značajki, dok je provedena evaluacija opisana u poglavlju
+6. Konačno, na kraju je dan zaključak.
 
 \chapter{Teorijska razrada}
 Slike lica osoba koje računalni sustav treba raspoznati podložne su različitom
@@ -228,7 +228,8 @@ pojasa kojeg će Gaborov filtar propustiti, stoga je poželjno da omjer standard
 devijacije i radijalne frekvencije Gaborove funkcije bude konstantan. Gaborova
 funkcija s većom frekvencijom će tako imati manju standardnu devijaciju te time
 pokrivati manju površinu u prostornoj domeni od Gaborove funkcije s manjom
-frekvencijom.
+frekvencijom.
+
 
 Širina Gaborovog filtra $b$ povezana je s omjerom
 $\frac{\sigma}{\lambda}$, ($\lambda = \frac{1}{r_0}$) i definirana kao
@@ -311,7 +312,9 @@ rezultata konvolucije izvorne slike s $48$ različitih Gaborovih filtara. Treba
 primijetiti da je postupak reduciranja dimenzionalnosti nužan jer bi bez tog koraka
 dobiveni vektor značajki bio dimenzija $64\times64\times48 = 196608$ što u
 pogledu brzine izvođenja predstavlja ozbiljan problem prilikom računanja samog
-vektora, a i prilikom koraka klasifikacije.
+vektora, a i prilikom koraka klasifikacije.
+
+
 
 
 \chapter{Klasifikacija}
@@ -369,7 +372,7 @@ lica nad kojima je provedeno testiranje. Nakon što su pronađeni parametri mode
 se uči na potpunom skupu za učenje. Parametri SVM klasifikatora korišteni u ovom
 radu su $C = 2^{12}$ i $\gamma = 2^{-11}$.
 
-\section{Metoda $k--nn$}
+\section{Metoda $k-nn$}
 
 %TODO: 
 % Popravi TEX gdje nije ok!
@@ -377,10 +380,15 @@ radu su $C = 2^{12}$ i $\gamma = 2^{-11}$.
 % Obuci carape, vani je hladno
 % Ra ra raspici, samo dobro opici...
 
-Metoda $k--nn$ je jednostavna neparametarska metoda koja radi na principu
+Metoda $k-nn$ je jednostavna neparametarska metoda koja radi na principu
 promatranja klasifikacije $k$ najbližih susjeda nepoznatog uzorka koji se
 klasificira. Primjere za učenje moguće je predstaviti točkama u
-$n$-dimenzionalnom prostoru $R^{n}$. Nepoznati uzorak se klasificira tako dase u navedenom $n$-dimenzionalnom prostoru pronađe njemu $k$ najbližih susjedaiz skupa za učenje te se uzorku dodijeli većinska klasifikacija od $k$ susjeda.Za pronalazak najbližih susjeda koristi se euklidska metrika. Moguće jekorištenje i drugih metrika, ovisno o domeni problema.
+$n$-dimenzionalnom prostoru $R^{n}$. Nepoznati uzorak se klasificira tako da
+se u navedenom $n$-dimenzionalnom prostoru pronađe njemu $k$ najbližih susjeda
+iz skupa za učenje te se uzorku dodijeli većinska klasifikacija od $k$ susjeda.
+Za pronalazak najbližih susjeda koristi se euklidska metrika. Moguće je
+korištenje i drugih metrika, ovisno o domeni problema.
+
 Primjer $x$ opisan je vektorom značajki:
 
 \begin{equation}
@@ -424,7 +432,46 @@ $k$ nije potrebno podešavati nikakve dodatne parametre. Nedostatak je visoka
 cijena klasificiranja svakog novog primjera jer se mora računati njegova
 udaljenost od svih uzoraka u skupu za učenje.
 
-Vrijednost parametra $k$ odabrana u ovom radu je $k = 3$ zbog činjenice da je uskupu za učenje svaka osoba predstavljena s $5$ različitih slika lica pakorištenje veće vrijednosti $k$ ne bi pridonjelo uspješnijoj klasifikaciji.
+Vrijednost parametra $k$ odabrana u ovom radu je $k = 3$ zbog činjenice da je u
+skupu za učenje svaka osoba predstavljena s $5$ različitih slika lica pa
+korištenje veće vrijednosti $k$ ne bi pridonjelo uspješnijoj klasifikaciji.
+
+\chapter{Evaluacija}
+\label{ch:eval}
+Za evaluaciju korištena je baza slika lica veličine $64 \times 64$ piksela. Nad
+slikama je provedena geometrijska i svjetlosna normalizacija. 
+U bazi se nalazi ukupno 295 razreda (osoba) te 2360 uzoraka (slika) sa
+jednolikom razdiobom (8 slika po razredu). Skup je podijeljen \emph{holdout} metodom
+uzimajući 5 slika za učenje i 3 slike za testiranje.
+
+U tablici \ref{tbl:eval} prikazana je uspješnost klasifikacije u ovisnosti o izboru
+parametara Gaborovog filtera te klasifikatora\footnote{Za $k$--nn je dan samo
+jedan očite manje uspješnosti i izrazito dužeg vremena izvršavanja.}. U tablici
+se nalaze vrijednosti omjera dimenzija ($\gamma$) i širine filtra ($b$).
+Orijentacija je fiksirana na $\theta = \{ \frac{i \pi}{8} | i =
+0 \ldots 7\}$, a faze su $0$ i $\frac{\pi}{2}$. Za valnu duljinu su korištene
+vrijednosti $\lambda = \{2.5, 4, 5.6568, 8, 11.3137, 16\}$
+\citep{shen2007gabor}.
+
+\begin{table}[ht]
+\caption{Rezultati evaluacije}
+\centering
+\begin{tabular}{c c c c c c c}
+\hline\hline
+Klasifikator & $\gamma$ & $b$ & Ispravnih & Neispravnih &
+Točnost & Trajanje (min) \\ [0.5ex]
+\hline
+$k$--nn & 0.5 & $\pi$ & 776 & 109 & 87.6\% & >120 \\
+SVM & 0.5 & $\pi$ & 812  & 73 & 91.7\% & 23 \\
+SVM & 0.7 & 1.5 & 823  & 62 & 92.9\% & 32\\
+SVM & 0.5 & 1.5 & 823  & 62 & 92.9\% & 23\\
+SVM & 1 & $\pi$ & 811  & 74 & 91.6\% & 20\\
+SVM & 0.7 & $\pi$ & 812  & 73 & 91.7\% & 20\\
+SVM & 1 & 1.5 & 822  & 63 & 92.8\% & 36\\ [1ex]
+\hline
+\end{tabular}
+\label{tbl:eval}
+\end{table}
 
 \chapter{Zaključak}
 
@@ -438,9 +485,6 @@ moguće da se korištenjem drugih parametara i drugačijim predstavljanjem
 izlučenih značajki mogu postići još bolji rezultati. Upravo u navedenoj
 činjenici vidi se prilika za daljnji nastavak istraživanja primjene Gaborovog
 filtra u izradi sustava za računalno raspoznavanje lica.
-
-%TODO:
-% rasprava rezultata
 
 \bibliography{literatura}
 \bibliographystyle{plainnat}
