@@ -13,13 +13,10 @@ class GaborkNNclassifier(Classifier):
 
 	def distance(self, a, b):
 		dist = 0
-		ac = a.load()
-		bc = b.load()
-		for i in xrange(0, a.size[0]):
-			for j in xrange(0, a.size[1]):
-				dist = dist + math.fabs(ac[i, j] - bc[i, j])
-				if self.currentWorst != -1 and dist > self.currentWorst:
-					return dist
+		for i in xrange(0, a.size):
+			dist = dist + math.fabs(a[i] - b[i])*math.fabs(a[i] - b[i])
+			if self.currentWorst != -1 and dist > self.currentWorst:
+				return dist
 		return dist
 				
 		
@@ -28,7 +25,6 @@ class GaborkNNclassifier(Classifier):
 		""" 	Traindata sadrzi dictionary u kojem su kljucevi ID
 			faca a vrijednosti liste Image objekata u kojima su slikice """
 		tmp = traindata.values()[0][0]
-		tmpc = tmp.load()
 		self.data = {}
 		count = 0
 		for x in traindata:		

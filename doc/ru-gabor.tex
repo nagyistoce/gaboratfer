@@ -38,7 +38,8 @@ Kao osnovna motivacija za korištenje Gaborovog filtra za izvlačenje značajki 
 veza sa biološkim osobinama vida kod sisavaca čiji su receptori osjetljivi na
 karakteristične prostorne frekvencije te njihovu orijentaciju. Gaborov filtar
 može iskoristit vizualne osobine kao što su lokalizacija prostora i selekcija
-orijentacije pojedine prostorne frekvencije
+orijentacije pojedine prostorne frekvencije te tako omogućiti lakše
+raspoznavanje objekata vanjskog svijeta
 \citep{bhuiyan2007onfacerecognition}\nocite{daugman1985uncertainty}.
 
 % Ovo je opis o čemu koji odjeljak govori. Ovo se MORA nalaziti na kraju uvoda.
@@ -62,19 +63,20 @@ prostornom frekvencijom \engl{Spatial frequency}, prostornom lokalizacijom
 \engl{Spatial locality} i orijentacijom koje će predstavljati diskriminatorne
 značajke za raspoznavanje lica različitih osoba. Promatranje slike u
 frekvencijskoj domeni \engl{Frequency domain}, gdje je cijela slika predstavljena
-skupom različitih prostornih frekvencija, omogućuje lakšu manipulaciju s
-različitim informacijama sa slike. Uklanjanjem nekog manjeg skupa frekvencija i
+skupom različitih prostornih frekvencija, omogućuje lakšu manipulaciju različitim informacijama sa slike. Uklanjanjem nekog manjeg skupa frekvencija i
 prikazom dobivene slike moguće je ukloniti različiti šum na slici. Problem kod
-prikaza u frekvencijskoj domeni je globalni karakter prikaza, tj. za
+prikaza u frekvencijskoj domeni je globalni karakter prikaza, tj.~za
 pojedinu frekvenciju nije moguće odrediti gdje se prostorno na slici ona pojavila.
 Moguće je samo utvrditi da ona na slici postoji. Gaborov filtar rješava
-upravo navedeni problem prostorne lokalizacije. Pomoću njega možemo efikasno
-odrediti je li se u pojedinom dijelu slike pojavila određena frekvencija, koja
+upravo navedeni problem prostorne lokalizacije. Pomoću njega moguće je efikasno
+odrediti da li se u pojedinom dijelu slike pojavila određena frekvencija, koja
 je amplituda i faza te frekvencije te koji je smjer njenog rasprostiranja.
 
 Nakon izlučivanja skupa značajki pomoću Gaborovog filtra lice sa slike raspoznaje
-se pomoću stroja s potpornim vektorima \engl{Support vector machine,
-SVM} s radijalnom baznom funkcijom.
+se klasifikatorom. Izbor klasifikatora koji se pri tome može koristiti je
+proizvoljan, a klasifikator koji je korišten u ovom radu je stroj s
+potpornim vektorima \engl{Support vector machine, SVM} uz nelinearno
+preslikavanje radijalnom baznom funkcijom.
 
 \chapter{Gaborov filtar}
 
@@ -140,7 +142,7 @@ elementima \engl{Pixel} i realan je broj veći ili jednak $2$. Prema
 Nyquist--Shannonovom teoremu uzorkovanja signal koji sadrži frekvencije veće od
 polovine frekvencije uzorkovanja ne može biti rekonstruiran u potpunosti, stoga
 je gornja granica frekvencije koju $2D$ slika može sadržavati jednaka $F_{max} =
-0.5$ ciklusa/slikovnom elementu, a to je upravo znači da će valna duljina
+0.5$ ciklusa/slikovnom elementu, a to upravo znači da će minimalna valna duljina
 biti veća ili jednaka od $2$ slikovna elementa.
 
 Slike realnih dijelova Gaborovih filtara uz parametre $\theta = 0,\: b
@@ -172,11 +174,11 @@ Slike realnih dijelova Gaborovih filtara uz parametre $\theta = 0,\: b
 \section{Orijentacija ($\theta$)}
 Orijentacija određuje smjer rasprostiranja moduliranog sinusnog signala odnosno
 kut normale paralelnih pruga Gaborovog filtra. Za potpuno
-specificiranje prostorne frekvencije nije dovoljna informacija o valnoj
-duljini, već je potrebno odrediti i smjer u kojem se ta frekvencija
-rasprostire. Određena je kutom od $0$ do $360$ stupnjeva odnosno $0$ do $2\pi$
-radijana. Prikaze realnog dijela Gaborovog filtra sa orijentacijama od
-45\textdegree, 80\textdegree\,i 0\textdegree\, možete vidjeti na slikama
+specificiranje prostorne frekvencije, ukoliko se ona prikazuje u polarnom
+obliku odnosno kao radijalna frekvencija, nije dovoljna samo informacija o
+valnoj duljini, već je potrebno odrediti i smjer u kojem se ta frekvencija
+rasprostire. Orijentacija je određena kutom od $0$ do $360$ stupnjeva odnosno
+$0$ do $2\pi$ radijana. Prikaze realnog dijela Gaborovog filtra sa orijentacijama od 45\textdegree, 80\textdegree\,i 0\textdegree\, možete vidjeti na slikama
 \ref{fig:filter-orientation-45}, \ref{fig:filter-orientation-80} i \ref{fig:filter-lambda-10}.
 
 
@@ -198,7 +200,7 @@ radijana. Prikaze realnog dijela Gaborovog filtra sa orijentacijama od
 
 \section{Omjer dimenzija ($\gamma $)}
 Parametar koji se preciznije naziva prostorni omjer dimenzija, određuje
-eliptičnost Gaborove funkcije tj. odnos između devijacija Gaussove funkcije u
+eliptičnost Gaborove funkcije tj.~odnos između devijacija Gaussove funkcije u
 $x$ i $y$ smjeru. Za $\gamma = 1$ eliptičnost se svodi na krug, dok je za
 $\gamma < 1$ funkcija je izdužena u smjeru paralelnom s paralelnim prugama
 funkcije. Primjer filtra sa različitim omjerima dimenzija se može vidjeti na
@@ -221,14 +223,14 @@ slici \ref{fig:filter-ratios}.
 
 \section{Standardna devijacija ($\sigma$)}
 Standardna devijacija Gaussove funkcije utječe na dio prostora u kojem će se
-računati odziv Gaborovog filtra, a jednako tako utječe i na širinu
-frekvencijskog pojasa koji će gaborov filtar propustiti, stoga je poželjno da
-omjer standardne devijacije i radijalne frekvencije Gaborove funkcije bude
-konstantan. Gaborova funkcija s većom frekvencijom će tako imati
-manju standardnu devijaciju te time pokrivati manju površinu u prostornoj domeni
-od Gaborove funkcije s manjom frekvencijom. 
+računati odziv Gaborovog filtra, a jednako tako utječe i na širinu frekvencijskog
+pojasa kojeg će Gaborov filtar propustiti, stoga je poželjno da omjer standardne
+devijacije i radijalne frekvencije Gaborove funkcije bude konstantan. Gaborova
+funkcija s većom frekvencijom će tako imati manju standardnu devijaciju te time
+pokrivati manju površinu u prostornoj domeni od Gaborove funkcije s manjom
+frekvencijom.
 
-Širina filtra $b$ Gaborovog filtra povezana je s omjerom
+Širina Gaborovog filtra $b$ povezana je s omjerom
 $\frac{\sigma}{\lambda}$, ($\lambda = \frac{1}{r_0}$) i definirana kao
 \begin{eqnarray}
 b = \log_2{\left ( \frac{\frac{\sigma}{\lambda}\pi + \sqrt{\frac{\ln2}{2}}}
@@ -265,57 +267,61 @@ filtra od $b = 1$.
 
 \chapter{Izlučivanje značajki pomoću Gaborovog filtra}
 
-Kako bi izlučili značajke sliku konvoluiramo sa skupom Gaborovih filtara. Ako
-je s $I(x, y)$ definirana slika sivih razina, odziv pojedinog Gaborov filtra i
+Izlučivanje značajki sa slika lica provodi se konvolucijom slike sa skupom
+Gaborovih filtara. Ako je s $I(x, y)$ definirana slika sivih razina, odziv pojedinog Gaborov filtra i
 slike računa se konvolucijom:
 \begin{equation}
 O(x,y,\lambda, \theta) = I(x,y) * g(x,y,\lambda, \theta),
 \label{konvolucija-filter-slika}
 \end{equation}
 gdje je $g(x,y,\lambda, \theta)$ Gaborov filtar definiran parametrima $\lambda$
-i $\theta$. Parametri koji su u ovom radu pri tome korišteni su $\lambda =
+i $\theta$. Rezultantna slika koja nastaje je kompleksna slika s realnim i imaginarnim
+dijelom. Parametri koji su u ovom radu pri tome korišteni su $\lambda =
 \{2.5, 4, 5.6568, 8, 11.3137, 16\}$ i $\theta = \{ \frac{i \pi}{8} | i =
 0 \ldots 7\}$ uz ostale parametre filtra $\gamma = 1$ i $b = \pi$ za koje se
 pokazalo da su uspješni u izlučivanju značajki prilikom klasifikacije lica
 \citep{shen2007gabor}.
 
-Rezultantna slika koja nastaje je kompleksna slika s realnim i imaginarnim
-dijelom. Prije konvolucije Gaborov filter potrebno je normalizirati, odnosno
-oduzeti mu istosmjernu komponentu \engl{DC component}, kako odziv nebi bio ovisan
-o varijacijama osvjetljenja izvorne slike, tj. o istosmjernoj komponenti izvorne
-slike. Nakon što se slika konvoluira s cijelim skupom Gaborovih filtera dobiveni
-su odzivi $O(x,y,\lambda_i, \theta_j)$ za sve parametre $\theta$ i $\lambda$. Za
-svaki element ($x,y$) slike kompleksnog odziva $O(x,y,\lambda_i, \theta_j)$
-računa se magnituda čime je dobivena nova slika realnih magnituda. Kako su
-izvorne slike korištene u raspoznavanju dimenzija $64\times64$ sliku magnituda potom
-svodimo na sliku manjih dimenzija, $8\times8$, postupkom rezolucijske piramide
-tako da je slikovni element nove slike dobiven kao srednja vrijednost $8\times8$
-susjednih slikovnih elemenata. Ako je s $O^{r}(x,y,\lambda_i, \theta_j)$
-označena dobivena slika magnituda nakon postupka reduciranja dimenzije, svaka
-slika se tada pretvara u vektor $V(x,y,\lambda_i, \theta_j)$ tako da se
-slijepe \engl{Concatenate} redovi slike $O^{r}(x,y,\lambda_i, \theta_j)$.
-Dobiveni skup vektora se potom slijepi u rezultantni vektor $X$:
+Prije konvolucije Gaborov filter potrebno je normalizirati, odnosno Gaborovoj
+funkciji oduzeti istosmjernu komponentu \engl{DC component}, kako odziv nebi bio
+ovisan o varijacijama osvjetljenja izvorne slike, tj.~o istosmjernoj komponenti
+izvorne slike. Nakon što se slika konvoluira s cijelim skupom Gaborovih filtera
+dobiveni su odzivi $O(x,y,\lambda_i, \theta_j)$ za sve parametre $\theta$ i
+$\lambda$. Za svaki element ($x,y$) slike kompleksnog odziva $O(x,y,\lambda_i,
+\theta_j)$ računa se magnituda čime je dobivena nova slika realnih vrijednosti
+magnitude pri čemu su vrijednosti magnitude unutar slike skalirane na interval
+$[0, 1]$. Kako su izvorne slike, koje su korištene u raspoznavanju, dimenzija
+$64\times64$ sliku magnituda potom svodimo na sliku manjih dimenzija, $8\times8$,
+postupkom rezolucijske piramide: Slikovni element nove slike dobiven je
+kao srednja vrijednost $8\times8$ susjednih slikovnih elemenata. Ako je s
+$O^{r}(x,y,\lambda_i, \theta_j)$ označena dobivena slika magnituda nakon postupka
+reduciranja dimenzije, svaka slika se tada pretvara u vektor $V(x,y,\lambda_i,
+\theta_j)$ tako da se slijepe \engl{Concatenate} redovi slike
+$O^{r}(x,y,\lambda_i, \theta_j)$. Dobiveni skup vektora se potom slijepi u
+rezultantni vektor $X$:
 \begin{equation}
  X = \left ( V(x,y,\lambda_1, \theta_1)^T \ldots
 V(x,y,\lambda_i, \theta_j)^T \ldots V(x,y,\lambda_m, \theta_n)^T \right )
 \end{equation}
+gdje je s $^T$ označena operacija transponiranja.
+
 Vektor $X$ je vektor značajki koje se koriste za raspoznavanja lica i on
 je veličine $8\times8\times48 = 3072$  jer je nastao povezivanjem reduciranih
 rezultata konvolucije izvorne slike s $48$ različitih Gaborovih filtara. Treba
 primijetiti da je postupak reduciranja dimenzionalnosti nužan jer bi bez tog koraka
 dobiveni vektor značajki bio dimenzija $64\times64\times48 = 196608$ što u
 pogledu brzine izvođenja predstavlja ozbiljan problem prilikom računanja samog
-vektora, a i prilikom koraka klasifikacije.
+vektora, a i prilikom koraka klasifikacije.
 
 
 \chapter{Klasifikacija}
 
 Prikaz izvorne slike vektorom realnih brojeva omogućava jednostavno korištenje
-klasifikatora koji traže decizijske funkcije, tj.~granice u vektorskom
-prostoru. U radu je za klasifikaciju korišten stroj s potpornim vektorima \engl{Support
-vector machine}. Također je omogućeno korištenje klasifikatora koji koriste lijene metode, 
-tj. pohranjuju primjere za učenje i odgađaju generalizaciju do potrebe za klasifikacijom
-novog uzorka. U radu je implementirana metoda $k$-najbližih susjeda \engl{$k$-nearest-neighbor}.
+klasifikatora koji traže decizijske funkcije, tj.~granice u vektorskom prostoru.
+Prilikom klasifikacije su tako isprobana dva pristupa: klasifikacija strojem s
+potpornim vektorima \engl{Support vector machine} i klasifikacija metodom
+$k$-najbližih susjeda \engl{$k$-nearest-neighbor algorithm}.
+
 
 \section{Stroj s potpornim vektorim}
 Izvorno, SVM traži optimalnu linearnu granicu, odnosno
@@ -363,7 +369,7 @@ lica nad kojima je provedeno testiranje. Nakon što su pronađeni parametri mode
 se uči na potpunom skupu za učenje. Parametri SVM klasifikatora korišteni u ovom
 radu su $C = 2^{12}$ i $\gamma = 2^{-11}$.
 
-\section{Metoda $k-nn$}
+\section{Metoda $k--nn$}
 
 %TODO: 
 % Popravi TEX gdje nije ok!
@@ -371,25 +377,25 @@ radu su $C = 2^{12}$ i $\gamma = 2^{-11}$.
 % Obuci carape, vani je hladno
 % Ra ra raspici, samo dobro opici...
 
-Metoda $k-nn$ radi na principu promatranja $k$ najbližih susjeda uzorka koji
-se klasificira. Primjeri za učenje su točke u $n$-dimenzionalnom prostoru $R^{n}$, a za račun udaljenosti koristi se
-euklidska metrika. Moguće je korištenje i drugih metrika, ovisno o domeni problema.
-
-Primjer $x_k$ opisan je vektorom značajki:
+Metoda $k--nn$ je jednostavna neparametarska metoda koja radi na principu
+promatranja klasifikacije $k$ najbližih susjeda nepoznatog uzorka koji se
+klasificira. Primjere za učenje moguće je predstaviti točkama u
+$n$-dimenzionalnom prostoru $R^{n}$. Nepoznati uzorak se klasificira tako dase u navedenom $n$-dimenzionalnom prostoru pronađe njemu $k$ najbližih susjedaiz skupa za učenje te se uzorku dodijeli većinska klasifikacija od $k$ susjeda.Za pronalazak najbližih susjeda koristi se euklidska metrika. Moguće jekorištenje i drugih metrika, ovisno o domeni problema.
+Primjer $x$ opisan je vektorom značajki:
 
 \begin{equation}
-x_k = [a_1(x), a_2(x), ..., a_n(x)]
+x = [x_1, x_2, ..., x_n]
 \end{equation}
 
-
-Euklidska udaljenost dva vektora $x_i$ i $x_j$ je:
+Euklidska udaljenost dva vektora $x$ i $y$ je:
 
 \begin{equation}
-d(x_i, y_i) = \sqrt{\sum_{i=1}^n |a_r(x_i) - a_r(x_j)|^2}
+d(x, y) = \sqrt{\sum_{i=1}^n |x_i - y_i|^2}
 \end{equation}
 
 Valja primjetiti da za $k-nn$ metodu nije potrebno izračunavati punu euklidsku
-udaljenost. Kako je operacija kvadratnog korijena jedna od računalno skupljih operacija zgodno je iskoristiti sljedeću relaciju:
+udaljenost. Kako je operacija kvadratnog korijena jedna od računalno skupljih
+operacija zgodno je iskoristiti sljedeću relaciju:
 
 \begin{equation}
 a \leq b \Rightarrow a^2 \leq b^2 \quad \forall a,b \geq 0
@@ -408,18 +414,30 @@ f(x_q)=\arg\max_{v \epsilon V} \sum_{i=1}^k \delta(v,f(x_i))
 gdje je $\delta$ kroneckerov simbol (vrijednost je 1 ako su oba argumenta jednaka).
 
 
-Lijene metode poput metode $k-nn$ konstruiraju različitu aproksimaciju ciljne
-funkcije za svaki različiti novi uzorak koji traba biti klasificiran. Umjesto procjene ciljne funkcije jednom za cijeli prostor,
-procjenjuje se ciljna funkcija samo lokalno, u okolini novog uzorka. Ovo je pogodno u slučaju
-kompleksnih ciljnih funkcija. Nedostatak je visoka cijena klasificiranja svakog novog primjera. Razmatraju se svi atributi
-iako samo neki mogu imati utjecaj na ciljnu funkciju. Induktivna pristranost
-$k-nn$ algoritma je pretpostavka da je klasifikacija u blizini uzorka $x_q$ slična klasifikaciji primjera u blizini.
+Lijene metode poput $k-nn$ klasifikatora konstruiraju različitu aproksimaciju
+ciljne funkcije za svaki različiti novi uzorak koji treba biti klasificiran. Umjesto
+procjene ciljne funkcije jednom za cijeli prostor, procjenjuje se ciljna funkcija
+samo lokalno, u okolini novog uzorka što je pogodno u slučaju kompleksnih ciljnih
+funkcija. Velika prednost u korištenju metode $k-nn$ je njezina jednostavnost
+zbog toga što se sam postupak učenja svodi na pamćenje uzoraka i osim vrijednosti
+$k$ nije potrebno podešavati nikakve dodatne parametre. Nedostatak je visoka
+cijena klasificiranja svakog novog primjera jer se mora računati njegova
+udaljenost od svih uzoraka u skupu za učenje.
+
+Vrijednost parametra $k$ odabrana u ovom radu je $k = 3$ zbog činjenice da je uskupu za učenje svaka osoba predstavljena s $5$ različitih slika lica pakorištenje veće vrijednosti $k$ ne bi pridonjelo uspješnijoj klasifikaciji.
 
 \chapter{Zaključak}
 
 Korištenje Gaborovog filtra ima dobru podlogu u biološkim osnovama vida
-sisavaca te se očekuje da će se njegovom upotrebom, korištenjem različitih klasifikatora i
-automatiziranom optimizacijom parametara postići uspjeh u raspoznavanju lica različitih osoba.
+sisavaca te se očekivalo da će se njegovom upotrebom u klasifikaciji lica
+postići zadovoljavajući rezultati. Uspješnost raspoznavanja lica od $p\%$
+dobivena u ovom radu potkrjepljuje navedena očekivanja. Iako su rezultati
+odlični, korišteni parametri i oblik izlučenih značajki predstavljaju
+samo jedan od mnogobrojnih mogućih načina korištenja Gaborovog filtra te je
+moguće da se korištenjem drugih parametara i drugačijim predstavljanjem
+izlučenih značajki mogu postići još bolji rezultati. Upravo u navedenoj
+činjenici vidi se prilika za daljnji nastavak istraživanja primjene Gaborovog
+filtra u izradi sustava za računalno raspoznavanje lica.
 
 %TODO:
 % rasprava rezultata
