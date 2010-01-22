@@ -1,0 +1,176 @@
+%%
+%% This is file `todo.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% todo.dtx  (with options: `package')
+%% 
+%% Copyright 2007 Martin Leucker
+%% 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\def\filedate{2007/08/08}
+\def\fileversion{1.1}
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{todo}
+\typeout{Document Style `todo'}
+
+\RequirePackage{ifthen}
+\RequirePackage{amsmath}
+
+\newboolean{todo@list}
+\newboolean{todo@showtodo}
+\newboolean{todo@inline}
+\newboolean{todo@hide}
+\newboolean{todo@nonumbers}
+\setboolean{todo@list}{false} % no list of todo's as last page
+\setboolean{todo@showtodo}{true}
+\setboolean{todo@inline}{false}
+\setboolean{todo@hide}{false}
+\setboolean{todo@nonumbers}{false}
+
+
+\DeclareOption{list}{%
+  \setboolean{todo@list}{true}%
+}%
+
+\DeclareOption{showtodo}{%
+  \setboolean{todo@showtodo}{true}%
+}%
+
+\DeclareOption{dontshowtodo}{%
+  \setboolean{todo@showtodo}{false}%
+}%
+
+\DeclareOption{inline}{%
+  \setboolean{todo@inline}{true}%
+}%
+
+\DeclareOption{hide}{
+  \setboolean{todo@hide}{true}
+}
+
+\DeclareOption{nonumbers}{
+  \setboolean{todo@nonumbers}{true}
+}
+
+\ProcessOptions
+
+
+\let\todoFont\scriptsize % size of todos
+\let\todoFontLarge\normalfont % size of todos
+\def\todoWord{TODO: }    % todoword
+
+
+\newcount\@todos
+\newtoks\@todot
+\let\@todoinput=\input
+\edef\@todofile{\jobname.tex}%
+\def\input#1{\edef\@todofile{#1}\@todoinput{#1}}
+\long\def\TODO#1{%
+  \ifthenelse{\boolean{todo@hide}}{}{% else write todo
+    \global\advance\@todos by 1\relax
+    \@todot={#1}%
+    \global\expandafter\edef\csname @todoitem\the\@todos\endcsname{\the\@todot}%
+    \global\expandafter\edef\csname @todoloc\the\@todos\endcsname{\@todofile:\the\inputlineno}%
+    \ifthenelse{\boolean{todo@nonumbers}}{}{$^{(\the\@todos)}$}%
+                                %set number if requested
+    \ifthenelse{\boolean{todo@showtodo}}{%then write todo text
+      \ifthenelse{\boolean{todo@inline}}{% inline text
+        \parindent0pt%
+        \par{\rule{\columnwidth}{.5mm}}%
+        \par%
+        % \marginpar{\rule[-13.5mm]{1mm}{16mm}}
+        {\todoFontLarge%
+        $^{(\the\@todos)}$\todoWord #1\hfill}%
+        \par%
+        \hspace{-\parindent}{\rule{\columnwidth}{.5mm}}%
+      }{% else text in marginpar
+        \marginpar{\fbox{\begin{minipage}{\marginparwidth}
+              \todoFont%
+              \sloppy\raggedright $^{(\the\@todos)}$\todoWord #1%
+            \end{minipage}}%
+        }%
+      }%
+    }{% no text to show
+      \marginpar{$^{(\the\@todos)}$}}
+  }%
+}%
+
+\newcommand\TODOLong[2][\text{see text}]{
+{\parindent0pt
+\par{\rule{\columnwidth}{.5mm}}
+\par
+\TODO{#1}#2\hfill
+\par
+\hspace{-\parindent}{\rule{\columnwidth}{.5mm}}}}
+
+\def\@dotodoloc#1{%
+  \ifx\@nil#1\let\temp\relax\else
+    \if#1_\_\else#1\fi%
+    \let\temp\@dotodoloc
+  \fi
+  \temp
+  }
+
+\def\@enumtodos{%
+  \ifnum\count@<\@todos
+    \advance\count@ by1\relax
+    \typeout{!!!! \expandafter\csname @todoloc\the\count@\endcsname: \expandafter\csname @todoitem\the\count@\endcsname}%
+    \item \expandafter\expandafter\expandafter\@dotodoloc\csname @todoloc\the\count@\endcsname\@nil: \expandafter\csname @todoitem\the\count@\endcsname
+    \let\temp\@enumtodos
+  \else
+    \let\temp\relax
+  \fi
+  \temp
+  }
+
+\AtEndDocument{
+  \ifthenelse{\boolean{todo@list}}{%
+    \ifnum\the\@todos>0\relax
+    \newpage
+    \typeout{}
+    \typeout{!!!!}
+    \typeout{!!!! \the\@todos\space item(s) to do:}
+    \section*{\the\@todos\space item(s) to do}
+    \count@=0\relax
+    \begin{enumerate}
+      \@enumtodos
+    \end{enumerate}
+    \typeout{!!!!}
+    \typeout{}
+    \fi
+    \let\input=\@todoinput
+  }{%
+    \ifnum\the\@todos>0\relax
+    \typeout{}%
+    \typeout{!!!!}%
+    \typeout{!!!! \the\@todos\space item(s) to do:}%
+    \typeout{!!!!}%
+    \typeout{}%
+    \fi
+    \let\input=\@todoinput
+}%
+}
+
+\newcommand{\FUJ}[1]{\def\todoWord{FUJ: }\TODO{#1}\def\todoWord{TODO: }}
+
+\endinput
+%%
+%% End of file `todo.sty'.
