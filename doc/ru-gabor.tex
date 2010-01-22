@@ -286,7 +286,7 @@ pokazalo da su uspješni u izlučivanju značajki prilikom klasifikacije lica
 Prije konvolucije Gaborov filter potrebno je normalizirati, odnosno Gaborovoj
 funkciji oduzeti istosmjernu komponentu \engl{DC component}, kako odziv nebi bio
 ovisan o varijacijama osvjetljenja izvorne slike, tj.~o istosmjernoj komponenti
-izvorne slike. Nakon što se slika konvoluira s cijelim skupom Gaborovih filtera
+izvorne slike. Nakon što se slika konvoluira s cijelim skupom Gaborovih filtara
 dobiveni su odzivi $O(x,y,\lambda_i, \theta_j)$ za sve parametre $\theta$ i
 $\lambda$. Za svaki element ($x,y$) slike kompleksnog odziva $O(x,y,\lambda_i,
 \theta_j)$ računa se magnituda čime je dobivena nova slika realnih vrijednosti
@@ -401,7 +401,7 @@ Euklidska udaljenost dva vektora $x$ i $y$ je:
 d(x, y) = \sqrt{\sum_{i=1}^n |x_i - y_i|^2}
 \end{equation}
 
-Valja primjetiti da za $k-nn$ metodu nije potrebno izračunavati punu euklidsku
+Valja primijetiti da za $k-nn$ metodu nije potrebno izračunavati punu euklidsku
 udaljenost. Kako je operacija kvadratnog korijena jedna od računalno skupljih
 operacija zgodno je iskoristiti sljedeću relaciju:
 
@@ -419,7 +419,7 @@ susjeda, prema formuli:
 f(x_q)=\arg\max_{v \epsilon V} \sum_{i=1}^k \delta(v,f(x_i))
 \end{equation}
 
-gdje je $\delta$ kroneckerov simbol (vrijednost je 1 ako su oba argumenta jednaka).
+gdje je $\delta$ Kroneckerov simbol (vrijednost je 1 ako su oba argumenta jednaka).
 
 
 Lijene metode poput $k-nn$ klasifikatora konstruiraju različitu aproksimaciju
@@ -434,7 +434,7 @@ udaljenost od svih uzoraka u skupu za učenje.
 
 Vrijednost parametra $k$ odabrana u ovom radu je $k = 3$ zbog činjenice da je u
 skupu za učenje svaka osoba predstavljena s $5$ različitih slika lica pa
-korištenje veće vrijednosti $k$ ne bi pridonjelo uspješnijoj klasifikaciji.
+korištenje veće vrijednosti $k$ ne bi pridonijelo uspješnijoj klasifikaciji.
 
 \chapter{Evaluacija}
 \label{ch:eval}
@@ -446,7 +446,7 @@ jednolikom razdiobom (8 slika po razredu). Skup je podijeljen \emph{holdout} met
 uzimajući 5 slika za učenje i 3 slike za testiranje.
 
 U tablici \ref{tbl:eval} prikazana je uspješnost klasifikacije u ovisnosti o izboru
-parametara Gaborovog filtera te klasifikatora\footnote{Za $k$--nn je dan samo
+parametara Gaborovog filtra te klasifikatora\footnote{Za $k$--nn je dan samo
 jedan primjer radi očite manje uspješnosti i izrazito dužeg vremena
 izvršavanja.}. U tablici se nalaze vrijednosti omjera dimenzija ($\gamma$) i širine filtra ($b$).
 Orijentacija je fiksirana na $\theta = \{ \frac{i \pi}{8} | i =
