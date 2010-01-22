@@ -105,7 +105,7 @@ def filterImageMultipassAvg(image):
 lambdaSet = [2.5, 4, 5.6568, 8, 11.3137, 16]
 orientationNum = 8
 gamma = 0.5
-bandwidth = math.pi
+bandwidth = 1
 _filterSet1 = []
 _filterSet2 = []
 for Lambda in lambdaSet:
